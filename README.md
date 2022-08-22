@@ -1,16 +1,35 @@
-<h1>Spotify Clone</h1>
+# Spotify Clone
 Клон популярного приложения с поддержкой .flac, .wav и .ogg.
 
 ## Стек
 ### Frontend
-React, mobX, SCSS modules
+<ul>
+  <li>React</li>
+  <li>mobX</li>
+  <li>SCSS modules</li>
+</ul>
+
 ### Backend
-PostgreSQL, Express JS
+<ul>
+  <li>PostgreSQL</li>
+  <li>Express JS</li>
+</ul>
 
 ## В разработке
-1. Панель создания контента:
-a. 
-
-## Available scripts
-### `yarn start`
-### `yarn build`
+<ul>
+  <li>Панель создания контента</li>
+  <ul>
+    <li><s>Загрузка и первоначальное редактирование треков</s></li>
+    <li>Создание альбома</li>
+    <li>Создание плейлиста</li>
+    <li>Создание исполнителя</li>
+  </ul>
+  <li>Регистрация и авторизация</li>
+  <li>Страницы</li>
+  <ul>
+    <li>Главная</li>
+    <li>Поиск</li>
+    <li>Универсальная страница альбома</li>
+    <li>Универсальная страница плейлиста</li>
+  </ul>
+</ul>
