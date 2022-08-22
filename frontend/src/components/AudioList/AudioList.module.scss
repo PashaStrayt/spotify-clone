@@ -1,0 +1,53 @@
+.audio-list {
+  width: 100%;
+}
+
+.header-table {
+  display: grid;
+  column-gap: 22px;
+  grid-template-columns: 1fr 2fr 14fr 11fr 4fr 1fr 3fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  padding: 0 25px;
+  align-items: flex-start;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.text {
+  font-weight: 450;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #B3B3B3;
+}
+
+.name-column, .format-column {
+  grid-column: span 2;
+}
+
+.number-column, .duration-column {
+  align-items: flex-end;
+}
+
+.icon-image {
+  width: 24px;
+  height: 24px;
+}
+
+.empty-column {
+  grid-column: span 2;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background: #666666;
+  margin: 14px 0 22px;
+}

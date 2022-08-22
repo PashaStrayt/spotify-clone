@@ -1,0 +1,26 @@
+.plate {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba($color: #000, $alpha: 0.6);
+  cursor: auto;
+}
+
+.content {
+  max-width: 700px;
+  width: 100%;
+  padding: 54px 64px;
+  background: #1C1C1C;
+  border: 5px solid #65D36E;
+  border-radius: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  column-gap: 20px;
+}

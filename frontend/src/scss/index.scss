@@ -1,0 +1,24 @@
+@import './_reset.scss';
+@import url('http://fonts.cdnfonts.com/css/circular-std');
+
+body {
+  background: #121212;
+}
+
+* {
+  font-family: 'Circular Std', sans-serif;
+  font-weight: 450;
+  color: #FFF
+}
+
+.wrapper {
+  padding: 40px;
+}
+
+button {
+  transition: ease-in-out 0.4s;
+  -webkit-transition: ease-in-out 0.4s;
+  -moz-transition: ease-in-out 0.4s;
+  -ms-transition: ease-in-out 0.4s;
+  -o-transition: ease-in-out 0.4s;
+}

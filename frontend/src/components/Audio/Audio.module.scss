@@ -1,0 +1,135 @@
+.audio {
+  display: grid;
+  column-gap: 22px;
+  grid-template-columns: 1fr 2fr 14fr 11fr 4fr 1fr 3fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 72px;
+  padding: 10px 25px;
+  background: none;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  transition: ease-in-out 0.2s;
+  -webkit-transition: ease-in-out 0.2s;
+  -moz-transition: ease-in-out 0.2s;
+  -ms-transition: ease-in-out 0.2s;
+  -o-transition: ease-in-out 0.2s;
+  cursor: pointer;
+
+  font-weight: 450;
+  font-size: 18px;
+  line-height: 23px;
+  color: #B3B3B3;
+
+  &:hover {
+    background: rgba($color: #FFF, $alpha: 0.1);
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-image {
+  width: 100%;
+}
+
+.number {
+  &-column {
+    align-items: flex-end;
+  }
+
+  &-text {
+    font-weight: 450;
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: 0.02em;
+
+    color: #B3B3B3;
+  }
+}
+
+.album-image {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+}
+
+.name {
+  &-column {
+    align-items: flex-start;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  &-text {
+    font-weight: 450;
+    font-size: 19px;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    transition: ease-in-out 0.4s;
+    -webkit-transition: ease-in-out 0.4s;
+    -moz-transition: ease-in-out 0.4s;
+    -ms-transition: ease-in-out 0.4s;
+    -o-transition: ease-in-out 0.4s;
+    color: #FFFFFF;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &--active {
+      color: #65D36E;
+    }
+  }
+
+  &-singer-text {
+    color: #B3B3B3;
+  }
+}
+
+.album {
+  &-column {
+    align-items: flex-start;
+  }
+
+  &-text {
+    color: #B3B3B3;
+  }
+}
+
+.format {
+  &-column {
+    align-items: flex-start;
+  }
+
+  &-text {
+    text-transform: uppercase;
+    color: #B3B3B3;
+  }
+}
+
+.button {
+  &-column {
+    align-items: center;
+  }
+}
+
+.duration {
+  &-column {
+    align-items: flex-end;
+  }
+
+  &-text {
+    font-weight: 450;
+    font-size: 19px;
+    line-height: 25px;
+    letter-spacing: -0.03em;
+
+    color: #FFFFFF;
+  }
+}
