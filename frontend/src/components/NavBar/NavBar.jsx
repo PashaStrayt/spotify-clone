@@ -24,7 +24,7 @@ const NavBar = observer(() => {
     const formData = new FormData();
     formData.append('id', userStore.userId);
     formData.append('image', uploadAvatar);
-    formData.append('imageFileName', userStore.imageFileName);
+    formData.append('oldImageOFileName', userStore.imageFileName);
 
     let response = await fetch('/api/user/update-avatar', {
       method: 'POST',
@@ -33,6 +33,11 @@ const NavBar = observer(() => {
         'Authorization': 'bearer ' + userStore.token
       }
     });
+    response = await response.json();
+
+    if (response?.imageFileName) {
+      userStore.setStateAndCookie('imageFileName', response.imageFileName);
+    }
   });
 
   useEffect(() => {

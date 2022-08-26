@@ -100,12 +100,18 @@ export class UserController {
 
   static async updateAvatar(request, response, next) {
     try {
-      const { imageFileName } = request.body;
+      const { oldImageOFileName } = request.body;
       const { image } = request.files;
+      const dirPath = resolve(__dirname, '..', '..', 'static', 'users');
 
-      image.mv(resolve(__dirname, '..', '..', 'static', 'users', imageFileName));
+      unlink(resolve(dirPath, oldImageOFileName), error => {
+        if (error) throw error;
+      });
+      const newImageFileName = v4() + '.jpg';
+      image.mv(resolve(dirPath, newImageFileName));
 
-      return response.json({message: 'SUCCESS'});
+      return response.json({ imageFileName: newImageFileName });
+
     } catch (error) {
       console.log(error.message);
       return next(ErrorAPI.internalServer(error.message));
@@ -114,7 +120,7 @@ export class UserController {
 
   static async getFavourite(request, response, next) {
     try {
-      const {id: userId, content} = request.query.id;
+      const { id: userId, content } = request.query.id;
       let FavouriteModel, Model, modelId;
       switch (content) {
         case 'albums':
@@ -130,7 +136,7 @@ export class UserController {
         default:
           FavouriteModel = FavouriteSong;
           Model = Song;
-          modelId =  'songId';
+          modelId = 'songId';
           break;
       }
 
