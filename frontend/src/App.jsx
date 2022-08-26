@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import { BrowserRouter } from "react-router-dom";
 import { AppRouter } from "./AppRouter";
 import LoadingWheel from "./components/UI/LoadingWheel/LoadingWheel";
-import EditSongWindow from "./components/EditContentWindow/EditSongWindow";
 import NavBar from "./components/NavBar/NavBar";
 import { uiStore } from "./store/UIStore";
+import ErrorWindow from "./components/UI/ErrorWindow";
 
 const App = observer(() => {
   return (
@@ -18,8 +18,8 @@ const App = observer(() => {
             <LoadingWheel />
           }
           {
-            uiStore.isEditSongWindowVisible &&
-            <EditSongWindow />
+            !!uiStore.errorMessage &&
+            <ErrorWindow />
           }
         </div>
       </div>

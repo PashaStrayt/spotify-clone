@@ -4,10 +4,15 @@ class UIStore {
   isLoading = false;
   currentEditingSong = {};
   whichButtonIconActive = '';
+  errorMessage = '';
 
   constructor() {
     this.setDefaultCurrentEditingSong();
     makeAutoObservable(this);
+  }
+
+  setErrorMessage(message = '') {
+    this.errorMessage = message;
   }
 
   changeIsLoading = () => {

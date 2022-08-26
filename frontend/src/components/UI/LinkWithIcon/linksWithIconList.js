@@ -9,6 +9,16 @@ export const linksWithIconList = {
     text: 'Войти',
     urlOfImage: '/login-link.svg'
   },
+  'sign-out': {
+    path: '/login',
+    text: 'Выйти из профиля',
+    urlOfImage: '/sign-out-link.svg'
+  },
+  'user-settings': {
+    path: '/user-settings',
+    text: 'Настройки',
+    urlOfImage: '/user-settings-link.svg'
+  },
   home: {
     path: '/home',
     text: 'Главная',

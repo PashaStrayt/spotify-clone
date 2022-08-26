@@ -15,11 +15,10 @@ const server = express();
 
 server.use(express.json());
 server.use(fileUpload({}));
-server.use(express.static(resolve(__dirname, '..', 'static', 'images')));
+server.use(express.static(resolve(__dirname, '..', 'static', 'image-preview')));
 server.use(express.static(resolve(__dirname, '..', 'static', 'songs')));
 server.use(express.static(resolve(__dirname, '..', 'static', 'users')));
 server.use(express.static(resolve(__dirname, '..', 'static', 'UI')));
-server.use(express.static(resolve(__dirname, '..', 'static', 'fonts')));
 server.use('/api', rootRouter);
 server.use(errorHandlerMiddleware);
 

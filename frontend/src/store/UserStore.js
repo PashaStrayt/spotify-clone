@@ -2,12 +2,12 @@ import { makeAutoObservable } from "mobx";
 import { getCookie, setCookie } from "../API/cookies";
 
 class UserStore {
-  token = '1';
+  token = getCookie('token');
   userId = parseInt(getCookie('userId'));
   login = getCookie('login');
   email = getCookie('email');
   role = getCookie('role');
-  image = getCookie('image');
+  imageFileName = getCookie('imageFileName');
   isAuth = getCookie('isAuth');
 
   constructor() {

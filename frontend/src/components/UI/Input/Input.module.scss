@@ -29,6 +29,7 @@
   letter-spacing: 0.01em;
   color: #FFFFFF;
   background: #282828;
+  border: 2px solid #282828;
   border-radius: 8px;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
@@ -38,4 +39,9 @@
   &:focus {
     border: 2px solid #5C5C5C;
   }
+}
+
+.file {
+  width: 0;
+  height: 0;
 }

@@ -1,5 +1,5 @@
 import Input from '../Input/Input';
-import style from './Input.module.scss';
+import style from './InputPassword.module.scss';
 import ButtonIcon from '../ButtonIcon/ButtonIcon';
 import { useState } from 'react';
 
@@ -15,7 +15,8 @@ const InputPassword = (props) => {
       />
       <ButtonIcon
         buttonName='password-visibility'
-        clickHandler={() => {
+        additionalStyle={{ position: 'absolute', right: '12px', top: '13px', margin: 0 }}
+        clickHandler={event => {
           setType(
             type === 'password' ?
               'text' :

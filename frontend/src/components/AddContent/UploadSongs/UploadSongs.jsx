@@ -9,7 +9,7 @@ import { uploadStore } from "../../../store/UploadStore";
 import style from './UploadSongs.module.scss';
 
 const Songs = observer(() => {
-  const [uploadSongs, uploadSongsError] = useFetching(async () => {
+  const uploadSongs = useFetching(async () => {
     await fetch('/api/song', {
       method: 'POST',
       body: makeFilesArray(),

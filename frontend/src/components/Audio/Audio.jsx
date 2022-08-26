@@ -28,7 +28,7 @@ const Audio = observer(({
   const [focus, setFocus] = useState(false);
   const [isEditWindowVisible, setIsEditWindowVisible] = useState(false);
   const audioRef = useRef();
-  const [deleteSong, deleteSongError] = useFetching(() => {
+  const deleteSong = useFetching(() => {
     const initialURL = 'http://localhost:3000/api/';
     let url;
     if (playlistId) {

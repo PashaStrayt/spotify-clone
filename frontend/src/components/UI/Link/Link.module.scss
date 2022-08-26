@@ -1,4 +1,4 @@
-.with-icon {
+.with-icon, .with-icon-and-background {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -23,6 +23,20 @@
   img {
     width: auto;
     height: 100%;
+  }
+}
+
+.with-icon-and-background {
+  padding: 10px 20px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  max-height: 42px;
+
+  &:hover {
+    background: #262626;
   }
 }
 

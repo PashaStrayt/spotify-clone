@@ -6,6 +6,7 @@ import { userRouter } from "./userRouter.js";
 import { singerRouter } from "./singerRouter.js";
 import { songRouter } from "./songRouter.js";
 import { checkUserMiddleware } from '../midddleware/checkUserMiddleware.js';
+import { imageRouter } from "./imageRouter.js";
 
 const rootRouter = new Router();
 
@@ -16,5 +17,6 @@ rootRouter.use('/album', albumRouter);
 // rootRouter.use('/playlist',);
 rootRouter.use('/singer', singerRouter);
 rootRouter.use('/test', testRouter);
+rootRouter.use('/image', imageRouter);
 
 export { rootRouter };

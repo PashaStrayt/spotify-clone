@@ -5,9 +5,9 @@ export const buttonsIconList = {
     urlOfActiveImage: '/password-visibility-active-image.svg',
     size: 'small'
   },
-  'user-settings': {
-    title: 'Панель управления',
-    urlOfImage: '/user-settings-image.svg',
+  'user-menu': {
+    title: 'Меню пользователя',
+    urlOfImage: '/user-menu-image.svg',
     size: 'small'
   },
   'sort-by-duration': {

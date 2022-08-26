@@ -6,37 +6,49 @@ import { ErrorAPI } from '../API/ErrorAPI.js';
 import { Album, Favourite, FavouriteAlbum, FavouritePlaylist, FavouriteSong, Playlist, Song, User } from '../database/models.js';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { readdir, readdirSync, unlink } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 config();
 
-const generateJwt = (id, login, email, role, image) => {
-  return jwt.sign({ id, login, email, role, image }, process.env.SECRET_KEY, { expiresIn: '24h' });
+const generateJwt = (id, login, email, role, imageFileName) => {
+  return jwt.sign({ id, login, email, role, imageFileName }, process.env.SECRET_KEY, { expiresIn: '24h' });
 }
 
 export class UserController {
   static async registration(request, response, next) {
     try {
-      const { login, email, password, role } = request.body;
+      const { login, email, password } = request.body;
       const { image } = request.files;
+
+      const dirPath = resolve(__dirname, '..', '..', 'static', 'image-preview');
+      readdir(dirPath, (error, files) => {
+        if (error) throw error;
+
+        for (let file of files) {
+          unlink(resolve(dirPath, file), error => {
+            if (error) throw error;
+          });
+        }
+      });
 
       if (!login || !email || !password) {
         return next(ErrorAPI.badRequest('Не введен логин, email или пароль'));
       }
       const doUserExist = await User.findOne({ where: { email } });
       if (doUserExist) {
-        return next(ErrorAPI.internalServer('Такой пользователь уже существует'));
+        return next(ErrorAPI.badRequest('Такой пользователь уже существует'));
       }
 
       const fileName = v4() + '.jpg';
       image.mv(resolve(__dirname, '..', '..', 'static', 'users', fileName));
 
       const hashedPassword = await hash(password, 5);
-      const user = await User.create({ login, email, password: hashedPassword, role, image: fileName });
-      const token = generateJwt(user.id, login, email, role, fileName);
+      const user = await User.create({ login, email, password: hashedPassword, imageFileName: fileName });
+      const token = generateJwt(user.id, login, email, user.role, fileName);
 
-      response.json({ token, userId: user.id, login, email, role, image: fileName })
+      response.json({ token, userId: user.id, login, email, role: user.role, imageFileName: fileName })
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
     }
@@ -44,30 +56,32 @@ export class UserController {
 
   static async login(request, response, next) {
     try {
-      const { email, password } = request.body;
+      let { email, password } = request.body;
+      email = email.toLowerCase();
 
       if (!email || !password) {
-        return next(ErrorAPI.badRequest('Не введен логин, email или пароль'));
+        return next(ErrorAPI.badRequest('Не введены email или пароль'));
+      }
+      const user = await User.findOne({ where: { email } });
+      if (!user?.id) {
+        return next(ErrorAPI.badRequest('Неправильный email или пароль'));
       }
       const {
         password: hashedPassword,
         id: userId,
-        image,
+        imageFileName,
         login,
         role
-      } = await User.findOne({ where: { email } });
-      if (!userId) {
-        return next(ErrorAPI.internalServer('Неправильный логин или пароль'));
-      }
+      } = user;
 
       const comparePasswords = compareSync(password, hashedPassword);
       if (!comparePasswords) {
-        return next(ErrorAPI.internalServer('Неправильный логин или пароль'));
+        return next(ErrorAPI.badRequest('Неправильный email или пароль'));
       }
 
-      const token = generateJwt(userId, login, email, role, image);
+      const token = generateJwt(userId, login, email, role, imageFileName);
 
-      response.json({ token, userId, login, email, role, image })
+      response.json({ token, userId, login, email, role, imageFileName })
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
     }
@@ -75,12 +89,26 @@ export class UserController {
 
   static async checkAuth(request, response, next) {
     try {
-      const { id, login, email, role, image } = request.user;
-      const token = generateJwt(id, login, email, role, image);
+      const { id, login, email, role, imageFileName } = request.user;
+      const token = generateJwt(id, login, email, role, imageFileName);
 
-      return response.json({ token, userId: id, login, email, role, image });
+      return response.json({ token, userId: id, login, email, role, imageFileName });
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
+    }
+  }
+
+  static async updateAvatar(request, response, next) {
+    try {
+      const { imageFileName } = request.body;
+      const { image } = request.files;
+
+      image.mv(resolve(__dirname, '..', '..', 'static', 'users', imageFileName));
+
+      return response.json({message: 'SUCCESS'});
+    } catch (error) {
+      console.log(error.message);
+      return next(ErrorAPI.internalServer(error.message));
     }
   }
 

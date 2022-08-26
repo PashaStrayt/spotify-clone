@@ -3,11 +3,11 @@ import { DataTypes } from 'sequelize';
 
 const User = database.define('user', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  login: { type: DataTypes.STRING, unique: true, allowNull: false },
+  login: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, unique: true, allowNull: false },
   password: { type: DataTypes.STRING, allowNull: false },
   role: { type: DataTypes.STRING, defaultValue: 'USER' },
-  image: { type: DataTypes.STRING }
+  imageFileName: { type: DataTypes.STRING }
 });
 
 const Favourite = database.define('favourite', {

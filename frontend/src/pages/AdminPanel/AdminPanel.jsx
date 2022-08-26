@@ -52,7 +52,7 @@ const AdminPanel = () => {
   }, [path])
 
   return (
-    <div className={style['admin-panel']}>
+    <div>
       <header className={style.header}>
         <Header className='secondary'>Панель администратора</Header>
         <p className={style['header__text']}>Добавить</p>

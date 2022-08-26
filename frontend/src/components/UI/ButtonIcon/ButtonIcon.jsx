@@ -9,6 +9,7 @@ import style from './ButtonIcon.module.scss';
 const ButtonIcon = observer(({ buttonName, additionalStyle, clickHandler }) => {
   const { title, urlOfImage, urlOfActiveImage, size } = buttonsIconList[buttonName];
 
+  const [count, setCount] = useState(0)
   const [stateUrlOfImage, setStateUrlOfImage] = useState(urlOfImage);
   const [styleState, setStyleState] = useState(additionalStyle);
   const [mouseOverHandler, setMouseOverHandler] = useState();
@@ -45,9 +46,16 @@ const ButtonIcon = observer(({ buttonName, additionalStyle, clickHandler }) => {
     <Button
       className={'only-icon--' + size}
       additionalStyle={styleState}
-      clickHandler={() => {
-        uiStore.setButtonIconActive(buttonName);
-        clickHandler();
+      clickHandler={event => {
+        event.preventDefault();
+        uiStore.setButtonIconActive(
+          uiStore.whichButtonIconActive ?
+            '' :
+            buttonName
+        );
+        if (clickHandler) {
+          clickHandler()
+        }
       }}
       title={title}
       onMouseOver={mouseOverHandler}
