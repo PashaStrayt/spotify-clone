@@ -5,12 +5,11 @@ import { testRouter } from "./testRouter.js";
 import { userRouter } from "./userRouter.js";
 import { singerRouter } from "./singerRouter.js";
 import { songRouter } from "./songRouter.js";
-import { checkUserMiddleware } from '../midddleware/checkUserMiddleware.js';
 import { imageRouter } from "./imageRouter.js";
 
 const rootRouter = new Router();
 
-rootRouter.use('/song', checkUserMiddleware('ADMIN'), songRouter);
+rootRouter.use('/song', songRouter);
 rootRouter.use('/user', userRouter);
 rootRouter.use('/search', searchRouter);
 rootRouter.use('/album', albumRouter);

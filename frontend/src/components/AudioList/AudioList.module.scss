@@ -1,11 +1,14 @@
 .audio-list {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .header-table {
   display: grid;
   column-gap: 22px;
-  grid-template-columns: 1fr 2fr 14fr 11fr 4fr 1fr 3fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 14fr 12fr 3fr 1fr 3fr 1fr 1fr;
   grid-template-rows: 1fr;
   width: 100%;
   padding: 0 25px;
@@ -32,7 +35,11 @@
   grid-column: span 2;
 }
 
-.number-column, .duration-column {
+.number-column {
+  align-items: flex-end;
+}
+
+.duration-column {
   align-items: flex-end;
 }
 
@@ -49,5 +56,5 @@
   width: 100%;
   height: 1px;
   background: #666666;
-  margin: 14px 0 22px;
+  margin: 8px 0 16px;
 }

@@ -1,11 +1,10 @@
 import { config } from 'dotenv';
 import { ErrorAPI } from '../API/ErrorAPI.js';
-import { Song, SongPlaylist, SongPrivate, SongPrivatePlaylist, SongSinger, User } from '../database/models.js';
+import { Album, Favourite, FavouriteSong, FavouriteSongPrivate, Singer, Song, SongPlaylist, SongPrivate, SongPrivatePlaylist, SongSinger, User } from '../database/models.js';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { v4 } from 'uuid';
-import e from 'express';
 
 config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -24,8 +23,7 @@ export class SongController {
         const {
           name,
           albumId,
-          singerId,
-          singerName,
+          singers,
           albumName,
           format
         } = songsInfo[index];
@@ -37,16 +35,28 @@ export class SongController {
         let duration = await getAudioDurationInSeconds(path);
         duration = Math.floor(duration);
 
-        if (albumId && singerId) {
+        let hasOnlyExistingSingers = true;
+        let singersIds = [], singersNames = [];
+        for (let [property, value] of Object.entries(singers)) {
+          if (!value.id) {
+            hasOnlyExistingSingers = false;
+          }
+          singersIds.push(value.id);
+          singersNames.push(value.name);
+        }
+
+        if (albumId && hasOnlyExistingSingers) {
           const song = await Song.create({
             name, albumId, format, duration, fileName
           });
-          await SongSinger.create({
-            songId: song.id, singerId
-          });
+          for (let singerId of singersIds) {
+            await SongSinger.create({
+              songId: song.id, singerId
+            });
+          }
         } else {
           await SongPrivate.create({
-            name, singerName, albumName, format, duration, fileName
+            name, singersNames, albumName, format, duration, fileName
           });
         }
       });
@@ -157,6 +167,60 @@ export class SongController {
       return response.json(song);
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
+    }
+  }
+
+  static async getAll(request, response, next) {
+    try {
+      let { userId, limit, page } = request.query;
+      limit = limit || 10;
+      page = page || 1;
+      const offset = limit * page - limit;
+      const order = [['createdAt', 'DESC']];
+
+      let songs = await Song.findAll({
+        order, limit, offset,
+        include: [
+          { model: Singer, as: 'SongSinger', attributes: ['name'] },
+          { model: Album, attributes: ['name', 'image'] }
+        ]
+      });
+      let songsPrivate = await SongPrivate.findAll({ order, limit, offset });
+
+      if (userId) {
+        const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
+        const favouriteSongs = await FavouriteSong.findAll({ where: { favouriteId } });
+        const favouriteSongsPrivate = await FavouriteSongPrivate.findAll({ where: { favouriteId } });
+
+        if (favouriteSongs.length) {
+          songs.forEach(song => {
+            let isFavourite = false;
+            for (let favouriteSong of favouriteSongs) {
+              if (favouriteSong.songId === song.id) {
+                isFavourite = true;
+                break;
+              }
+            }
+            song.dataValues.isFavourite = isFavourite
+          });
+        }
+        if(favouriteSongsPrivate.length) {
+          songsPrivate.forEach(songPrivate => {
+            let isFavourite = false;
+            for (let favouriteSongPrivate of favouriteSongsPrivate) {
+              if (favouriteSongPrivate.songPrivateId === songPrivate.id) {
+                isFavourite = true;
+                break;
+              }
+            }
+            songPrivate.dataValues.isFavourite = isFavourite
+          });
+        }
+      }
+
+      response.json([...songs, ...songsPrivate]);
+    } catch (error) {
+      next(ErrorAPI.badRequest(error.message));
     }
   }
 }

@@ -27,3 +27,17 @@ export const checkAcceptFormat = type => {
 
   return acceptFormats.includes(type);
 };
+
+export const deepCopy = data => {
+  if (data && Array.isArray(data)) {
+    return data.map(item => deepCopy(item));
+  } else if (data && typeof data === 'object') {
+    const obj = {};
+    Object.entries(data).forEach(([property, value]) => {
+      obj[property] = deepCopy(value);
+    });
+    return obj;
+  } else {
+    return data;
+  }
+};

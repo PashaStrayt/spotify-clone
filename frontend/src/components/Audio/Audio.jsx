@@ -8,6 +8,16 @@ import { uploadStore } from "../../store/UploadStore";
 import ButtonIcon from '../UI/ButtonIcon/ButtonIcon';
 import style from './Audio.module.scss';
 import { observer } from 'mobx-react-lite';
+import { deepCopy } from '../../API/files';
+import { makeDurationString } from '../../API/audio';
+import ButtonFavourite from '../UI/ButtonFavourite/ButtonFavourite';
+import { audioStore } from '../../store/AudioStore';
+import { useEffect } from 'react';
+import AudioWave from '../UI/AudioWave/AudioWave';
+
+const makeSingerNames = singers => {
+  return Object.entries(singers).map(([index, { name }]) => name).join(', ');
+};
 
 const Audio = observer(({
   isPreview,
@@ -17,15 +27,16 @@ const Audio = observer(({
   format,
   albumName,
   albumImage,
-  singerName,
+  singers,
   albumId,
-  singerId,
   playlistId,
   duration,
+  fileName,
   number,
-  isFavourite
+  isFavourite = false
 }) => {
-  const [focus, setFocus] = useState(false);
+  albumImage = albumImage || '/album-image.svg'
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isEditWindowVisible, setIsEditWindowVisible] = useState(false);
   const audioRef = useRef();
   const deleteSong = useFetching(() => {
@@ -49,12 +60,12 @@ const Audio = observer(({
   });
 
   const editClickHandler = () => {
+    uiStore.setButtonIconActive('');
     setIsEditWindowVisible(true);
     const song = {
       name,
-      singerName,
+      singers: deepCopy(singers),
       albumName,
-      singerId,
       albumId,
       index: number - 1
     };
@@ -68,14 +79,47 @@ const Audio = observer(({
     }
     uiStore.setButtonIconActive('');
   };
+  const favouriteClickHandler = () => {
+    uiStore.setErrorMessage('На этом пока что все!');
+  };
+  const audioClickHandler = () => {
+    if (audioStore.currentPlaying.audio.src.slice(22) === fileName) {
+      if (audioStore.currentPlaying.audio.paused) {
+        setIsPlaying(true);
+        audioStore.currentPlaying.audio.play();
+      } else {
+        audioStore.currentPlaying.audio.pause();
+        setIsPlaying(false);
+      }
+    } else {
+      audioStore.setCurrentQueue(deepCopy(audioStore.availableQueue));
+      audioStore.setCurrentPlaying({
+        name,
+        singers: makeSingerNames(singers),
+        albumName
+      });
+      audioStore.setCurrentPlayingFileName(fileName);
+      audioStore.currentPlaying.audio.play();
+    }
+  };
+
+  useEffect(() => {
+    setIsPlaying(audioStore.currentPlaying.fileName === fileName);
+  }, [audioStore.currentPlaying.fileName]);
 
   return (
     <div
       className={style.audio}
+      style={isPlaying ? { background: 'rgba(255, 255, 255, 0.1)' } : {}}
+      onClick={audioClickHandler}
     >
-      <audio preload='none' src={!isPreview ? name + '.' + format : ''} ref={audioRef}></audio>
+      <audio preload='none' src={!isPreview ? '/' + fileName : ''} ref={audioRef}></audio>
       <div className={[style.column, style['number-column']].join(' ')}>
-        <p className={style['number-text']}>{number}</p>
+        {
+          isPlaying ?
+            <AudioWave /> :
+            <p className={style['number-text']}>•</p>
+        }
       </div>
       <div className={[style.column, ['albumName-image-column']].join(' ')}>
         <img src={albumImage} alt="Album icon" className={style['albumName-image']} />
@@ -86,7 +130,7 @@ const Audio = observer(({
             name.slice(0, 25) + '...' :
             name
         }</p>
-        <p className={style['name-singerName-text']}>{singerName}</p>
+        <p className={style['name-singerName-text']}>{makeSingerNames(singers)}</p>
       </div>
       <div className={[style.column, style['album-column']].join(' ')}>
         <p className={style['album-text']}>{albumName}</p>
@@ -97,13 +141,15 @@ const Audio = observer(({
       <div className={[style.column, style['button-column']].join(' ')}>
         {
           !isPreview &&
-          <ButtonIcon 
-            buttonName='favourite-song'
+          <ButtonFavourite
+            size='small'
+            clickHandler={favouriteClickHandler}
+            isActive={isFavourite}
           />
         }
       </div>
       <div className={[style.column, style['duration-column']].join(' ')}>
-        <p className={style['duration-text']}>{duration}</p>
+        <p className={style['duration-text']}>{makeDurationString(duration)}</p>
       </div>
       <div className={[style.column, style['button-column']].join(' ')}>
         <ButtonIcon

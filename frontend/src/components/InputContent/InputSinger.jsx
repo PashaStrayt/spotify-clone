@@ -5,20 +5,17 @@ import Button from '../UI/Button/Button';
 import Input from '../UI/Input/Input';
 import style from './InputContent.module.scss';
 
-const InputSinger = observer(() => {
+const InputSinger = observer(({ index }) => {
   const [searchResult, setSearchResult] = useState(null);
 
   const changeHandler = async event => {
     const singerName = event.target.value;
-    uiStore.setCurrentEditingSong({ ...uiStore.currentEditingSong, singerName, singerId: null });
+    uiStore.setSingerIdAndNameByIndex(index, { id: null, name: singerName });
     if (!singerName) {
       setSearchResult(null);
       return;
     }
-    const url = new URL('http://localhost:3000/api/search/simple');
-    url.searchParams.append('searchMethod', 'singer');
-    url.searchParams.append('searchQuery', singerName);
-
+    const url = encodeURI('/api/search/simple?searchMethod=singer&searchQuery=' + singerName);
     let singers = await fetch(url);
     singers = await singers.json();
     setSearchResult(singers);
@@ -27,14 +24,14 @@ const InputSinger = observer(() => {
     setSearchResult(null);
     const singerName = event.target.innerHTML;
     const singerId = event.target.getAttribute('data-id');
-    uiStore.setCurrentEditingSong({ ...uiStore.currentEditingSong, singerName, singerId });
+    uiStore.setSingerIdAndNameByIndex(index, { id: singerId, name: singerName });
   };
 
   return (
     <div className={style.container}>
       <Input
         className='in-adding-content'
-        value={uiStore.currentEditingSong.singerName}
+        value={uiStore.currentEditingSong.singers[index].name}
         placeholder='Название группы или исполнитель'
         onChange={changeHandler}
       />
@@ -51,6 +48,18 @@ const InputSinger = observer(() => {
             </Button>
           ) :
           ''
+      }
+      {
+        !uiStore.currentEditingSong.singers[index + 1] &&
+        <Button
+          additionalStyle={{ maxWidth: '216px', marginBottom: '6px' }}
+          className='simple-transparent'
+          clickHandler={() => {
+            uiStore.setSingerIdAndNameByIndex(index + 1, { id: null, name: 'Не известен' })
+          }}
+        >
+          Добавить еще
+        </Button>
       }
     </div>
   );

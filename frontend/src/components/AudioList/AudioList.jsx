@@ -38,11 +38,11 @@ const AudioList = observer(({ isPreview, audios, playlistId }) => {
             format={audio?.format}
             albumName={audio?.albumName}
             albumImage={audio?.albumImage}
-            singerName={audio?.singerName}
+            singers={audio?.singers}
             albumId={audio?.albumId}
-            singerId={audio?.singerId}
             playlistId={playlistId}
             duration={audio?.duration}
+            fileName={audio?.fileName}
             number={index + 1}
             isFavourite={audio?.isFavourite}
             allSongInfo={{ ...audio, index }}

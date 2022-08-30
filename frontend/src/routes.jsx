@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import AdminPanel from "./pages/AdminPanel/AdminPanel";
 import Error from "./pages/Error";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Registration from "./pages/Registration/Registration";
 import Favourite from "./pages/Favourite";

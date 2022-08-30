@@ -15,10 +15,7 @@ const InputAlbum = observer(() => {
       setSearchResult(null);
       return;
     }
-    const url = new URL('http:localhost:3000/api/search/simple');
-    url.searchParams.append('searchMethod', 'album');
-    url.searchParams.append('searchQuery', albumName);
-
+    const url = encodeURI('/api/search/simple?searchMethod=album&searchQuery=' + albumName);
     let albums = await fetch(url);
     albums = await albums.json();
     setSearchResult(albums);
@@ -36,7 +33,7 @@ const InputAlbum = observer(() => {
         className='in-adding-content'
         value={uiStore.currentEditingSong.albumName}
         placeholder='Название альбома'
-        onChange={changeHandler}
+        changeHandler={changeHandler}
       />
       {
         searchResult ?

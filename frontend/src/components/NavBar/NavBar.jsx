@@ -35,9 +35,7 @@ const NavBar = observer(() => {
     });
     response = await response.json();
 
-    if (response?.imageFileName) {
-      userStore.setStateAndCookie('imageFileName', response.imageFileName);
-    }
+    Auth.setStateAndCookie(response);
   });
 
   useEffect(() => {

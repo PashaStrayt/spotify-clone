@@ -6,7 +6,7 @@ import { ErrorAPI } from '../API/ErrorAPI.js';
 import { Album, Favourite, FavouriteAlbum, FavouritePlaylist, FavouriteSong, Playlist, Song, User } from '../database/models.js';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { readdir, readdirSync, unlink } from 'fs';
+import { copyFile, readdir, readdirSync, unlink } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -20,7 +20,6 @@ export class UserController {
   static async registration(request, response, next) {
     try {
       const { login, email, password } = request.body;
-      const { image } = request.files;
 
       const dirPath = resolve(__dirname, '..', '..', 'static', 'image-preview');
       readdir(dirPath, (error, files) => {
@@ -42,10 +41,19 @@ export class UserController {
       }
 
       const fileName = v4() + '.jpg';
-      image.mv(resolve(__dirname, '..', '..', 'static', 'users', fileName));
+      const usersDir = resolve(__dirname, '..', '..', 'static', 'users');
+      if (request?.files?.image) {
+        const { image } = request.files;
+        image.mv(resolve(usersDir, fileName));
+      } else {
+        copyFile(resolve(usersDir, 'example-user-avatar.jpg'), resolve(usersDir, fileName), error => {
+          if (error) throw error;
+        });
+      }
 
       const hashedPassword = await hash(password, 5);
       const user = await User.create({ login, email, password: hashedPassword, imageFileName: fileName });
+      await Favourite.create({ userId: user.id })
       const token = generateJwt(user.id, login, email, user.role, fileName);
 
       response.json({ token, userId: user.id, login, email, role: user.role, imageFileName: fileName })
@@ -110,8 +118,20 @@ export class UserController {
       const newImageFileName = v4() + '.jpg';
       image.mv(resolve(dirPath, newImageFileName));
 
-      return response.json({ imageFileName: newImageFileName });
+      const user = await User.findOne({ where: { imageFileName: oldImageOFileName } });
+      user.imageFileName = newImageFileName;
+      await user.save({ fields: ['imageFileName'] });
 
+      const token = generateJwt(user.id, user.login, user.email, user.role, user.imageFileName);
+
+      return response.json({
+        token,
+        userId: user.id,
+        login: user.login,
+        email: user.email,
+        role: user.role,
+        imageFileName: user.imageFileName
+      });
     } catch (error) {
       console.log(error.message);
       return next(ErrorAPI.internalServer(error.message));

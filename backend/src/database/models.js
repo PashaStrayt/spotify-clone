@@ -21,6 +21,10 @@ const FavouriteSong = database.define('favourite_song', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
 });
 
+const FavouriteSongPrivate = database.define('favourite_song_private', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
+});
+
 const FavouriteAlbum = database.define('favourite_album', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
 });
@@ -31,6 +35,9 @@ const FavouritePlaylist = database.define('favourite_playlist', {
 
 Favourite.hasMany(FavouriteSong);
 FavouriteSong.belongsTo(Favourite);
+
+Favourite.hasMany(FavouriteSongPrivate);
+FavouriteSongPrivate.belongsTo(Favourite);
 
 Favourite.hasMany(FavouriteAlbum);
 FavouriteAlbum.belongsTo(Favourite);
@@ -50,7 +57,7 @@ const Song = database.define('song', {
 const SongPrivate = database.define('song_private', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, allowNull: false },
-  singerName: { type: DataTypes.STRING, allowNull: false },
+  singersNames: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false },
   albumName: { type: DataTypes.STRING, allowNull: false },
   format: { type: DataTypes.STRING, allowNull: false },
   duration: { type: DataTypes.INTEGER, allowNull: false },
@@ -74,8 +81,8 @@ const Playlist = database.define('playlist', {
 Song.hasOne(FavouriteSong);
 FavouriteSong.belongsTo(Song);
 
-SongPrivate.hasOne(FavouriteSong);
-FavouriteSong.belongsTo(SongPrivate);
+SongPrivate.hasOne(FavouriteSongPrivate);
+FavouriteSongPrivate.belongsTo(SongPrivate);
 
 Album.hasOne(FavouriteAlbum);
 FavouriteAlbum.belongsTo(Album);
@@ -130,6 +137,7 @@ export {
   User,
   Favourite,
   FavouriteSong,
+  FavouriteSongPrivate,
   FavouriteAlbum,
   FavouritePlaylist,
   Song,

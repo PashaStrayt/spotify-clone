@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 class UIStore {
   isLoading = false;
@@ -15,8 +15,10 @@ class UIStore {
     this.errorMessage = message;
   }
 
-  changeIsLoading = () => {
-    this.isLoading = !this.isLoading;
+  changeIsLoading() {
+    runInAction(() => {
+      this.isLoading = !this.isLoading;
+    });
   }
 
   setButtonIconActive(buttonName) {
@@ -27,12 +29,15 @@ class UIStore {
     this.currentEditingSong = song;
   }
 
+  setSingerIdAndNameByIndex(index, { id, name }) {
+    this.currentEditingSong.singers[index] = { id, name };
+  }
+
   setDefaultCurrentEditingSong() {
     this.currentEditingSong = {
       name: '',
-      singerName: '',
+      singers: { 0: { id: null, name: '' } },
       albumName: '',
-      singerId: null,
       albumId: null,
       index: null
     };

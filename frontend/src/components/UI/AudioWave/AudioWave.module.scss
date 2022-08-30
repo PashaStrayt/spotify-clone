@@ -1,0 +1,99 @@
+.wave {
+  width: 20px;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 30px;
+}
+
+.wave__item {
+  background: #65D36E;
+  border-radius: 25px;
+  margin: 1px;
+  width: 10px;
+}
+
+.wave__item--one {
+  height: 75%;
+  -webkit-animation: one 1.2s infinite;
+          animation: one 1.2s infinite;
+  -webkit-animation-delay: 900ms;
+          animation-delay: 900ms;
+}
+
+@-webkit-keyframes one {
+  50% {
+    height: 25%;
+  }
+}
+
+@keyframes one {
+  50% {
+    height: 25%;
+  }
+}
+
+.wave__item--two {
+  height: 33%;
+  -webkit-animation: two 1.2s infinite;
+          animation: two 1.2s infinite;
+}
+
+@-webkit-keyframes two {
+  50% {
+    height: 56%;
+  }
+}
+
+@keyframes two {
+  50% {
+    height: 56%;
+  }
+}
+
+.wave__item--three {
+  height: 42%;
+  -webkit-animation: three 1.2s infinite;
+          animation: three 1.2s infinite;
+  -webkit-animation-delay: 1.5s;
+          animation-delay: 1.5s;
+}
+
+@-webkit-keyframes three {
+  50% {
+    height: 50%;
+  }
+}
+
+@keyframes three {
+  50% {
+    height: 50%;
+  }
+}
+
+.wave__item--four {
+  height: 16%;
+  -webkit-animation: four 1.2s infinite;
+          animation: four 1.2s infinite;
+  -webkit-animation-delay: 100ms;
+          animation-delay: 100ms;
+}
+
+@-webkit-keyframes four {
+  50% {
+    height: 38%;
+  }
+}
+
+@keyframes four {
+  50% {
+    height: 38%;
+  }
+}

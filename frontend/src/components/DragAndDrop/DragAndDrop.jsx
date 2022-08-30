@@ -39,9 +39,8 @@ const DragAndDrop = () => {
         format: makeValidFormat(file.name),
         albumName: 'Без альбома',
         albumImage: '/album-image.svg',
-        singerName: 'Не известен',
+        singers: { 0: { id: null, name: 'Не известен' } },
         duration: '—',
-        singerId: null,
         albumId: null
       }, file);
     });

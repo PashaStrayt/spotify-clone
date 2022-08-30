@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { ErrorAPI } from '../API/ErrorAPI.js';
-import { Singer, Song, SongPrivate, SongSinger } from '../database/models.js'
+import { FavouriteSong, FavouriteSongPrivate, Singer, Song, SongPrivate, SongSinger } from '../database/models.js'
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { v4 } from 'uuid';
@@ -13,9 +13,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export class TestController {
   static async test(request, response, next) {
     try {
-      const song = await SongPrivate.destroy({ where: { id: 44 } });
+      const favouriteSongs = await FavouriteSongPrivate.create({ favouriteId: 2, songPrivateId: 2 });
 
-      return response.json(song);
+      return response.json(favouriteSongs);
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
     }

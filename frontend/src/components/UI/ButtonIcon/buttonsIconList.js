@@ -1,10 +1,4 @@
 export const buttonsIconList = {
-  'password-visibility': {
-    title: 'Показать / скрыть пароль',
-    urlOfImage: '/password-visibility-image.svg',
-    urlOfActiveImage: '/password-visibility-active-image.svg',
-    size: 'small'
-  },
   'user-menu': {
     title: 'Меню пользователя',
     urlOfImage: '/user-menu-image.svg',

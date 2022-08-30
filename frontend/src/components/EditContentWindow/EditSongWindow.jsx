@@ -21,7 +21,11 @@ const EditSongWindow = observer(({ isPreview, setVisible }) => {
           });
         }}
       />
-      <InputSinger />
+      {
+        Object.entries(uiStore.currentEditingSong.singers).map((singer, index) =>
+          <InputSinger key={singer.name + index.toString()} index={index} />
+        )
+      }
       <InputAlbum />
       <Button
         className='simple-green'

@@ -1,16 +1,13 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
 backend/node_modules
 frontend/node_modules
+
 *.jpg
+!example-user-avatar.jpg
 *.flac
 *.wav
 *.ogg
 *.mp3
 *.m4a
-/.pnp
-.pnp.js
 
 # testing
 /coverage

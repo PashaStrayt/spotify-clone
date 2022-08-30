@@ -4,7 +4,11 @@ const Button = ({ children, className, additionalStyle, clickHandler, title, ...
   return (
     <button
       className={style[className]}
-      onClick={clickHandler}
+      onClick={event => {
+        event.preventDefault();
+        event.stopPropagation();
+        clickHandler();
+      }}
       style={additionalStyle}
       title={title ? title : children}
       {...props}
