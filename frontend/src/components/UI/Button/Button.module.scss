@@ -67,6 +67,24 @@
   }
 }
 
+.audio-sontrol {
+  &--big, &--small {
+    width: auto;
+    opacity: 0.7;
+    background: none;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &--big {
+    height: 40px;
+  }
+  &--small {
+    height: 20px;
+  }
+}
+
 .search-advice {
   max-width: 570px;
   width: 100%;

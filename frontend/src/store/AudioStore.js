@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { action, makeAutoObservable, makeObservable, observable, runInAction } from "mobx";
 import { deepCopy } from "../API/files";
 
 class AudioStore {
@@ -41,18 +41,20 @@ class AudioStore {
       name: '',
       singers: '',
       albumName: '',
-      fileName: ''
-    }
+      fileName: '',
+      isFavourite: false,
+      currentTime: 0
+    };
   }
   setCurrentPlaying(object) {
     this.currentPlaying = {
       ...this.currentPlaying,
       ...object
+    };
+    if (object.fileName) {
+      this.currentPlaying.audio.src = '/' + object.fileName;
+      localStorage.setItem('lastPlayed', JSON.stringify(object));
     }
-  }
-  setCurrentPlayingFileName(fileName) {
-    this.currentPlaying.audio.src = '/' + fileName;
-    this.currentPlaying.fileName = fileName;
   }
 }
 

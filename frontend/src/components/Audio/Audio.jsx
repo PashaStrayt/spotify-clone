@@ -15,6 +15,7 @@ import { audioStore } from '../../store/AudioStore';
 import { useEffect } from 'react';
 import AudioWave from '../UI/AudioWave/AudioWave';
 
+let interval;
 const makeSingerNames = singers => {
   return Object.entries(singers).map(([index, { name }]) => name).join(', ');
 };
@@ -86,6 +87,7 @@ const Audio = observer(({
     if (audioStore.currentPlaying.audio.src.slice(22) === fileName) {
       if (audioStore.currentPlaying.audio.paused) {
         setIsPlaying(true);
+        audioStore.setCurrentPlaying({});
         audioStore.currentPlaying.audio.play();
       } else {
         audioStore.currentPlaying.audio.pause();
@@ -96,16 +98,20 @@ const Audio = observer(({
       audioStore.setCurrentPlaying({
         name,
         singers: makeSingerNames(singers),
-        albumName
+        albumName,
+        fileName,
+        duration
       });
-      audioStore.setCurrentPlayingFileName(fileName);
       audioStore.currentPlaying.audio.play();
     }
   };
 
   useEffect(() => {
-    setIsPlaying(audioStore.currentPlaying.fileName === fileName);
-  }, [audioStore.currentPlaying.fileName]);
+    setIsPlaying(
+      audioStore.currentPlaying.fileName === fileName &&
+      !audioStore.currentPlaying.audio.paused
+    );
+  }, [audioStore.currentPlaying.fileName, audioStore.currentPlaying.audio.paused]);
 
   return (
     <div

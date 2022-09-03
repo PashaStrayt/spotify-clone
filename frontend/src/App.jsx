@@ -7,6 +7,7 @@ import { uiStore } from "./store/UIStore";
 import ErrorWindow from "./components/UI/ErrorWindow";
 import AudioController from "./components/AudioController";
 import AudioWave from "./components/UI/AudioWave/AudioWave";
+import AudioPanel from "./components/AudioPanel/AudioPanel";
 
 const App = observer(() => {
   return (
@@ -25,6 +26,7 @@ const App = observer(() => {
             <ErrorWindow />
           }
         </div>
+        <AudioPanel />
       </div>
     </BrowserRouter>
   );
