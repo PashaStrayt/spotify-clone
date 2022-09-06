@@ -108,3 +108,9 @@
     background: #363636;
   }
 }
+
+button {
+  img { 
+    pointer-events: none;
+  }
+}

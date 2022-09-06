@@ -8,6 +8,8 @@ import ErrorWindow from "./components/UI/ErrorWindow";
 import AudioController from "./components/AudioController";
 import AudioWave from "./components/UI/AudioWave/AudioWave";
 import AudioPanel from "./components/AudioPanel/AudioPanel";
+import { audioStore } from "./store/AudioStore";
+import SongInfoPlate from "./components/UI/SongInfoPlate/SongInfoPlate";
 
 const App = observer(() => {
   return (
@@ -15,7 +17,7 @@ const App = observer(() => {
       <div style={{ display: 'flex' }}>
         <AudioController />
         <NavBar />
-        <div style={{ width: '100%' }}>
+        <div style={{ width: '100%', marginBottom: '112px'}}>
           <AppRouter />
           {
             uiStore.isLoading &&
@@ -26,7 +28,11 @@ const App = observer(() => {
             <ErrorWindow />
           }
         </div>
-        <AudioPanel />
+        <SongInfoPlate />
+        {
+          audioStore.currentPlaying.name &&
+          <AudioPanel />
+        }
       </div>
     </BrowserRouter>
   );

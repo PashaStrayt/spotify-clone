@@ -1,4 +1,5 @@
 import { uiStore } from "../store/UIStore";
+import { deepCopy } from "./files";
 
 export const makeDurationString = duration => {
   const addNullToString = string => {
@@ -54,4 +55,19 @@ export const fetching = async callback => {
   } finally {
     uiStore.changeIsLoading();
   }
+}
+
+export const makeSingerNames = singers => {
+  return Object.entries(singers).map(([index, { name }]) => name).join(', ');
+};
+
+export const shuffleArray = array => {
+  const arrayCopy = deepCopy(array);
+
+  for (let i = arrayCopy.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+  }
+
+  return arrayCopy;
 }

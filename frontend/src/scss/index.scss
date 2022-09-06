@@ -3,12 +3,13 @@
 
 body {
   background: #121212;
+  overflow-y: scroll;
 }
 
 * {
   font-family: 'Circular Std', sans-serif;
   font-weight: 450;
-  color: #FFF
+  color: #FFF;
 }
 
 .wrapper {
@@ -21,4 +22,25 @@ button {
   -moz-transition: ease-in-out 0.4s;
   -ms-transition: ease-in-out 0.4s;
   -o-transition: ease-in-out 0.4s;
+}
+
+body::-webkit-scrollbar {
+  width: 20px;
+  cursor: pointer;
+  background: #181818;
+}
+
+body::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  background: #686868;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border: 6px solid #181818;
+
+  &:hover {
+    background: #63cf6cc7;
+  }
 }

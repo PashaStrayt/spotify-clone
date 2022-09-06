@@ -178,6 +178,10 @@ export class SongController {
       const offset = limit * page - limit;
       const order = [['createdAt', 'DESC']];
 
+      const SongsTotalPages = Math.ceil(await Song.count() / 10);
+      const SongPrivatesTotalPages = Math.ceil(await SongPrivate.count() / 10);
+      response.append('Total-Pages', SongsTotalPages > SongPrivatesTotalPages ? SongsTotalPages : SongPrivatesTotalPages);
+
       let songs = await Song.findAll({
         order, limit, offset,
         include: [

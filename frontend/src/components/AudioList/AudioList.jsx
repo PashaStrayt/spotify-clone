@@ -1,8 +1,23 @@
 import { observer } from 'mobx-react-lite';
+import { useRef } from 'react';
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+import { audioStore } from '../../store/AudioStore';
+import { uiStore } from '../../store/UIStore';
 import Audio from '../Audio/Audio';
 import style from './AudioList.module.scss';
 
 const AudioList = observer(({ isPreview, audios, playlistId }) => {
+  const observableRef = useRef();
+
+  useIntersectionObserver(
+    observableRef,
+    audioStore.availableQueue.page < audioStore.availableQueue.totalPages && !isPreview,
+    uiStore.isLoading,
+    () => {
+      audioStore.setAvailableQueue({ page: audioStore.availableQueue.page + 1 });
+    }
+  );
+
   return (
     <div className={style['audio-list']}>
       <div className={style['header-table']}>
@@ -50,6 +65,7 @@ const AudioList = observer(({ isPreview, audios, playlistId }) => {
           />
         )
       }
+      <div ref={observableRef} className={style.observer}></div>
     </div>
   );
 })

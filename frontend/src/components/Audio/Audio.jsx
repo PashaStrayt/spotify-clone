@@ -9,16 +9,11 @@ import ButtonIcon from '../UI/ButtonIcon/ButtonIcon';
 import style from './Audio.module.scss';
 import { observer } from 'mobx-react-lite';
 import { deepCopy } from '../../API/files';
-import { makeDurationString } from '../../API/audio';
+import { makeDurationString, makeSingerNames } from '../../API/audio';
 import ButtonFavourite from '../UI/ButtonFavourite/ButtonFavourite';
 import { audioStore } from '../../store/AudioStore';
 import { useEffect } from 'react';
 import AudioWave from '../UI/AudioWave/AudioWave';
-
-let interval;
-const makeSingerNames = singers => {
-  return Object.entries(singers).map(([index, { name }]) => name).join(', ');
-};
 
 const Audio = observer(({
   isPreview,
@@ -100,7 +95,11 @@ const Audio = observer(({
         singers: makeSingerNames(singers),
         albumName,
         fileName,
-        duration
+        format,
+        albumImage,
+        duration,
+        isFavourite,
+        index: number - 1
       });
       audioStore.currentPlaying.audio.play();
     }
@@ -124,7 +123,7 @@ const Audio = observer(({
         {
           isPlaying ?
             <AudioWave /> :
-            <p className={style['number-text']}>•</p>
+            <p className={style['number-text']}>{number}</p>
         }
       </div>
       <div className={[style.column, ['albumName-image-column']].join(' ')}>
@@ -155,7 +154,7 @@ const Audio = observer(({
         }
       </div>
       <div className={[style.column, style['duration-column']].join(' ')}>
-        <p className={style['duration-text']}>{makeDurationString(duration)}</p>
+        <p className={style['duration-text']}>{Number.isInteger(duration) ? makeDurationString(duration) : '—'}</p>
       </div>
       <div className={[style.column, style['button-column']].join(' ')}>
         <ButtonIcon

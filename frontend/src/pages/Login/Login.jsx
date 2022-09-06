@@ -35,8 +35,7 @@ const Login = () => {
     }
   });
 
-  const submit = event => {
-    event.preventDefault();
+  const submit = () => {
     if (Auth.validateEmail(email)) {
       fetchForm();
     } else {

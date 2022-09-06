@@ -1,15 +1,15 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { audioStore } from '../../../store/AudioStore';
 import Button from '../Button/Button';
 import style from './ButtonFavourite.module.scss';
 
-const ButtonFavourite = observer(({ size, additionalStyle, clickHandler, ...props }) => {
+const ButtonFavourite = observer(({ size, additionalStyle, clickHandler, isActive, ...props }) => {
   const urlOfImage = '/favourite-image.svg';
   const urlOfActiveImage = '/favourite-active-image.svg';
 
   const [styleState, setStyleState] = useState(additionalStyle);
-  const [isActive, setIsActive] = useState(props?.isActive);
-  const [stateUrlOfImage, setStateUrlOfImage] = useState(isActive ? urlOfActiveImage : urlOfImage);
+  const [stateUrlOfImage, setStateUrlOfImage] = useState();
 
   const mouseOverHandler = () => {
     if (isActive) {
@@ -30,6 +30,10 @@ const ButtonFavourite = observer(({ size, additionalStyle, clickHandler, ...prop
     setStyleState(additionalStyle)
   };
 
+  useEffect(() => {
+    setStateUrlOfImage(isActive ? urlOfActiveImage : urlOfImage)
+  }, [isActive])
+
   return (
     <Button
       className={'only-icon--' + size}
@@ -41,7 +45,7 @@ const ButtonFavourite = observer(({ size, additionalStyle, clickHandler, ...prop
         } else {
           mouseOutHandler();
         }
-        setIsActive(!isActive);
+        isActive = !isActive;
         clickHandler();
       }}
       onMouseOver={mouseOverHandler}

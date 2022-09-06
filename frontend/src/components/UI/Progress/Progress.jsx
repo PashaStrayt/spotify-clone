@@ -1,33 +1,39 @@
+import { useEffect } from 'react';
+import { useState } from 'react';
 import style from './Progress.module.scss';
 
-const Progress = ({ value, max, className }) => {
+const calcGradientPercents = (value, max) => {
+  return Math.floor(Number(value) / Number(max) * 100);
+};
+
+const Progress = ({ min, value, max, step, className, changeHandler, mouseUpHandler }) => {
+  const [gradientPercents, setGradientPercents] = useState(0);
+
+  const inputHandler = event => {
+    const percents = calcGradientPercents(event.target.value, event.target.max);
+    setGradientPercents(percents);
+    if (changeHandler) {
+      changeHandler(event);
+    }
+  };
+
+  useEffect(() => {
+    const percents = calcGradientPercents(value, max);
+    setGradientPercents(percents);
+  }, [value]);
+
   return (
-    <progress
+    <input
+      type='range'
+      min={min}
       value={value}
       max={max}
+      step={step}
       className={style[className]}
-      // onMouseDown={event => {
-      //   setStartPoint(event.pageX);
-        
-      //   const endPoint = Math.floor(event.pageX - ref.current.offsetLeft);
-      //     const progress = endPoint / (ref.current.offsetWidth / 222);
-      //     ref.current.value = progress;
-      // }}
-      // onMouseMove={event => {
-      //   if (startPoint) {
-      //     const endPoint = Math.floor(event.pageX - ref.current.offsetLeft);
-      //     const progress = endPoint / (ref.current.offsetWidth / 222);
-      //     ref.current.value = progress;
-      //   }
-      // }}
-      // onMouseUp={event => {
-      //   const endPoint = Math.floor(event.pageX - ref.current.offsetLeft);
-      //   const progress = endPoint / (ref.current.offsetWidth / 222);
-      //   ref.current.value = progress;
-      //   setStartPoint(null)
-      // }}
-    >
-    </progress>
+      style={{ background: `-webkit-linear-gradient(left, #63CF6C 0, #63CF6C ${gradientPercents}%, rgba(255, 255, 255, 0.5) ${gradientPercents}%, rgba(255, 255, 255, 0.5) 100%)` }}
+      onChange={inputHandler}
+      onMouseUp={mouseUpHandler}
+    />
   );
 };
 
