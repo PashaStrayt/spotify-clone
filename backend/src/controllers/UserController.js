@@ -20,17 +20,7 @@ export class UserController {
   static async registration(request, response, next) {
     try {
       const { login, email, password } = request.body;
-
-      const dirPath = resolve(__dirname, '..', '..', 'static', 'image-preview');
-      readdir(dirPath, (error, files) => {
-        if (error) throw error;
-
-        for (let file of files) {
-          unlink(resolve(dirPath, file), error => {
-            if (error) throw error;
-          });
-        }
-      });
+      const image = request?.files?.image;
 
       if (!login || !email || !password) {
         return next(ErrorAPI.badRequest('Не введен логин, email или пароль'));
@@ -40,15 +30,13 @@ export class UserController {
         return next(ErrorAPI.badRequest('Такой пользователь уже существует'));
       }
 
-      const fileName = v4() + '.jpg';
+      let fileName;
       const usersDir = resolve(__dirname, '..', '..', 'static', 'users');
-      if (request?.files?.image) {
-        const { image } = request.files;
+      if (image) {
+        fileName = v4() + '.jpg';
         image.mv(resolve(usersDir, fileName));
       } else {
-        copyFile(resolve(usersDir, 'example-user-avatar.jpg'), resolve(usersDir, fileName), error => {
-          if (error) throw error;
-        });
+        fileName = 'example-user-avatar.jpg';
       }
 
       const hashedPassword = await hash(password, 5);

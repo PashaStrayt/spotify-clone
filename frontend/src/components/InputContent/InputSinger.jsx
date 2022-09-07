@@ -1,16 +1,15 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import { uiStore } from '../../store/UIStore';
 import Button from '../UI/Button/Button';
 import Input from '../UI/Input/Input';
 import style from './InputContent.module.scss';
 
-const InputSinger = observer(({ index }) => {
+const InputSinger = observer(({ singers, value, index, adviceClickHandler, addMoreClickHandler, additionalStyle }) => {
   const [searchResult, setSearchResult] = useState(null);
 
   const changeHandler = async event => {
     const singerName = event.target.value;
-    uiStore.setSingerIdAndNameByIndex(index, { id: null, name: singerName });
+    adviceClickHandler(index, { id: null, name: singerName });
     if (!singerName) {
       setSearchResult(null);
       return;
@@ -24,20 +23,20 @@ const InputSinger = observer(({ index }) => {
     setSearchResult(null);
     const singerName = event.target.innerHTML;
     const singerId = event.target.getAttribute('data-id');
-    uiStore.setSingerIdAndNameByIndex(index, { id: singerId, name: singerName });
+    adviceClickHandler(index, { id: singerId, name: singerName });
   };
 
   return (
-    <div className={style.container}>
+    <div className={style.container} style={additionalStyle}>
       <Input
         className='in-adding-content'
-        value={uiStore.currentEditingSong.singers[index].name}
+        value={value}
         placeholder='Название группы или исполнитель'
         onChange={changeHandler}
       />
       {
         searchResult ?
-          searchResult.map(singer =>
+          searchResult?.map(singer =>
             <Button
               className='search-advice'
               clickHandler={clickHandler}
@@ -50,13 +49,11 @@ const InputSinger = observer(({ index }) => {
           ''
       }
       {
-        !uiStore.currentEditingSong.singers[index + 1] &&
+        !singers[index + 1] &&
         <Button
           additionalStyle={{ maxWidth: '216px', marginBottom: '6px' }}
           className='simple-transparent'
-          clickHandler={() => {
-            uiStore.setSingerIdAndNameByIndex(index + 1, { id: null, name: 'Не известен' })
-          }}
+          clickHandler={addMoreClickHandler}
         >
           Добавить еще
         </Button>

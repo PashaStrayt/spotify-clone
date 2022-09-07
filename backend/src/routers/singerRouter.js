@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { SingerController } from "../controllers/singerController.js";
 import { checkUserMiddleware } from "../midddleware/checkUserMiddleware.js";
+import { deletePreviewImagesMidddleware } from "../midddleware/deletePreviewImagesMidddleware.js";
 
 const singerRouter = new Router();
 
-singerRouter.post('/', checkUserMiddleware('ADMIN'), SingerController.create);
+singerRouter.post('/', checkUserMiddleware('ADMIN'), deletePreviewImagesMidddleware, SingerController.create);
 
 export { singerRouter };

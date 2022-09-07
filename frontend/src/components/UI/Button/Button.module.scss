@@ -88,7 +88,8 @@
 .search-advice {
   max-width: 570px;
   width: 100%;
-  background: #131313;
+  background: #363636;
+  // background: #131313;
   border-radius: 20px;
   transition: ease-in-out 0.4s;
   -webkit-transition: ease-in-out 0.4s;
@@ -105,7 +106,7 @@
   color: #FFFFFF;
 
   &:hover, &:focus {
-    background: #363636;
+    background: #4a4a4a;
   }
 }
 

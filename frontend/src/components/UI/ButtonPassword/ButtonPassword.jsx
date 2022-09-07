@@ -35,8 +35,7 @@ const ButtonPassword = observer(({ additionalStyle, clickHandler }) => {
       className='only-icon--small'
       additionalStyle={styleState}
       title='Показать / скрыть пароль'
-      clickHandler={event => {
-        event.preventDefault();
+      clickHandler={() => {
         setIsPress(!isPress);
         if (isPress) {
           mouseOverHandler();

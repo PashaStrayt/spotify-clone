@@ -1,6 +1,6 @@
 import { col, fn, Op, where } from 'sequelize';
 import { ErrorAPI } from '../API/ErrorAPI.js';
-import { Album, AlbumSinger, Playlist, PlaylistSinger, Singer, Song, SongPrivate, SongSinger } from '../database/models.js'
+import { Album, AlbumSinger, Playlist, Singer, Song, SongPrivate, SongSinger } from '../database/models.js'
 
 const doSubstrings = string => {
   const substringsArray = string.split(' ');
@@ -81,9 +81,6 @@ export class SearchController {
           break;
         case 'playlists':
           Model = Playlist;
-          ModelSinger = PlaylistSinger;
-          modelId = 'playlistId';
-          includeAs = 'PlaylistSinger'
           limit = limit || 6;
           break;
         default:

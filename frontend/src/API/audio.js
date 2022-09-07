@@ -37,7 +37,7 @@ export const makeSongsArray = async songs => {
       return {
         ...song,
         albumName: song.album.name,
-        albumImage: song.album.image,
+        albumImage: song.album.imageFileName,
         singers,
         SongSinger: null,
         album: null

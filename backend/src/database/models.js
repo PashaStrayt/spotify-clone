@@ -69,13 +69,13 @@ const Album = database.define('album', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, allowNull: false },
   date: { type: DataTypes.STRING },
-  image: { type: DataTypes.STRING }
+  imageFileName: { type: DataTypes.STRING }
 });
 
 const Playlist = database.define('playlist', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, allowNull: false },
-  image: { type: DataTypes.STRING }
+  imageFileName: { type: DataTypes.STRING }
 });
 
 Song.hasOne(FavouriteSong);
@@ -109,7 +109,8 @@ Playlist.belongsToMany(SongPrivate, { through: SongPrivatePlaylist });
 
 const Singer = database.define('singer', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false, unique: true }
+  name: { type: DataTypes.STRING, allowNull: false, unique: true },
+  imageFileName: { type: DataTypes.STRING }
 });
 
 const SongSinger = database.define('song-singer', {
@@ -126,13 +127,6 @@ const AlbumSinger = database.define('album-singer', {
 Album.belongsToMany(Singer, { through: AlbumSinger, as: 'AlbumSinger' });
 Singer.belongsToMany(Album, { through: AlbumSinger, as: 'AlbumSinger' });
 
-const PlaylistSinger = database.define('playlist-singer', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
-});
-
-Playlist.belongsToMany(Singer, { through: PlaylistSinger, as: 'PlaylistSinger' });
-Singer.belongsToMany(Playlist, { through: PlaylistSinger, as: 'PlaylistSinger' });
-
 export {
   User,
   Favourite,
@@ -148,6 +142,5 @@ export {
   SongPrivatePlaylist,
   Singer,
   SongSinger,
-  AlbumSinger,
-  PlaylistSinger
+  AlbumSinger
 };

@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/UI/Header/Header';
 import UploadSongs from '../../components/AddContent/UploadSongs/UploadSongs';
-import Album from '../../components/AddContent/Album';
-import Playlist from '../../components/AddContent/Playlist';
-import Singer from '../../components/AddContent/Singer';
+import CreateAlbumOrPlaylistOrSinger from '../../components/AddContent/CreateAlbumOrPlaylistOrSinger';
 import style from './AdminPanel.module.scss';
 import Button from '../../components/UI/Button/Button';
 
@@ -38,13 +36,13 @@ const AdminPanel = () => {
         setContent(<UploadSongs />);
         break;
       case '/admin-panel/album':
-        setContent(<Album />);
+        setContent(<CreateAlbumOrPlaylistOrSinger contentType='album' />);
         break;
       case '/admin-panel/playlist':
-        setContent(<Playlist />);
+        setContent(<CreateAlbumOrPlaylistOrSinger contentType='playlist' />);
         break;
       case '/admin-panel/singer':
-        setContent(<Singer />);
+        setContent(<CreateAlbumOrPlaylistOrSinger contentType='singer' />);
         break;
       default:
         break;

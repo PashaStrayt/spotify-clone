@@ -31,5 +31,10 @@ export const buttonsAudioControlList = {
     urlOfImage: '/mute.svg',
     urlOfActiveImage: '/unmute.svg',
     size: 'small'
+  },
+  'visible-song-info-plate': {
+    title: 'Показать / скрыть панель информации о треке',
+    urlOfImage: '/visible-song-info-plate.svg',
+    size: 'small'
   }
 };

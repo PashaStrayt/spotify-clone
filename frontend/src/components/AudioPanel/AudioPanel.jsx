@@ -8,10 +8,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { makeDurationString, shuffleArray } from '../../API/audio';
 import Progress from '../UI/Progress/Progress';
-
-const getLastPlayed = () => {
-  return JSON.parse(localStorage.getItem('lastPlayed'));
-}
+import { uiStore } from '../../store/UIStore';
 
 const AudioPanel = observer(() => {
   const [availableCurrentTime, setAvailableCurrentTime] = useState(0);
@@ -58,7 +55,6 @@ const AudioPanel = observer(() => {
   };
   const shuffleQueueClickHandler = () => {
     audioStore.setCurrentQueue({ queue: shuffleArray(audioStore.currentQueue.queue) });
-    setNextClickHandler();
   };
   const favouriteClickHandler = () => {
   };
@@ -114,10 +110,18 @@ const AudioPanel = observer(() => {
             value={availableCurrentTime || currentTime}
             max={duration || 100}
             step={1}
-            changeHandler={event => setAvailableCurrentTime(event.target.value)}
+            changeHandler={event => {
+              if (event.target.value <= 0) {
+                return setAvailableCurrentTime(0.001);
+              }
+              setAvailableCurrentTime(Math.floor(event.target.value));
+            }}
             mouseUpHandler={event => {
-              setCurrentTime(event.target.value);
-              audioStore.currentPlaying.audio.currentTime = event.target.value;
+              setCurrentTime(Math.floor(event.target.value));
+              audioStore.currentPlaying.audio.currentTime = Math.floor(event.target.value);
+              if (event.target.value >= duration) {
+                audioStore.setCurrentPlaying({ isEnded: true });
+              }
               setAvailableCurrentTime(0);
             }}
           />
@@ -148,6 +152,12 @@ const AudioPanel = observer(() => {
             audioStore.currentPlaying.audio.volume = event.target.value;
             audioStore.setCurrentPlaying({});
             localStorage.setItem('volume', event.target.value);
+          }}
+        />
+        <ButtonAudioControl
+          buttonName='visible-song-info-plate'
+          clickHandler={() => {
+            uiStore.changeIsVisibleSongInfoPlate();
           }}
         />
       </div>

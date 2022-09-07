@@ -23,7 +23,18 @@ const EditSongWindow = observer(({ isPreview, setVisible }) => {
       />
       {
         Object.entries(uiStore.currentEditingSong.singers).map((singer, index) =>
-          <InputSinger key={singer.name + index.toString()} index={index} />
+          <InputSinger
+            singers={uiStore.currentEditingSong.singers}
+            value={uiStore.currentEditingSong.singers[index].name}
+            key={singer.name + index.toString()}
+            index={index}
+            adviceClickHandler={(index, { id, name }) => {
+              uiStore.setSingerIdAndNameByIndex(index, { id, name });
+            }}
+            addMoreClickHandler={() => {
+              uiStore.setSingerIdAndNameByIndex(index + 1, { id: null, name: 'Не известен' });
+            }}
+          />
         )
       }
       <InputAlbum />

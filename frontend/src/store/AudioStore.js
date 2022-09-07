@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, makeObservable, observable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { makeSingerNames } from "../API/audio";
 import { deepCopy } from "../API/files";
 
@@ -10,7 +10,14 @@ class AudioStore {
   constructor() {
     this.setDefaultCurrentPlaying();
     this.setDefaultAvailableQueue();
-    this.currentQueue = deepCopy(this.availableQueue);
+
+    const lastQueue = JSON.parse(localStorage.getItem('lastQueue'));
+    if (lastQueue?.page) {
+      this.currentQueue = lastQueue;
+    } else {
+      this.currentQueue = deepCopy(this.availableQueue);
+    }
+    
     makeAutoObservable(this);
   }
 
@@ -57,6 +64,7 @@ class AudioStore {
       format: '',
       isFavourite: false,
       currentTime: 0,
+      isEnded: false,
       volume: 0.5,
       index: 0
     };

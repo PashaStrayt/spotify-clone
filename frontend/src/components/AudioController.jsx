@@ -76,22 +76,27 @@ const AudioController = observer(() => {
         volume: audioStore.currentPlaying.audio.volume
       });
       localStorage.setItem('lastPlayed', JSON.stringify(audioStore.currentPlaying));
+      localStorage.setItem('lastQueue', JSON.stringify(audioStore.currentQueue));
     });
   }, []);
 
   // Play the next song from current queue
   useEffect(() => {
-    if (audioStore.currentPlaying.audio.ended && !audioStore.currentPlaying.audio.loop) {
+    if ((audioStore.currentPlaying.isEnded || audioStore.currentPlaying.audio.ended) && !audioStore.currentPlaying.audio.loop) {
       const nextSongIndex = audioStore.currentPlaying.index + 1;
 
       if (nextSongIndex <= audioStore.currentQueue.queue.length - 1) {
         audioStore.setNextCurrentPlaying(nextSongIndex);
         audioStore.currentPlaying.audio.play();
+        audioStore.setCurrentPlaying({ isEnded: false });
       } else {
         audioStore.setCurrentQueue({ isEnded: true });
       }
+    } else if (audioStore.currentPlaying.isEnded || audioStore.currentPlaying.audio.ended) {
+      audioStore.currentPlaying.audio.currentTime = 0;
+      audioStore.setCurrentPlaying({ isEnded: false });
     }
-  }, [audioStore.currentPlaying.audio.ended]);
+  }, [audioStore.currentPlaying.audio.ended, audioStore.currentPlaying.isEnded]);
 
   // Update current queue, if it's ended, and continue listening, if it was
   useEffect(() => {

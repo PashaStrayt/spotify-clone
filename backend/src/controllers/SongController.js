@@ -173,7 +173,7 @@ export class SongController {
   static async getAll(request, response, next) {
     try {
       let { userId, limit, page } = request.query;
-      limit = limit || 10;
+      limit = limit || 50;
       page = page || 1;
       const offset = limit * page - limit;
       const order = [['createdAt', 'DESC']];
@@ -186,7 +186,7 @@ export class SongController {
         order, limit, offset,
         include: [
           { model: Singer, as: 'SongSinger', attributes: ['name'] },
-          { model: Album, attributes: ['name', 'image'] }
+          { model: Album, attributes: ['name', 'imageFileName'] }
         ]
       });
       let songsPrivate = await SongPrivate.findAll({ order, limit, offset });
@@ -224,6 +224,7 @@ export class SongController {
 
       response.json([...songs, ...songsPrivate]);
     } catch (error) {
+      console.log(error.message);
       next(ErrorAPI.badRequest(error.message));
     }
   }

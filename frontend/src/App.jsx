@@ -17,7 +17,7 @@ const App = observer(() => {
       <div style={{ display: 'flex' }}>
         <AudioController />
         <NavBar />
-        <div style={{ width: '100%', marginBottom: '112px'}}>
+        <div style={{ width: '100%', marginBottom: '112px' }}>
           <AppRouter />
           {
             uiStore.isLoading &&
@@ -28,7 +28,10 @@ const App = observer(() => {
             <ErrorWindow />
           }
         </div>
-        <SongInfoPlate />
+        {
+          uiStore.isVisibleSongInfoPlate === 'true' &&
+          <SongInfoPlate />
+        }
         {
           audioStore.currentPlaying.name &&
           <AudioPanel />

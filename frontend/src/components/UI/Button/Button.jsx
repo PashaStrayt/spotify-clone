@@ -7,7 +7,7 @@ const Button = ({ children, className, additionalStyle, clickHandler, title, ...
       onClick={event => {
         event.preventDefault();
         event.stopPropagation();
-        clickHandler();
+        clickHandler(event);
       }}
       style={additionalStyle}
       title={title ? title : children}

@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 
 class UIStore {
   isLoading = false;
+  isVisibleSongInfoPlate = localStorage.getItem('isVisibleSongInfoPlate') || 'false';
   currentEditingSong = {};
   whichButtonIconActive = '';
   errorMessage = '';
@@ -18,6 +19,12 @@ class UIStore {
   changeIsLoading() {
     runInAction(() => {
       this.isLoading = !this.isLoading;
+    });
+  }
+  changeIsVisibleSongInfoPlate() {
+    runInAction(() => {
+      this.isVisibleSongInfoPlate = this.isVisibleSongInfoPlate === 'true' ? 'false' : 'true';
+      localStorage.setItem('isVisibleSongInfoPlate', this.isVisibleSongInfoPlate);
     });
   }
 

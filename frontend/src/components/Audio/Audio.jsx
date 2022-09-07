@@ -79,6 +79,7 @@ const Audio = observer(({
     uiStore.setErrorMessage('На этом пока что все!');
   };
   const audioClickHandler = () => {
+    if (isPreview) return;
     if (audioStore.currentPlaying.audio.src.slice(22) === fileName) {
       if (audioStore.currentPlaying.audio.paused) {
         setIsPlaying(true);
@@ -108,7 +109,8 @@ const Audio = observer(({
   useEffect(() => {
     setIsPlaying(
       audioStore.currentPlaying.fileName === fileName &&
-      !audioStore.currentPlaying.audio.paused
+      !audioStore.currentPlaying.audio.paused &&
+      !isPreview
     );
   }, [audioStore.currentPlaying.fileName, audioStore.currentPlaying.audio.paused]);
 

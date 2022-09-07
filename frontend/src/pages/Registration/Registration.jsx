@@ -9,6 +9,7 @@ import { Auth } from '../../API/Auth';
 import { useNavigate } from 'react-router-dom';
 import { uiStore } from '../../store/UIStore';
 import { useEffect } from 'react';
+import UploadImage from '../../components/UI/UploadImage/UploadImage';
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -17,26 +18,17 @@ const Registration = () => {
     email: '',
     password1: '',
     password2: '',
-    avatar: null,
-    avatarFileName: ''
+    avatar: { file: null, fileName: '' }
   });
-  const fetchAvatar = useFetching(async () => {
-    const formData = new FormData();
-    formData.append('0', account.avatar);
-
-    let avatarFileName = await fetch('/api/image/preview', {
-      method: 'POST',
-      body: formData
-    });
-    avatarFileName = await avatarFileName.json();
-    setAccount({ ...account, avatarFileName });
-  })
+  const setAvatar = async avatar => {
+    setAccount({ ...account, avatar });
+  };
   const fetchForm = useFetching(async () => {
     const formData = new FormData();
     formData.append('login', account.login);
     formData.append('email', account.email);
     formData.append('password', account.password1);
-    formData.append('image', account.avatar);
+    formData.append('image', account.avatar.file);
 
     let response = await fetch('/api/user/registration', {
       method: 'POST',
@@ -52,8 +44,7 @@ const Registration = () => {
     }
   });
 
-  const submit = event => {
-    event.preventDefault();
+  const submit = () => {
     if (account.login) {
       if (Auth.validateEmail(account.email)) {
         if (account.password1 === account.password2) {
@@ -67,13 +58,7 @@ const Registration = () => {
     } else {
       uiStore.setErrorMessage('Введите логин');
     }
-  }
-
-  useEffect(() => {
-    if (account.avatar) {
-      fetchAvatar();
-    }
-  }, [account.avatar]);
+  };
 
   return (
     <div className={style.container}>
@@ -91,55 +76,31 @@ const Registration = () => {
           placeholder='Электронная почта'
           type='email'
           value={account.email}
-          autoComplete='email'
+          autoComplete='off'
           changeHandler={event => setAccount({ ...account, email: event.target.value })}
         />
         <label>Пароль</label>
         <InputPassword
+          autoComplete='off'
           placeholder='Пароль'
           value={account.password1}
           changeHandler={event => setAccount({ ...account, password1: event.target.value })}
         />
         <label>Повторите пароль</label>
         <InputPassword
+          autoComplete='off'
           placeholder='Пароль'
           value={account.password2}
           changeHandler={event => setAccount({ ...account, password2: event.target.value })}
         />
         <label>Фотография профиля</label>
-        <div className={style['upload-avatar']}>
-          <label className={style['upload-avatar__label']}>
-            {
-              account.avatarFileName ?
-                <img className={style['upload-avatar__avatar']} src={'/' + account.avatarFileName} alt="" /> :
-                <img className={style['upload-avatar__plus']} src="/plus-icon.svg" alt="" />
-            }
-            <Input
-              id='avatar'
-              type='file'
-              multiple
-              accept='image/jpeg'
-              className='file'
-              changeHandler={event => {
-                setAccount({ ...account, avatar: event.target.files[0] });
-              }}
-            />
-          </label>
-          <div className={style['upload-avatar__buttons-block']}>
-            <Button
-              className='simple-transparent'
-              clickHandler={event => {
-                event.preventDefault();
-                setAccount({ ...account, avatar: null, avatarFileName: '' });
-              }}
-            >
-              УДАЛИТЬ
-            </Button>
-            <label className={style['upload-avatar__button-label']} htmlFor='avatar'>
-              ВЫБРАТЬ ДРУГУЮ
-            </label>
-          </div>
-        </div>
+        <UploadImage
+          className='user-avatar'
+          setImageInForm={setAvatar}
+          clickHandler={() => {
+            setAccount({ ...account, avatar: { file: null, fileName: '' } });
+          }}
+        />
         <Button
           className='simple-green'
           type='reset'

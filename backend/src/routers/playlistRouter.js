@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { AlbumController } from "../controllers/AlbumController.js";
+import { PlaylistController } from "../controllers/PlaylistController.js";
 import { checkUserMiddleware } from "../midddleware/checkUserMiddleware.js";
+import { deletePreviewImagesMidddleware } from "../midddleware/deletePreviewImagesMidddleware.js";
 
 const playlistRouter = new Router();
 
-// playlistRouter.post('/', checkUserMiddleware('ADMIN'), AlbumController.create);
+playlistRouter.post('/', checkUserMiddleware('ADMIN'), deletePreviewImagesMidddleware, PlaylistController.create);
 // playlistRouter.post('/edit/:id', checkUserMiddleware('ADMIN'), AlbumController.edit);
 // playlistRouter.get('/:id', AlbumController.getById);
 // playlistRouter.get('/', AlbumController.getMany);

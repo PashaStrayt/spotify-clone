@@ -15,10 +15,10 @@ const server = express();
 
 server.use(express.json());
 server.use(fileUpload({}));
-server.use(express.static(resolve(__dirname, '..', 'static', 'image-preview')));
-server.use(express.static(resolve(__dirname, '..', 'static', 'songs')));
-server.use(express.static(resolve(__dirname, '..', 'static', 'users')));
-server.use(express.static(resolve(__dirname, '..', 'static', 'UI')));
+const folders = ['albums', 'image-preview', 'playlists', 'songs', 'UI', 'users', 'singers'];
+for (let folder of folders) {
+  server.use(express.static(resolve(__dirname, '..', 'static', folder)));
+}
 server.use('/api', rootRouter);
 server.use(errorHandlerMiddleware);
 

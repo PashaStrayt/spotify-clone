@@ -2,10 +2,11 @@ import { Router } from "express";
 import { UserController } from "../controllers/UserController.js";
 import { checkCurrentUserMiddleware } from "../midddleware/checkCurrentUserMiddleware.js";
 import { checkUserMiddleware } from "../midddleware/checkUserMiddleware.js";
+import { deletePreviewImagesMidddleware } from "../midddleware/deletePreviewImagesMidddleware.js";
 
 const userRouter = new Router();
 
-userRouter.post('/registration', UserController.registration);
+userRouter.post('/registration', deletePreviewImagesMidddleware, UserController.registration);
 userRouter.post('/login', UserController.login);
 userRouter.post(
   '/update-avatar',
