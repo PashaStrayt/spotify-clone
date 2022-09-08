@@ -22,7 +22,7 @@ const Audio = observer(({
   name,
   format,
   albumName,
-  albumImage,
+  albumImage = 'album-image.svg',
   singers,
   albumId,
   playlistId,
@@ -31,9 +31,7 @@ const Audio = observer(({
   number,
   isFavourite = false
 }) => {
-  albumImage = albumImage || '/album-image.svg'
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isEditWindowVisible, setIsEditWindowVisible] = useState(false);
   const audioRef = useRef();
   const deleteSong = useFetching(() => {
     const initialURL = 'http://localhost:3000/api/';
@@ -57,7 +55,7 @@ const Audio = observer(({
 
   const editClickHandler = () => {
     uiStore.setButtonIconActive('');
-    setIsEditWindowVisible(true);
+    uiStore.setEditSongWindow({ isVisible: true, isPreview });
     const song = {
       name,
       singers: deepCopy(singers),
@@ -93,7 +91,7 @@ const Audio = observer(({
       audioStore.setCurrentQueue(deepCopy(audioStore.availableQueue));
       audioStore.setCurrentPlaying({
         name,
-        singers: makeSingerNames(singers),
+        singers,
         albumName,
         fileName,
         format,
@@ -129,7 +127,7 @@ const Audio = observer(({
         }
       </div>
       <div className={[style.column, ['albumName-image-column']].join(' ')}>
-        <img src={albumImage} alt="Album icon" className={style['albumName-image']} />
+        <img src={'/' + albumImage} alt="Album icon" className={style['albumName-image']} />
       </div>
       <div className={[style.column, style['name-column']].join(' ')}>
         <p className={style['name-text']}>{
@@ -170,10 +168,6 @@ const Audio = observer(({
           clickHandler={deleteClickHandler}
         />
       </div>
-      {
-        isEditWindowVisible &&
-        <EditSongWindow isPreview={isPreview} setVisible={setIsEditWindowVisible} />
-      }
     </div>
   );
 });

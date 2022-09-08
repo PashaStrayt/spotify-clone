@@ -24,13 +24,13 @@ button {
   -o-transition: ease-in-out 0.4s;
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 20px;
   cursor: pointer;
   background: #181818;
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   cursor: pointer;
   background: #686868;
   border-radius: 30px;

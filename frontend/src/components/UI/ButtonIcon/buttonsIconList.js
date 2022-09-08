@@ -74,5 +74,15 @@ export const buttonsIconList = {
     urlOfImage: '/search-image.svg',
     urlOfActiveImage: '/search-active-image.svg',
     size: 'small'
+  },
+  'play-album': {
+    title: 'Воспроизведение альбома с самого начала',
+    urlOfImage: '/play-album.svg',
+    size: 'large'
+  },
+  'play-playlist': {
+    title: 'Воспроизведение плейлиста с самого начала',
+    urlOfImage: '/play-album.svg',
+    size: 'large'
   }
 };

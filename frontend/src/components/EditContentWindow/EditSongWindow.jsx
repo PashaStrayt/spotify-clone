@@ -7,7 +7,7 @@ import Button from '../UI/Button/Button';
 import ModalWindow from '../UI/ModalWindow/ModalWindow';
 import Input from '../UI/Input/Input';
 
-const EditSongWindow = observer(({ isPreview, setVisible }) => {
+const EditSongWindow = observer(() => {
   return (
     <ModalWindow>
       <Input
@@ -41,15 +41,15 @@ const EditSongWindow = observer(({ isPreview, setVisible }) => {
       <Button
         className='simple-green'
         clickHandler={async () => {
-          setVisible(false);
-          uiStore.setButtonIconActive('');
-
-          if (isPreview) {
+          if (uiStore.editSongWindow.isPreview) {
             const song = uiStore.currentEditingSong;
-            uploadStore.setFileInfo(song, song.index)
+            uploadStore.setFileInfo(song, song.index);
           } else {
 
           }
+          
+          uiStore.setEditSongWindow({ isVisible: false });
+          uiStore.setButtonIconActive('');
         }}
       >
         Сохранить
@@ -59,7 +59,7 @@ const EditSongWindow = observer(({ isPreview, setVisible }) => {
         additionalStyle={{ marginTop: '22px' }}
         clickHandler={() => {
           uiStore.setButtonIconActive('');
-          setVisible(false);
+          uiStore.setEditSongWindow({ isVisible: false });
         }}
       >
         Отмена

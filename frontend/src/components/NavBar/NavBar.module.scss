@@ -1,17 +1,16 @@
 .wrapper {
-  position: sticky;
   max-width: 310px;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .nav-bar {
-  position: relative;
   position: fixed;
   max-width: 310px;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   padding: 20px;
+  padding-bottom: 112px;
   background: #000;
 }
 
@@ -31,7 +30,6 @@
 
       &:hover {
         ::after {
-          position: absolute;
           content: url('http://localhost:5000/upload-icon-a.svg');
           position: absolute;
           top: calc(50% - 26px);
@@ -96,6 +94,7 @@
 }
 
 .playlists-block {
+  height: calc(100vh - 573px - 112px);
   opacity: 0.8;
   display: flex;
   flex-direction: column;
@@ -104,4 +103,31 @@
   line-height: 23px;
   background: none;
   color: #FFF;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 9px;
+    cursor: pointer;
+    background: none;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background: #686868;
+    border: 0px solid #181818;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+  
+    &:hover {
+      background: #63cf6cc7;
+    }
+}
 }

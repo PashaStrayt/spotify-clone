@@ -2,7 +2,7 @@ import { hash } from 'bcrypt';
 import { config } from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { ErrorAPI } from '../API/ErrorAPI.js';
-import { Album, AlbumSinger, Song, SongSinger, User } from '../database/models.js';
+import { Album, AlbumSinger, Singer, SongSinger, User } from '../database/models.js';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { rm } from 'fs/promises';
@@ -81,15 +81,10 @@ export class AlbumController {
 
       const album = await Album.findOne({
         where: { id },
-        include: { model: AlbumSinger, as: 'albumSingers' }
+        include: { model: Singer, as: 'AlbumSinger' }
       });
 
-      const songs = await Song.findAll({ where: { albumId: id } });
-      const songSingers = songs.map(async song => {
-        await SongSinger.findAll({ where: { songId: song.id } });
-      });
-
-      return response.json({ ...album, songs, songSingers });
+      return response.json(album);
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
     }

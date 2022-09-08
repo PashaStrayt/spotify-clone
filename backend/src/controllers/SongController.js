@@ -208,7 +208,7 @@ export class SongController {
             song.dataValues.isFavourite = isFavourite
           });
         }
-        if(favouriteSongsPrivate.length) {
+        if (favouriteSongsPrivate.length) {
           songsPrivate.forEach(songPrivate => {
             let isFavourite = false;
             for (let favouriteSongPrivate of favouriteSongsPrivate) {
@@ -223,6 +223,51 @@ export class SongController {
       }
 
       response.json([...songs, ...songsPrivate]);
+    } catch (error) {
+      console.log(error.message);
+      next(ErrorAPI.badRequest(error.message));
+    }
+  }
+
+  static async getFromAlbum(request, response, next) {
+    try {
+      let { albumId, userId, limit, page } = request.query;
+      limit = limit || 100;
+      page = page || 1;
+      const offset = limit * page - limit;
+      const order = [['createdAt', 'DESC']];
+
+      const SongsTotalPages = Math.ceil(await Song.count() / 10);
+      response.append('Total-Pages', SongsTotalPages);
+
+      let songs = await Song.findAll({
+        where: { albumId },
+        order, limit, offset,
+        include: [
+          { model: Singer, as: 'SongSinger', attributes: ['name'] },
+          { model: Album, attributes: ['name', 'imageFileName'] }
+        ]
+      });
+
+      if (userId) {
+        const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
+        const favouriteSongs = await FavouriteSong.findAll({ where: { favouriteId } });
+
+        if (favouriteSongs.length) {
+          songs.forEach(song => {
+            let isFavourite = false;
+            for (let favouriteSong of favouriteSongs) {
+              if (favouriteSong.songId === song.id) {
+                isFavourite = true;
+                break;
+              }
+            }
+            song.dataValues.isFavourite = isFavourite
+          });
+        }
+      }
+
+      response.json(songs);
     } catch (error) {
       console.log(error.message);
       next(ErrorAPI.badRequest(error.message));

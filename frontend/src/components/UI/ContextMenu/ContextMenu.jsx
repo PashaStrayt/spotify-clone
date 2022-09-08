@@ -1,8 +1,8 @@
 import style from './ContextMenu.module.scss';
 
-const ContextMenu = ({ children }) => {
+const ContextMenu = ({ children, additionalStyle }) => {
   return (
-    <div className={style.menu}>
+    <div className={style.menu} style={additionalStyle}>
       {children}
     </div>
   );

@@ -58,7 +58,11 @@ export const fetching = async callback => {
 }
 
 export const makeSingerNames = singers => {
-  return Object.entries(singers).map(([index, { name }]) => name).join(', ');
+  if (Array.isArray(singers)) {
+    return singers.map(({ name }) => name).join(', ');
+  } else {
+    return Object.entries(singers).map(([index, { name }]) => name).join(', ');
+  }
 };
 
 export const shuffleArray = array => {
@@ -71,3 +75,9 @@ export const shuffleArray = array => {
 
   return arrayCopy;
 }
+
+export const makeTotalDurationQueue = queue => {
+  return queue.reduce((totalDuration, { duration }) => {
+    return totalDuration + duration;
+  }, 0);
+};

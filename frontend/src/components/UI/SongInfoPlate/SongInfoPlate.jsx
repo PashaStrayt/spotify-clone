@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+import { makeSingerNames } from '../../../API/audio';
 import { audioStore } from '../../../store/AudioStore';
 import style from './SongInfoPlate.module.scss';
 
@@ -7,11 +8,11 @@ const SongInfoPlate = observer(() => {
   return (
     <div className={style.wrapper}>
       <div className={style.container}>
-        <img src={audioStore.currentPlaying.albumImage} className={style.image} alt="" />
+        <img src={'/' + audioStore.currentPlaying.albumImage} className={style.image} alt="" />
         <div className={style.info}>
           <div className={style.info__row}>
             <p className={style['info__song-name']}>{audioStore.currentPlaying.name}</p>
-            <p className={style['info__singers-names']}>{audioStore.currentPlaying.singers}</p>
+            <p className={style['info__singers-names']}>{makeSingerNames(audioStore.currentPlaying.singers)}</p>
           </div>
           <div className={style.info__row}>
             <p className={style['info__property-name']}>АЛЬБОМ</p>

@@ -1,8 +1,7 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { fetching, makeSingerNames, makeSongsArray } from "../API/audio";
+import { fetching, makeSongsArray } from "../API/audio";
 import { audioStore } from "../store/AudioStore";
 import { userStore } from "../store/UserStore";
 
@@ -10,6 +9,25 @@ let interval;
 
 const AudioController = observer(() => {
   const location = useLocation();
+
+  const getRequestData = () => {
+    let url;
+
+    if (location.pathname === '/home') {
+      url = `/api/song/get-all?${userStore.isAuth === 'true' ? 'userId=' + userStore.userId + '&' : ''}page=${audioStore.availableQueue.page}`;
+    } else if (location.pathname.includes('/album')) {
+      const albumId = location.pathname.slice(7);
+      url = `/api/song/get-from-album?${userStore.isAuth === 'true' ? 'userId=' + userStore.userId + '&' : ''}albumId=${albumId}&page=${audioStore.availableQueue.page}`;
+    } else {
+      return false;
+    }
+
+    return [url, {
+      method: 'GET', headers: {
+        'Authorization': 'bearer ' + userStore.token
+      }
+    }];
+  };
 
   // Setting default available queue if changing page
   useEffect(() => {
@@ -21,25 +39,12 @@ const AudioController = observer(() => {
     if (audioStore.availableQueue.page === 0) {
       return audioStore.setAvailableQueue({ page: 1 });
     };
-    let request = {
-      url: '',
-      method: 'GET'
-    };
-    switch (location.pathname) {
-      case '/home':
-        request.url = `/api/song/get-all?${userStore.isAuth === 'true' ? 'userId=' + userStore.userId + '&' : ''}page=${audioStore.availableQueue.page}`;
-        break;
-      default:
-        break;
-    }
-    if (request.url) {
+
+    const request = getRequestData();
+
+    if (request) {
       fetching(async () => {
-        let response = await fetch(request.url, {
-          method: request.method,
-          headers: {
-            'Authorization': 'bearer ' + userStore.token
-          }
-        });
+        let response = await fetch(...request);
         audioStore.setAvailableQueue({ totalPages: response.headers.get('Total-Pages') });
         response = await response.json();
 
@@ -101,33 +106,17 @@ const AudioController = observer(() => {
   // Update current queue, if it's ended, and continue listening, if it was
   useEffect(() => {
     if (audioStore.currentQueue.isEnded) {
-      let request = {
-        url: '',
-        isNeededAuthorizationHeader: false,
-        method: 'GET'
-      };
-
-      switch (location.pathname) {
-        case '/home':
-          request.url = `/api/song/get-all?${userStore.isAuth === 'true' ? 'userId=' + userStore.userId + '&' : ''}page=${audioStore.currentQueue.page + 1}`;
-          break;
-        default:
-          break;
-      }
-
       const lastSongIndex = audioStore.currentPlaying.index;
       audioStore.setCurrentQueue({ page: audioStore.currentQueue.page + 1 });
 
-      if (request.url && audioStore.currentQueue.page <= audioStore.currentQueue.totalPages) {
+      const request = getRequestData();
+
+      if (request && audioStore.currentQueue.page <= audioStore.currentQueue.totalPages) {
         fetching(async () => {
-          let response = await fetch(request.url, {
-            method: request.method,
-            headers: {
-              'Authorization': 'bearer ' + userStore.token
-            }
-          });
+          let response = await fetch(...request);
           audioStore.setCurrentQueue({ totalPages: response.headers.get('Total-Pages') });
           response = await response.json();
+
           if (Array.isArray(response) && response.length) {
             response = await makeSongsArray(response);
             audioStore.pushInCurrentQueue(response);

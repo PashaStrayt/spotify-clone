@@ -2,14 +2,20 @@ import { makeAutoObservable, runInAction } from "mobx";
 
 class UIStore {
   isLoading = false;
+  editSongWindow = {};
   isVisibleSongInfoPlate = localStorage.getItem('isVisibleSongInfoPlate') || 'false';
   currentEditingSong = {};
   whichButtonIconActive = '';
   errorMessage = '';
 
   constructor() {
+    this.setEditSongWindow({ isVisible: false, isPreview: true });
     this.setDefaultCurrentEditingSong();
     makeAutoObservable(this);
+  }
+
+  setEditSongWindow({ isVisible, isPreview }) {
+    this.editSongWindow = { isVisible, isPreview };
   }
 
   setErrorMessage(message = '') {

@@ -6,7 +6,7 @@ import ButtonFavourite from '../UI/ButtonFavourite/ButtonFavourite';
 import ButtonAudioControl from '../UI/ButtonAudioControl/ButtonAudioControl';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { makeDurationString, shuffleArray } from '../../API/audio';
+import { makeDurationString, makeSingerNames, shuffleArray } from '../../API/audio';
 import Progress from '../UI/Progress/Progress';
 import { uiStore } from '../../store/UIStore';
 
@@ -67,7 +67,7 @@ const AudioPanel = observer(() => {
             {audioStore.currentPlaying.name}
           </p>
           <p className={style.info__singers}>
-            {audioStore.currentPlaying.singers}
+            {makeSingerNames(audioStore.currentPlaying.singers)}
           </p>
         </div>
         <ButtonFavourite

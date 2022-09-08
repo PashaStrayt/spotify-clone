@@ -32,7 +32,7 @@ const Header = ({ children, className, additionalStyle }) => {
 
   useEffect(() => {
     setHeader(makeHeader());
-  }, [])
+  }, [children, className, additionalStyle])
 
   return header;
 };

@@ -11,6 +11,7 @@ import Input from '../UI/Input/Input';
 import { useFetching } from '../../hooks/useFetching';
 import { useState } from 'react';
 import { useRef } from 'react';
+import { audioStore } from '../../store/AudioStore';
 
 const NavBar = observer(() => {
   const links = [
@@ -95,25 +96,6 @@ const NavBar = observer(() => {
           <a>Insta Hits</a>
           <a>Your Top Songs 2021</a>
         </div>
-        {
-          uiStore.whichButtonIconActive === 'user-menu' &&
-          <ContextMenu>
-            <LinkWithIcon
-              linkName='sign-out'
-              className='with-icon-and-background'
-              clickHandler={() => {
-                uiStore.setButtonIconActive('');
-                userStore.setStateAndCookie('isAuth', false);
-                userStore.setStateAndCookie('token', '');
-              }}
-            />
-            <LinkWithIcon
-              linkName='user-settings'
-              className='with-icon-and-background'
-              clickHandler={() => uiStore.setButtonIconActive('')}
-            />
-          </ContextMenu>
-        }
       </nav>
     </div>
   )

@@ -1,5 +1,4 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { makeSingerNames } from "../API/audio";
 import { deepCopy } from "../API/files";
 
 class AudioStore {
@@ -57,7 +56,7 @@ class AudioStore {
     this.currentPlaying = {
       audio: new Audio(),
       name: '',
-      singers: '',
+      singers: {},
       albumName: '',
       fileName: '',
       albumImage: '',
@@ -71,6 +70,7 @@ class AudioStore {
     this.currentPlaying.audio.volume = 0.5;
     const lastPlayed = JSON.parse(localStorage.getItem('lastPlayed'));
     if (lastPlayed) {
+      console.log(lastPlayed.singers);
       this.setCurrentPlaying({...lastPlayed, audio: new Audio()});
       this.currentPlaying.audio.currentTime = Number(lastPlayed.currentTime);
       this.currentPlaying.audio.volume = Number(lastPlayed.volume);
@@ -91,7 +91,7 @@ class AudioStore {
 
     this.setCurrentPlaying({
       name,
-      singers: makeSingerNames(singers),
+      singers,
       albumName,
       fileName,
       duration,
