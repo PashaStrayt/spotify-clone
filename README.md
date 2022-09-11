@@ -1,7 +1,7 @@
 <img width='100%' src='./images/logo.jpg' />
 
 # Spotify Clone 🎶🎧
-<p>Clone of popular app with supporting such formats: .flac, .wav, .m4a и .ogg.<br>
+<p>Clone of popular app with supporting such formats: .flac, .wav, .m4a and .ogg.<br>
 // Клон популярного приложения с поддержкой форматов: .flac, .wav, .m4a и .ogg.</p>
 
 
