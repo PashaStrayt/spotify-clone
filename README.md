@@ -10,6 +10,16 @@
 // Приложение уже работает, но пока еще не закончены некоторые страницы, кнопки и пр.</p>
 <img width='100%' src='./images/progress.svg' />
 
+## Preview
+### Listen, revind, play, pause music! // Слушайте, перематывайте, проигрывайте музыку!
+<img width='100%' src='./images/listening.gif' />
+
+### You can also edit, delete and make favourite any song! // Вы также можете редактировать, удалять и добавлять в избранное любые треки!
+<img width='100%' src='./images/edit-song.gif' />
+
+### And, of course, you can add / create songs, albums, playlists and singers to a database // И, конечно, вы можете добавлять / создавать треки, альбомы, плейлисты и исполнителей в базу данных!
+<img width='100%' src='./images/upload-songs.gif' />
+
 ## Stack
 ### Frontend
 <ul>
