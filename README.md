@@ -1,4 +1,4 @@
-<img width='100%' src='./logo.jpg' />
+<img width='100%' src='./images/logo.jpg' />
 
 # Spotify Clone 🎶🎧
 <p>Clone of popular app width supporting such formats: .flac, .wav, .m4a и .ogg.<br>
@@ -8,7 +8,7 @@
 ## Development progress in percent // Прогресс разработки в процентах
 <p>App already works, but some pages, buttons, etc. haven't finished yet<br>
 // Приложение уже работает, но пока еще не закончены некоторые страницы, кнопки и пр.</p>
-<img width='100%' src='./progress.svg' />
+<img width='100%' src='./images/progress.svg' />
 
 ## Stack
 ### Frontend
