@@ -1,8 +1,8 @@
 import style from './Footer.module.scss';
 
-const Footer = ({ className, children }) => {
+const Footer = ({ className, additionalStyle, children }) => {
   return (
-    <footer className={style[className]}>
+    <footer className={style[className]} style={additionalStyle}>
       {children}
     </footer>
   );

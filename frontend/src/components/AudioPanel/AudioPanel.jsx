@@ -60,14 +60,22 @@ const AudioPanel = observer(() => {
   };
 
   return (
-    <Footer className='audio-panel'>
+    <Footer className='audio-panel' additionalStyle={{ gap: '20px' }}>
       <div className={style.left}>
         <div className={style['left__info']}>
           <p className={style.info__name}>
-            {audioStore.currentPlaying.name}
+            {
+              audioStore.currentPlaying.name.length > uiStore.stringLimit.name ?
+                audioStore.currentPlaying.name.slice(0, uiStore.stringLimit.name + 5) + '...' :
+                audioStore.currentPlaying.name
+            }
           </p>
           <p className={style.info__singers}>
-            {makeSingerNames(audioStore.currentPlaying.singers)}
+            {
+              makeSingerNames(audioStore.currentPlaying.singers).length > uiStore.stringLimit.singers ?
+                makeSingerNames(audioStore.currentPlaying.singers).slice(0, uiStore.stringLimit.singers + 5) + '...' :
+                makeSingerNames(audioStore.currentPlaying.singers)
+            }
           </p>
         </div>
         <ButtonFavourite

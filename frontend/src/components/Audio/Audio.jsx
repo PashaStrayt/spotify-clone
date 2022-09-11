@@ -1,4 +1,3 @@
-import EditSongWindow from '../EditContentWindow/EditSongWindow'
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useFetching } from '../../hooks/useFetching';
@@ -14,6 +13,8 @@ import ButtonFavourite from '../UI/ButtonFavourite/ButtonFavourite';
 import { audioStore } from '../../store/AudioStore';
 import { useEffect } from 'react';
 import AudioWave from '../UI/AudioWave/AudioWave';
+
+const initialURL = 'http://localhost:3000/api/song/';
 
 const Audio = observer(({
   isPreview,
@@ -32,9 +33,9 @@ const Audio = observer(({
   isFavourite = false
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const audioRef = useRef();
-  const deleteSong = useFetching(() => {
-    const initialURL = 'http://localhost:3000/api/';
+  const deleteSong = useFetching(async () => {
     let url;
     if (playlistId) {
       url = new URL(initialURL + 'delete-song-from-playlist');
@@ -43,25 +44,46 @@ const Audio = observer(({
     } else {
       url = new URL(initialURL + id);
       url.searchParams.append('isPrivate', isPrivate);
+      url.searchParams.append('userId', userStore.userId);
     }
 
-    fetch(url, {
+    const response = await fetch(url, {
       method: 'DELETE',
       headers: {
         'Authorization': 'bearer ' + userStore.token
       }
-    })
+    });
+
+    if (response.status === 200) {
+      audioStore.deleteFromAvailableQueue(number - 1);
+      audioStore.setCurrentPlaying({});
+    }
+  });
+  const makeFavouriteSong = useFetching(async () => {
+    const url = new URL(initialURL + 'make-favourite');
+    url.searchParams.append('isPrivate', isPrivate);
+    url.searchParams.append('userId', userStore.userId);
+    url.searchParams.append('songId', id);
+
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'bearer ' + userStore.token
+      }
+    });
   });
 
   const editClickHandler = () => {
     uiStore.setButtonIconActive('');
     uiStore.setEditSongWindow({ isVisible: true, isPreview });
     const song = {
+      id,
       name,
       singers: deepCopy(singers),
       albumName,
       albumId,
-      index: number - 1
+      index: number - 1,
+      wasPrivate: isPrivate
     };
     uiStore.setCurrentEditingSong(song);
   };
@@ -74,18 +96,21 @@ const Audio = observer(({
     uiStore.setButtonIconActive('');
   };
   const favouriteClickHandler = () => {
-    uiStore.setErrorMessage('На этом пока что все!');
+    if (isPreview) return;
+
+    makeFavouriteSong();
   };
   const audioClickHandler = () => {
     if (isPreview) return;
-    if (audioStore.currentPlaying.audio.src.slice(22) === fileName) {
+    if (audioStore.currentPlaying.audio.src.slice(-41) === fileName || audioStore.currentPlaying.audio.src.slice(-40) === fileName) {
       if (audioStore.currentPlaying.audio.paused) {
         setIsPlaying(true);
         audioStore.setCurrentPlaying({});
         audioStore.currentPlaying.audio.play();
       } else {
-        audioStore.currentPlaying.audio.pause();
         setIsPlaying(false);
+        audioStore.setCurrentPlaying({});
+        audioStore.currentPlaying.audio.pause();
       }
     } else {
       audioStore.setCurrentQueue(deepCopy(audioStore.availableQueue));
@@ -105,17 +130,26 @@ const Audio = observer(({
   };
 
   useEffect(() => {
-    setIsPlaying(
-      audioStore.currentPlaying.fileName === fileName &&
-      !audioStore.currentPlaying.audio.paused &&
-      !isPreview
-    );
+    if (!isPreview) {
+      if (audioStore.currentPlaying.fileName === fileName) {
+        if (audioStore.currentPlaying.audio.paused) {
+          setIsActive(true);
+          setIsPlaying(false);
+        } else {
+          setIsActive(true);
+          setIsPlaying(true);
+        }
+      } else {
+        setIsActive(false);
+        setIsPlaying(false);
+      }
+    }
   }, [audioStore.currentPlaying.fileName, audioStore.currentPlaying.audio.paused]);
 
   return (
     <div
       className={style.audio}
-      style={isPlaying ? { background: 'rgba(255, 255, 255, 0.1)' } : {}}
+      style={isActive ? { background: 'rgba(255, 255, 255, 0.1)' } : {}}
       onClick={audioClickHandler}
     >
       <audio preload='none' src={!isPreview ? '/' + fileName : ''} ref={audioRef}></audio>
@@ -123,22 +157,41 @@ const Audio = observer(({
         {
           isPlaying ?
             <AudioWave /> :
-            <p className={style['number-text']}>{number}</p>
+            <p
+              className={style['number-text']}
+              style={isActive ? { color: '#65D36E' } : {}}
+            >
+              {number}
+            </p>
         }
       </div>
-      <div className={[style.column, ['albumName-image-column']].join(' ')}>
-        <img src={'/' + albumImage} alt="Album icon" className={style['albumName-image']} />
+      <div className={[style.column, style['album-image-column']].join(' ')}>
+        <img src={'/' + albumImage} alt="Album icon" className={style['album-image']} />
       </div>
       <div className={[style.column, style['name-column']].join(' ')}>
-        <p className={style['name-text']}>{
-          name.length > 25 ?
-            name.slice(0, 25) + '...' :
-            name
+        <p
+          className={style['name-text']}
+          style={isActive ? { color: '#65D36E' } : {}}
+        >
+          {
+            name.length > uiStore.stringLimit.name ?
+              name.slice(0, uiStore.stringLimit.name) + '...' :
+              name
+          }
+        </p>
+        <p className={style['name-singerName-text']}>{
+          makeSingerNames(singers).length > uiStore.stringLimit.singers ?
+            makeSingerNames(singers).slice(0, uiStore.stringLimit.singers) + '...' :
+            makeSingerNames(singers)
+            || 'Не известен'
         }</p>
-        <p className={style['name-singerName-text']}>{makeSingerNames(singers)}</p>
       </div>
       <div className={[style.column, style['album-column']].join(' ')}>
-        <p className={style['album-text']}>{albumName}</p>
+        <p className={style['album-text']}>{
+          albumName.length > uiStore.stringLimit.album ?
+            albumName.slice(0, uiStore.stringLimit.album) + '...' :
+            albumName
+            || 'Без альбома'}</p>
       </div>
       <div className={[style.column, style['format-column']].join(' ')}>
         <p className={style['format-text']}>{format}</p>

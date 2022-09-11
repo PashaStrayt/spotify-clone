@@ -5,6 +5,7 @@ import { getAudioDurationInSeconds } from 'get-audio-duration';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { v4 } from 'uuid';
+import { copyFile, readdir, readdirSync, unlink } from 'fs';
 
 config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -38,11 +39,15 @@ export class SongController {
         let hasOnlyExistingSingers = true;
         let singersIds = [], singersNames = [];
         for (let [property, value] of Object.entries(singers)) {
-          if (!value.id) {
-            hasOnlyExistingSingers = false;
+          if (value.id) {
+            singersIds.push(value.id);
+            singersNames.push(value.name ? value.name : 'Не известен');
+          } else {
+            if (value.name) {
+              singersNames.push(value.name);
+              hasOnlyExistingSingers = false;
+            }
           }
-          singersIds.push(value.id);
-          singersNames.push(value.name);
         }
 
         if (albumId && hasOnlyExistingSingers) {
@@ -55,8 +60,11 @@ export class SongController {
             });
           }
         } else {
+          if (!singersNames.length) {
+            singersNames = ['Не известен']
+          }
           await SongPrivate.create({
-            name, singersNames, albumName, format, duration, fileName
+            name, singersNames, albumName: albumName || 'Без альбома', format, duration, fileName
           });
         }
       });
@@ -87,19 +95,38 @@ export class SongController {
     }
   }
 
-  static async deleteSongById(request, response, next) {
+  static async deleteById(request, response, next) {
     try {
       const { id } = request.params;
-      const { isPrivate } = request.query;
+      const { isPrivate, userId } = request.query;
 
-      if (isPrivate) {
-        await SongPrivate.destroy({ where: { id } });
+      const { id: favouriteId } = Favourite.findOne({ where: { userId } });
+
+      let fileName;
+      if (isPrivate === 'true') {
+        const song = await SongPrivate.findOne({ where: { id } });
+        fileName = song.fileName;
+
+        await song.destroy();
+        await FavouriteSongPrivate.destroy({ where: { favouriteId, songPrivateId: id } })
       } else {
-        await Song.destroy({ where: { id } });
+        const song = await Song.findOne({ where: { id } });
+        fileName = song.fileName;
+
+        await song.destroy();
+        await SongSinger.destroy({ where: { songId: id } });
+        await FavouriteSongPrivate.destroy({ where: { favouriteId, songId: id } })
       }
+
+      const path = resolve(__dirname, '..', '..', 'static', 'songs', fileName);
+      unlink(path, error => {
+        if (error) throw error;
+      });
+
 
       return response.json({ message: 'SUCCESS' });
     } catch (error) {
+      console.log(error.message);
       next(ErrorAPI.internalServer(error.message));
     }
   }
@@ -109,16 +136,30 @@ export class SongController {
       const {
         id,
         name,
-        singerName,
         albumName,
-        singerId,
         albumId,
+        singers,
         wasPrivate
       } = request.body;
 
+      let hasOnlyExistingSingers = true;
+      let singersIds = [], singersNames = [];
+      for (let [property, value] of Object.entries(singers)) {
+        if (value.id) {
+          singersIds.push(value.id);
+          singersNames.push(value.name ? value.name : 'Не известен');
+        } else {
+          if (value.name) {
+            singersNames.push(value.name);
+            hasOnlyExistingSingers = false;
+          }
+        }
+      }
+
       let song;
+      let album;
       if (wasPrivate) {
-        if (singerId && albumId) {
+        if (hasOnlyExistingSingers && albumId) {
           const { format, duration, fileName } = await SongPrivate.findOne(
             { where: { id } }
           );
@@ -127,30 +168,44 @@ export class SongController {
           song = await Song.create({
             name, albumId, format, duration, fileName
           });
-          await SongSinger.create({
-            songId: song.id, singerId
+          for (let singerId of singersIds) {
+            await SongSinger.create({
+              songId: song.id, singerId
+            });
+          }
+          album = await Album.findOne({
+            where: { id: song.albumId },
+            attributes: ['imageFileName'],
+
           });
         } else {
           song = await SongPrivate.findOne({ where: { id } });
 
           song.name = name;
-          song.singerName = singerName;
-          song.albumName = albumName;
+          song.singersNames = singersNames?.length ? singersNames : ['Не известен'];
+          song.albumName = albumName || 'Без альбома';
 
-          await song.save({ fields: ['name', 'singerName', 'albumName'] });
+          await song.save({ fields: ['name', 'singersNames', 'albumName'] });
         }
       } else {
-        if (singerId && albumId) {
-          const songSinger = await SongSinger.findOne({
-            where: { songId: id }
-          });
-          songSinger.singerId = singerId;
-          await songSinger.save({ fields: ['singerId'] });
+        if (hasOnlyExistingSingers && albumId) {
+          await SongSinger.destroy({ where: { songId: id } });
+
+          for (let singerId of singersIds) {
+            await SongSinger.create({
+              songId: id, singerId
+            });
+          }
 
           song = await Song.findOne({ where: { id } });
           song.name = name;
           song.albumId = albumId;
           await song.save({ fields: ['name', 'albumId'] });
+
+          album = await Album.findOne({
+            where: { id: albumId },
+            attributes: ['imageFileName']
+          });
         } else {
           await SongSinger.destroy({ where: { songId: id } });
 
@@ -159,13 +214,14 @@ export class SongController {
           await Song.destroy({ where: { id } });
 
           song = await SongPrivate.create({
-            name, singerName, albumName, format, duration, fileName
+            name, singersNames: singersNames?.length ? singersNames : ['Не известен'], albumName: albumName || 'Без альбома', format, duration, fileName
           });
         }
       }
 
-      return response.json(song);
+      return response.json({ ...song.dataValues, albumImage: album?.imageFileName || 'album-image.svg' });
     } catch (error) {
+      console.log(error.message);
       next(ErrorAPI.internalServer(error.message));
     }
   }
@@ -268,6 +324,26 @@ export class SongController {
       }
 
       response.json(songs);
+    } catch (error) {
+      console.log(error.message);
+      next(ErrorAPI.badRequest(error.message));
+    }
+  }
+
+  static async makeFavourite(request, response, next) {
+    try {
+      let { userId, songId, isPreview } = request.query;
+
+      const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
+      let favouriteSong;
+
+      if (isPreview === 'true') {
+        favouriteSong = await FavouriteSongPrivate.create({favouriteId, songPrivateId: songId});
+      } else {
+        favouriteSong = await FavouriteSong.create({favouriteId, songId});
+      }
+
+      response.json(favouriteSong);
     } catch (error) {
       console.log(error.message);
       next(ErrorAPI.badRequest(error.message));

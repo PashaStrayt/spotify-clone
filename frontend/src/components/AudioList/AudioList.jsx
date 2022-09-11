@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 import { audioStore } from '../../store/AudioStore';
@@ -6,8 +7,9 @@ import { uiStore } from '../../store/UIStore';
 import Audio from '../Audio/Audio';
 import style from './AudioList.module.scss';
 
-const AudioList = observer(({ isPreview, audios, playlistId }) => {
+const AudioList = observer(({ currentAlbumId, isPreview, audios, playlistId }) => {
   const observableRef = useRef();
+  const audioListRef = useRef();
 
   useIntersectionObserver(
     observableRef,
@@ -19,7 +21,7 @@ const AudioList = observer(({ isPreview, audios, playlistId }) => {
   );
 
   return (
-    <div className={style['audio-list']}>
+    <div className={style['audio-list']} ref={audioListRef}>
       <div className={style['header-table']}>
         <div className={[style.column, style['number-column']].join(' ')}>
           <p className={style.text}>#</p>
@@ -45,24 +47,26 @@ const AudioList = observer(({ isPreview, audios, playlistId }) => {
       <hr className={style.line} />
       {
         audios.map((audio, index) =>
-          <Audio
-            isPreview={isPreview}
-            isPrivate={audio?.isPrivate}
-            id={audio?.id}
-            name={audio.name}
-            format={audio?.format}
-            albumName={audio?.albumName}
-            albumImage={audio?.albumImage}
-            singers={audio?.singers}
-            albumId={audio?.albumId}
-            playlistId={playlistId}
-            duration={audio?.duration}
-            fileName={audio?.fileName}
-            number={index + 1}
-            isFavourite={audio?.isFavourite}
-            allSongInfo={{ ...audio, index }}
-            key={audio.name}
-          />
+          audio?.albumId && currentAlbumId && parseInt(audio?.albumId) !== parseInt(currentAlbumId) ?
+            '' :
+            <Audio
+              isPreview={isPreview}
+              isPrivate={audio?.isPrivate}
+              id={audio?.id}
+              name={audio.name}
+              format={audio?.format}
+              albumName={audio?.albumName}
+              albumImage={audio?.albumImage}
+              singers={audio?.singers}
+              albumId={audio?.albumId}
+              playlistId={playlistId}
+              duration={audio?.duration}
+              fileName={audio?.fileName}
+              number={index + 1}
+              isFavourite={audio?.isFavourite}
+              allSongInfo={{ ...audio, index }}
+              key={audio.name}
+            />
         )
       }
       <div ref={observableRef} className={style.observer}></div>

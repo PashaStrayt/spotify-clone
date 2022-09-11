@@ -3,6 +3,7 @@ frontend/node_modules
 
 *.jpg
 !example-user-avatar.jpg
+!logo.jpg
 *.flac
 *.wav
 *.ogg

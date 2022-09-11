@@ -7,11 +7,17 @@ class UIStore {
   currentEditingSong = {};
   whichButtonIconActive = '';
   errorMessage = '';
+  stringLimit = {};
 
   constructor() {
     this.setEditSongWindow({ isVisible: false, isPreview: true });
     this.setDefaultCurrentEditingSong();
+    this.setStringLimit({ name: 7, singers: 7, album: 8 });
     makeAutoObservable(this);
+  }
+
+  setStringLimit({ name, singers, album }) {
+    this.stringLimit = { name, singers, album };
   }
 
   setEditSongWindow({ isVisible, isPreview }) {

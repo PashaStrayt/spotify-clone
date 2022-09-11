@@ -41,6 +41,14 @@ class AudioStore {
   pushInAvailableQueue(queue) {
     this.availableQueue.queue.push(...queue);
   }
+  setInAvalaibleQueueByIndex(index, song) {
+    this.availableQueue.queue[index] = {...this.availableQueue.queue[index], ...song};
+  }
+  deleteFromAvailableQueue(indexDeletion) {
+    this.availableQueue.queue = this.availableQueue.queue.filter((song, index) => {
+      return index !== indexDeletion;
+    });
+  }
 
   setCurrentQueue(object) {
     this.currentQueue = {
@@ -70,7 +78,6 @@ class AudioStore {
     this.currentPlaying.audio.volume = 0.5;
     const lastPlayed = JSON.parse(localStorage.getItem('lastPlayed'));
     if (lastPlayed) {
-      console.log(lastPlayed.singers);
       this.setCurrentPlaying({...lastPlayed, audio: new Audio()});
       this.currentPlaying.audio.currentTime = Number(lastPlayed.currentTime);
       this.currentPlaying.audio.volume = Number(lastPlayed.volume);

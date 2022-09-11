@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { fetching, makeSongsArray } from "../API/audio";
 import { audioStore } from "../store/AudioStore";
+import { uiStore } from "../store/UIStore";
 import { userStore } from "../store/UserStore";
 
 let interval;
@@ -83,6 +84,37 @@ const AudioController = observer(() => {
       localStorage.setItem('lastPlayed', JSON.stringify(audioStore.currentPlaying));
       localStorage.setItem('lastQueue', JSON.stringify(audioStore.currentQueue));
     });
+  }, []);
+
+  // Handle resize event
+  useEffect(() => {
+    console.log(window.innerWidth);
+    const calcStringLimits = () => {
+      const width = window.innerWidth;
+
+      if (5090 <= width) {
+        uiStore.setStringLimit({ name: 180, singers: 190, album: 255 });
+      } else if (4000 <= width && width < 5090) {
+        uiStore.setStringLimit({ name: 124, singers: 133, album: 230 });
+      } else if (3000 <= width && width < 4000) {
+        uiStore.setStringLimit({ name: 74, singers: 80, album: 130 });
+      } else if (2500 <= width && width < 3000) {
+        uiStore.setStringLimit({ name: 51, singers: 54, album: 90 });
+      } else if (2400 <= width && width < 2500) {
+        uiStore.setStringLimit({ name: 45, singers: 50, album: 90 });
+      } else if (1920 <= width && width < 2500) {
+        uiStore.setStringLimit({ name: 22, singers: 20, album: 37 });
+      } else if (1600 <= width && width < 1920) {
+        uiStore.setStringLimit({ name: 5, singers: 5, album: 7 });
+      } else if (1200 <= width && width < 1600) {
+        uiStore.setStringLimit({ name: 7, singers: 7, album: 8 });
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      calcStringLimits();
+    });
+    calcStringLimits();
   }, []);
 
   // Play the next song from current queue

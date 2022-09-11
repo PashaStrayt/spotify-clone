@@ -1,15 +1,15 @@
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { audioStore } from '../../../store/AudioStore';
 import Button from '../Button/Button';
 import style from './ButtonFavourite.module.scss';
 
-const ButtonFavourite = observer(({ size, additionalStyle, clickHandler, isActive, ...props }) => {
+const ButtonFavourite = observer(({ size, additionalStyle, clickHandler, ...props }) => {
   const urlOfImage = '/favourite-image.svg';
   const urlOfActiveImage = '/favourite-active-image.svg';
 
   const [styleState, setStyleState] = useState(additionalStyle);
   const [stateUrlOfImage, setStateUrlOfImage] = useState();
+  const [isActive, setIsActive] = useState(props.isActive);
 
   const mouseOverHandler = () => {
     if (isActive) {
@@ -45,7 +45,7 @@ const ButtonFavourite = observer(({ size, additionalStyle, clickHandler, isActiv
         } else {
           mouseOutHandler();
         }
-        isActive = !isActive;
+        setIsActive(!isActive);
         clickHandler();
       }}
       onMouseOver={mouseOverHandler}

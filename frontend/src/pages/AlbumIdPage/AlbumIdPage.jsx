@@ -77,7 +77,7 @@ const AlbumOrPlaylistId = observer(() => {
         </div>
         {
           audioStore.availableQueue.queue?.length > 0 &&
-          <AudioList isPreview={false} audios={audioStore.availableQueue.queue} />
+          <AudioList isPreview={false} audios={audioStore.availableQueue.queue} currentAlbumId={params.id} />
         }
       </div>
     </div>
