@@ -11,13 +11,16 @@
 <img width='100%' src='./images/progress.svg' />
 
 ## Preview
-### Listen, revind, play, pause music! // Слушайте, перематывайте, проигрывайте музыку!
+<p>Listen, revind, play, pause music!<br>
+// Слушайте, перематывайте, проигрывайте музыку!</p>
 <img width='100%' src='./images/listening.gif' />
 
-### You can also edit, delete and make favourite any song! // Вы также можете редактировать, удалять и добавлять в избранное любые треки!
+<p>You can also edit, delete and make favourite any song!<br>
+// Вы также можете редактировать, удалять и добавлять в избранное любые треки!</p>
 <img width='100%' src='./images/edit-song.gif' />
 
-### And, of course, you can add / create songs, albums, playlists and singers to a database // И, конечно, вы можете добавлять / создавать треки, альбомы, плейлисты и исполнителей в базу данных!
+<p>And, of course, you can add / create songs, albums, playlists and singers to a database<br>
+// И, конечно, вы можете добавлять / создавать треки, альбомы, плейлисты и исполнителей в базу данных</p>
 <img width='100%' src='./images/upload-songs.gif' />
 
 ## Stack
@@ -34,7 +37,7 @@
   <li>Express JS</li>
 </ul>
 
-## В разработке
+## In developing // В разработке
 <ul>
   <li><s>Панель создания контента</s></li>
   <ul>
