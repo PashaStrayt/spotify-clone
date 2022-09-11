@@ -3,13 +3,18 @@
 # Spotify Clone 🎶🎧
 <p>Clone of popular app width supporting such formats: .flac, .wav, .m4a и .ogg.<br>
 // Клон популярного приложения с поддержкой форматов: .flac, .wav, .m4a и .ogg.</p>
+
+
+## Development progress in percent // Прогресс разработки в процентах
+<p>App already works, but some pages, buttons etc. haven't done yet<br>
+// Приложение уже работает, но пока еще не закончены некоторые страницы, кнопки и пр.</p>
 <img width='100%' src='./progress.svg' />
 
 ## Stack
 ### Frontend
 <ul>
   <li>React</li>
-  <li>mobX</li>
+  <li>MobX</li>
   <li>SCSS modules</li>
 </ul>
 
