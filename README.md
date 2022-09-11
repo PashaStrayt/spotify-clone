@@ -1,7 +1,11 @@
-# Spotify Clone
-Клон популярного приложения с поддержкой .flac, .wav и .ogg.
+<img width='100%' src='./logo.jpg' />
 
-## Стек
+# Spotify Clone 🎶🎧
+<p>Clone of popular app width supporting such formats: .flac, .wav, .m4a и .ogg.<br>
+// Клон популярного приложения с поддержкой форматов: .flac, .wav, .m4a и .ogg.</p>
+<img width='100%' src='./progress.svg' />
+
+## Stack
 ### Frontend
 <ul>
   <li>React</li>
