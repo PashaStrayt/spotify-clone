@@ -23,7 +23,7 @@ export class SingerController {
 
       const singer = await Singer.create({ name, imageFileName });
 
-      return response.json(singer);
+      return response.json({message: 'Исполнитель успешно создан'});
     } catch (error) {
       console.log(error.message);
       next(ErrorAPI.internalServer(error.message));

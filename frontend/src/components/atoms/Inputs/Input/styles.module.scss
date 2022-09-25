@@ -1,0 +1,47 @@
+.simple {
+  width: 100%;
+  border-radius: 20px;
+  transition: ease-in-out 0.4s;
+  -webkit-transition: ease-in-out 0.4s;
+  -moz-transition: ease-in-out 0.4s;
+  -ms-transition: ease-in-out 0.4s;
+  -o-transition: ease-in-out 0.4s;
+
+  padding: 16px 0 16px 20px;
+  font-weight: 450;
+  font-size: 18px;
+  letter-spacing: 0.01em;
+  
+  color: #FFFFFF;
+  background: #0C0C0C;
+
+  &:hover, &:focus {
+    background: #282828;
+  }
+}
+
+.registration {
+  width: 100%;
+  padding: 16px 12px;
+  font-weight: 450;
+  font-size: 18px;
+  line-height: 23px;
+  letter-spacing: 0.01em;
+  color: #FFFFFF;
+  background: #282828;
+  border: 2px solid #282828;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+
+  &:focus {
+    border: 2px solid #5C5C5C;
+  }
+}
+
+.file {
+  width: 0;
+  height: 0;
+}

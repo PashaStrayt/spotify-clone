@@ -24,8 +24,8 @@ export class AlbumController {
       if (!date || date?.length !== 4) {
         return next(ErrorAPI.badRequest('Введите корректный год выпуска в формате "xxxx"'));
       }
-      for (let singer of singers) {
-        if (!singer.id) {
+      for (let [, { id, name }] of Object.entries(singers)) {
+        if ((!id && name) || (id && !name)) {
           return next(ErrorAPI.badRequest('Все исполнители должны быть выбраны с помощью подсказок'));
         }
       }
@@ -38,12 +38,13 @@ export class AlbumController {
       }
 
       const album = await Album.create({ name, date, imageFileName });
-      singers.forEach(async singer => {
+      Object.entries(singers).forEach(async ([, singer]) => {
         await AlbumSinger.create({ albumId: album.id, singerId: singer.id });
       });
 
-      return response.json(album);
+      return response.json({message: 'Альбом успешно создан'});
     } catch (error) {
+      console.log(error.message);
       next(ErrorAPI.internalServer(error.message));
     }
   }

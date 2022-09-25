@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { useEffect } from "react";
-import { uiStore } from "../store/UIStore";
 
 export const useIntersectionObserver = (observableRef, isAbleToLoad, isLoading, callback) => {
   const observer = useRef();
@@ -10,7 +9,7 @@ export const useIntersectionObserver = (observableRef, isAbleToLoad, isLoading, 
       observer.current.disconnect();
     }
     
-    if (!isLoading) {
+    if (!isLoading && observableRef?.current) {
       const observerCallback = entries => {
         if (entries[0].isIntersecting && isAbleToLoad) {
           callback();
@@ -18,7 +17,7 @@ export const useIntersectionObserver = (observableRef, isAbleToLoad, isLoading, 
       };
   
       observer.current = new IntersectionObserver(observerCallback);
-      observer.current.observe(observableRef.current);
+      observer.current.observe(observableRef?.current);
     }
   }, [isLoading]);
-}
+};

@@ -1,0 +1,32 @@
+.self {
+  width: auto;
+  opacity: 0.7;
+  background: none;
+  filter: drop-shadow(0px 4px 16px rgba(0, 0, 0, 0.45));
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &--large {
+    height: 56px;
+  }
+  &--big {
+    height: 40px;
+  }
+  &--normal {
+    height: 32px;
+  }
+  &--small {
+    height: 28px;
+  }
+  &--tiny {
+    height: 20px;
+  }
+}
+
+.icon {
+  width: auto;
+  height: 100%;
+  pointer-events: none;
+}

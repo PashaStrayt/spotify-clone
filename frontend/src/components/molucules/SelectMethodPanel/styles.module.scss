@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 30px;
+
+  width: 100%;
+}
+
+.text {
+  font-weight: 700;
+  font-size: 20px;
+
+  color: #FFFFFF;
+
+  opacity: 0.7;
+}

@@ -1,20 +1,20 @@
 import { observer } from "mobx-react-lite";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login/Login";
-import Registration from "./pages/Registration/Registration";
 import { adminRoutes, publicRoutes, userRoutes } from "./routes";
-import { userStore } from "./store/UserStore";
+import { userStore } from "./stores/UserStore";
+import Registration from './components/pages/Registration';
+import Login from './components/pages/Login';
 
-export const AppRouter = observer(() => {
+const AppRouter = observer(() => {
   return (
     <Routes>
       <Route
         path='/registration'
-        element={userStore.isAuth === 'true' ? <Navigate to='/home' /> : <Registration />}
+        element={userStore.isAuth ? <Navigate to='/home' /> : <Registration />}
       />
       <Route
         path='/login'
-        element={userStore.isAuth === 'true' ? <Navigate to='/home' /> : <Login />}
+        element={userStore.isAuth ? <Navigate to='/home' /> : <Login />}
       />
       {
         publicRoutes.map(route =>
@@ -27,7 +27,7 @@ export const AppRouter = observer(() => {
         )
       }
       {
-        userStore.isAuth === 'true' ?
+        userStore.isAuth ?
           userRoutes.map(route =>
             <Route
               path={route.path}
@@ -39,7 +39,7 @@ export const AppRouter = observer(() => {
           ''
       }
       {
-        userStore.role === 'ADMIN' && userStore.isAuth === 'true' ?
+        userStore.role === 'ADMIN' && userStore.isAuth?
           adminRoutes.map(route =>
             <Route
               path={route.path}
@@ -53,3 +53,5 @@ export const AppRouter = observer(() => {
     </Routes>
   )
 });
+
+export default AppRouter;

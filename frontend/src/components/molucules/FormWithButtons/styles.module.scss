@@ -1,0 +1,12 @@
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+
+  width: 100%;
+  margin-top: 12px;
+
+  &--left {
+    justify-content: flex-start;
+  }
+}

@@ -1,4 +1,4 @@
-import { uiStore } from "../store/UIStore";
+import { uiStore } from './../stores/UIStore';
 
 export const useFetching = callback => {
   const fetching = async () => {

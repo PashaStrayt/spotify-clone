@@ -96,18 +96,19 @@ export class UserController {
 
   static async updateAvatar(request, response, next) {
     try {
-      const { oldImageOFileName } = request.body;
+      const { id } = request.user;
       const { image } = request.files;
-      const dirPath = resolve(__dirname, '..', '..', 'static', 'users');
+      
+      const user = await User.findOne({ where: { id } });
 
-      unlink(resolve(dirPath, oldImageOFileName), error => {
+      const dirPath = resolve(__dirname, '..', '..', 'static', 'users');
+      unlink(resolve(dirPath, user.imageFileName), error => {
         if (error) throw error;
       });
-      const newImageFileName = v4() + '.jpg';
-      image.mv(resolve(dirPath, newImageFileName));
+      const imageFileName = v4() + '.jpg';
+      image.mv(resolve(dirPath, imageFileName));
 
-      const user = await User.findOne({ where: { imageFileName: oldImageOFileName } });
-      user.imageFileName = newImageFileName;
+      user.imageFileName = imageFileName;
       await user.save({ fields: ['imageFileName'] });
 
       const token = generateJwt(user.id, user.login, user.email, user.role, user.imageFileName);
@@ -121,7 +122,6 @@ export class UserController {
         imageFileName: user.imageFileName
       });
     } catch (error) {
-      console.log(error.message);
       return next(ErrorAPI.internalServer(error.message));
     }
   }

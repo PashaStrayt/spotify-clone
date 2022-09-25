@@ -1,0 +1,138 @@
+.container {
+  display: grid;
+  column-gap: 22px;
+  grid-template-columns: 48px 46px 14fr 12fr 77px 28px 86px 28px 28px;
+  grid-template-rows: 1fr;
+  width: 100%;
+  padding: 10px 25px;
+  background: none;
+
+  font-weight: 450;
+  font-size: 18px;
+  line-height: 23px;
+  color: #B3B3B3;
+
+  &--audio-item {
+    height: 72px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+
+    transition: ease-in-out 0.2s;
+    -webkit-transition: ease-in-out 0.2s;
+    -moz-transition: ease-in-out 0.2s;
+    -ms-transition: ease-in-out 0.2s;
+    -o-transition: ease-in-out 0.2s;
+
+    cursor: pointer;
+
+    &:hover,
+    &--active {
+      background: rgba(#FFF, 0.1);
+    }
+  }
+
+  &--audio-list {
+    padding: 0 25px;
+    align-items: flex-start;
+
+    .album-image, .format {
+      grid-column: span 2;
+    }
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.number {
+  align-items: flex-end;
+
+  font-weight: 450;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0.02em;
+
+  color: #B3B3B3;
+
+  &--clicked {
+    color: #65D36E;
+  }
+}
+
+.album-image {
+
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+}
+
+.main-info {
+  gap: 2px;
+
+  &__name {
+    font-weight: 450;
+    font-size: 19px;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    transition: ease-in-out 0.4s;
+    -webkit-transition: ease-in-out 0.4s;
+    -moz-transition: ease-in-out 0.4s;
+    -ms-transition: ease-in-out 0.4s;
+    -o-transition: ease-in-out 0.4s;
+    color: #FFFFFF;
+    white-space: nowrap;
+
+    &--clicked {
+      color: #65D36E;
+    }
+  }
+
+  &__singers {
+    font-weight: 450;
+    font-size: 19px;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    transition: ease-in-out 0.4s;
+    -webkit-transition: ease-in-out 0.4s;
+    -moz-transition: ease-in-out 0.4s;
+    -ms-transition: ease-in-out 0.4s;
+    -o-transition: ease-in-out 0.4s;
+    color: #FFFFFF;
+    white-space: nowrap;
+
+    &--clicked {
+      color: #65D36E;
+    }
+  }
+}
+
+.album-name {
+  color: #B3B3B3;
+}
+
+.format {
+  text-transform: uppercase;
+  color: #B3B3B3;
+}
+
+.button-container {
+  align-self: center;
+}
+
+.duration {
+  align-items: flex-end;
+
+  font-weight: 450;
+  font-size: 19px;
+  line-height: 25px;
+  letter-spacing: -0.03em;
+
+  color: #FFFFFF;
+}

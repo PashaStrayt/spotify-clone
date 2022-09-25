@@ -30,7 +30,7 @@ export class PlaylistController {
 
       const playlist = await Playlist.create({ name, imageFileName });
 
-      return response.json(playlist);
+      return response.json({ message: 'Плейлист успешно создан' });
     } catch (error) {
       console.log(error.message);
       next(ErrorAPI.internalServer(error.message));

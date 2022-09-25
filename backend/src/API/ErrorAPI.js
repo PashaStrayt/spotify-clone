@@ -1,8 +1,9 @@
 export class ErrorAPI extends Error {
-  constructor(statusCode, message) {
+  constructor(statusCode, message, cause) {
     super();
     this.statusCode = statusCode;
     this.message = message;
+    this.cause = cause;
   }
 
   static badRequest(message) {
@@ -22,6 +23,6 @@ export class ErrorAPI extends Error {
   }
 
   static internalServer(message) {
-    return new ErrorAPI(500, message);
+    return new ErrorAPI(500, 'Упс! Произошла внутренняя ошибка сервера', message);
   }
 }

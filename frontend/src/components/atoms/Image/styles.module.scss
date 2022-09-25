@@ -1,0 +1,57 @@
+.self {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+
+  object-fit: cover;
+
+  transition: ease-in-out 0.4s;
+  -webkit-transition: ease-in-out 0.4s;
+  -moz-transition: ease-in-out 0.4s;
+  -ms-transition: ease-in-out 0.4s;
+  -o-transition: ease-in-out 0.4s;
+
+  &--visibled {
+    opacity: 1;
+  }
+
+  &--avatar {
+    max-width: 265px;
+    height: 172px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+  }
+
+  &--album {
+    &--full-screen {
+      max-width: 500px;
+      height: 500px;
+    }
+
+    &--big {
+      max-width: 297px;
+      height: 297px;
+    }
+
+    &--small {
+      max-width: 182px;
+      height: 182px;
+    }
+  }
+
+  &--audio {
+    max-width: 52px;
+    max-height: 52px;
+  }
+
+  &--upload-icon {
+    width: auto;
+    height: 54px;
+
+    position: absolute;
+    inset: calc(50% - 27px);
+  }
+}

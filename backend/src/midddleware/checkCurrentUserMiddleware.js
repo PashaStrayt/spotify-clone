@@ -1,6 +1,6 @@
 export const checkCurrentUserMiddleware = (request, response, next) => {
   try {
-    const id = request.query.id || request.body.id;
+    const id = request.query.id || request.body.id || request.cookies.userId;
 
     if (id != request.user.id) {
       return response.status(403).json({ message: 'Нет доступа' });

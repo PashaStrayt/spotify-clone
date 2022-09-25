@@ -69,7 +69,7 @@ export class SongController {
         }
       });
 
-      return response.json({ message: 'SUCCESS' });
+      return response.json({ message: 'Трек(и) успешно загружен(ы)' });
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
     }
@@ -100,7 +100,8 @@ export class SongController {
       const { id } = request.params;
       const { isPrivate, userId } = request.query;
 
-      const { id: favouriteId } = Favourite.findOne({ where: { userId } });
+      const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
+      console.log(favouriteId);
 
       let fileName;
       if (isPrivate === 'true') {
@@ -115,7 +116,7 @@ export class SongController {
 
         await song.destroy();
         await SongSinger.destroy({ where: { songId: id } });
-        await FavouriteSongPrivate.destroy({ where: { favouriteId, songId: id } })
+        await FavouriteSong.destroy({ where: { favouriteId, songId: id } });
       }
 
       const path = resolve(__dirname, '..', '..', 'static', 'songs', fileName);
@@ -123,8 +124,7 @@ export class SongController {
         if (error) throw error;
       });
 
-
-      return response.json({ message: 'SUCCESS' });
+      return response.json({ message: 'Трек успешно полностью удален' });
     } catch (error) {
       console.log(error.message);
       next(ErrorAPI.internalServer(error.message));
@@ -219,7 +219,11 @@ export class SongController {
         }
       }
 
-      return response.json({ ...song.dataValues, albumImage: album?.imageFileName || 'album-image.svg' });
+      return response.json({
+        ...song.dataValues,
+        albumImage: album?.imageFileName || 'album-image.svg',
+        message: 'Данные трека успешно обновлены'
+      });
     } catch (error) {
       console.log(error.message);
       next(ErrorAPI.internalServer(error.message));
@@ -330,23 +334,40 @@ export class SongController {
     }
   }
 
-  static async makeFavourite(request, response, next) {
+  static async changeFavourite(request, response, next) {
     try {
-      let { userId, songId, isPreview } = request.query;
-
+      let { userId, songId, isPrivate } = request.query;
       const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
       let favouriteSong;
 
-      if (isPreview === 'true') {
-        favouriteSong = await FavouriteSongPrivate.create({favouriteId, songPrivateId: songId});
+      if (isPrivate === 'true') {
+        favouriteSong = await FavouriteSongPrivate.findOne({
+          where: {
+            favouriteId, songPrivateId: songId
+          }
+        });
+        if (favouriteSong) {
+          favouriteSong.destroy();
+        } else {
+          favouriteSong = await FavouriteSongPrivate.create({ favouriteId, songPrivateId: songId });
+        }
       } else {
-        favouriteSong = await FavouriteSong.create({favouriteId, songId});
+        favouriteSong = await FavouriteSong.findOne({
+          where: {
+            favouriteId, songId
+          }
+        });
+        if (favouriteSong) {
+          favouriteSong.destroy();
+        } else {
+          favouriteSong = await FavouriteSong.create({ favouriteId, songId });
+        }
       }
 
-      response.json(favouriteSong);
+      response.json({message: 'Трек успешно добавлен / удален из избранного'});
     } catch (error) {
       console.log(error.message);
-      next(ErrorAPI.badRequest(error.message));
+      next(ErrorAPI.internalServer(error.message), request, response);
     }
   }
 }

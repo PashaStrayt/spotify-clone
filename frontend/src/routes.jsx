@@ -1,15 +1,14 @@
 import { Navigate } from "react-router-dom";
-import AdminPanel from "./pages/AdminPanel/AdminPanel";
-import Error from "./pages/Error";
-import Home from "./pages/Home/Home";
-import Favourite from "./pages/Favourite";
-import Search from "./pages/Search";
-import AlbumIdPage from "./pages/AlbumIdPage/AlbumIdPage";
+import AdminPanel from './components/pages/AdminPanel';
+import Error from './components/pages/Error';
+import Home from './components/pages/Home';
+import Search from './components/pages/Search';
+import Favourite from './components/pages/Favourite';
 
 export const publicRoutes = [
   { path: '/home', element: <Home /> },
   { path: '/search', element: <Search /> },
-  { path: '/album/:id', element: <AlbumIdPage />, exact: true },
+  // { path: '/album/:id', element: <AlbumIdPage />, exact: true },
   { path: '/error', element: <Error /> },
   { path: '/', element: <Navigate to='/home' /> },
   { path: '*', element: <Navigate to='/error' /> }

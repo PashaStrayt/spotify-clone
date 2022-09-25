@@ -1,0 +1,17 @@
+.container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  max-width: 253px;
+  width: 100%;
+  background: #1F1F1F;
+  border-radius: 5px;
+  opacity: 1;
+
+  &--links {
+    top: 215px;
+    left: 90px;
+  }
+}

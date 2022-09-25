@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  row-gap: 32px;
+
+  max-width: 414px;
+  width: 100%;
+  margin: 30px auto;
+  
+  text-align: center;
+}
+
+.buttons { 
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.upload-more {
+  width: 100%;
+
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 30px;
+  letter-spacing: -0.03em;
+
+  color: #FFFFFF;
+}
+
+.or {
+  width: 100%;
+
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+  letter-spacing: 0.025em;
+
+  color: #9C9C9C;
+}

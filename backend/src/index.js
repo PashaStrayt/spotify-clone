@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import { errorHandlerMiddleware } from "./midddleware/errorHandlerMiddleware.js";
 import { rootRouter } from "./routers/index.js";
 import { resolve, dirname } from 'path';
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 5000;
 const server = express();
 
 server.use(express.json());
+server.use(cookieParser());
 server.use(fileUpload({}));
 const folders = ['albums', 'image-preview', 'playlists', 'songs', 'UI', 'users', 'singers'];
 for (let folder of folders) {
