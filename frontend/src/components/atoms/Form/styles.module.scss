@@ -3,9 +3,10 @@
   max-width: 500px;
   width: 100%;
   display: flex;
-  flex-flow: column wrap;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-content: space-between;
+  justify-items: space-between;
   column-gap: 24px;
   margin: 0 auto;
 
@@ -34,7 +35,6 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 40px;
 
   input {
     margin-bottom: 10px;
@@ -62,11 +62,11 @@
   max-width: 700px;
   width: 100%;
   padding: 50px;
-  border: 5px solid #65D36E;
+  border: 1px solid #65d36e7d;
   border-radius: 50px;
 
   background: #1C1C1C;
-  box-shadow: 0px 0px 8px rgba(120, 120, 120, 0.26);
+  box-shadow: 0px 0px 12px 3px rgba(0, 0, 0, 0.26);
 
   z-index: 1000;
 

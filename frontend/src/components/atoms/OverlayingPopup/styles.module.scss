@@ -1,21 +1,51 @@
 .container {
   position: fixed;
   inset: 0;
-
-  z-index: 1;
-
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
+  animation: container-entering 0.4s ease-in forwards;
+  -webkit-animation: container-entering 0.4s ease-in forwards;
 }
 
 .overlay {
   position: absolute;
   inset: 0;
-
   cursor: pointer;
+  animation: overlay-entering 0.5s ease-in-out forwards;
+  -webkit-animation: overlay-entering 0.5s ease-in-out forwards;
 }
 
 .background {
   background: rgba($color: #000, $alpha: 0.6);
+}
+
+.entering {
+  animation: entering 0.4s ease-in-out forwards;
+  -webkit-animation: entering 0.4s ease-in-out forwards;
+}
+
+.exiting {
+  animation: entering 0.4s ease-in-out forwards reverse;
+  -webkit-animation: entering 0.4s ease-in-out forwards reverse;
+}
+
+@keyframes container-entering {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes overlay-entering {
+  0% {
+    inset: 15%;
+  }
+
+  100% {
+    inset: 0;
+  }
 }

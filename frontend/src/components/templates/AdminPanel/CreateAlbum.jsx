@@ -8,6 +8,7 @@ import { RestAPI } from '../../../shared/workingWithFetch';
 import FormWithButtons from './../../molucules/FormWithButtons/FormWithButtons';
 import Input from './../../atoms/Inputs/Input/Input';
 import InputSinger from './../../organisms/Inputs/InputSinger';
+import { AudioAPI } from '../../../shared/AudioAPI';
 
 const getDefaultAlbum = () => {
   return {
@@ -16,25 +17,6 @@ const getDefaultAlbum = () => {
     date: '',
     image: { file: null, fileName: '' }
   };
-};
-
-const isFormValid = ({ name, singers, date }) => {
-  if (!name) {
-    uiStore.setErrorMessage('Название не может быть пустым');
-    return false;
-  }
-  if (!date || date.length !== 4) {
-    uiStore.setErrorMessage('Введите корректный год выпуска в формате "xxxx"');
-    return false;
-  }
-  for (let [, { id, name }] of Object.entries(singers)) {
-    if ((!id && name) || (id && !name)) {
-      uiStore.setErrorMessage('Все исполнители должны быть выбраны с помощью подсказок');
-      return false;
-    }
-  }
-
-  return true;
 };
 
 const CreateAlbum = () => {
@@ -46,7 +28,7 @@ const CreateAlbum = () => {
   };
   const onSave = useFetching(async () => {
     const { name, singers, date } = album;
-    if (!isFormValid({ name, singers, date })) {
+    if (!AudioAPI.isAlbumFormValid({ name, singers, date })) {
       return;
     }
 
@@ -79,16 +61,10 @@ const CreateAlbum = () => {
     singerInputHandler(index, { id: null, name: '' });
   };
   const dateInputHandler = event => {
-    const date = event.target.value;
-    if (date.match(/^\d+$/) && date.length <= 4) {
-      setAlbum(prev => {
-        return { ...prev, date };
-      });
-    } else if (!date) {
-      setAlbum(prev => {
-        return { ...prev, date: '' };
-      });
-    }
+    const date = event.target.value.slice(0, 4);
+    setAlbum(prev => {
+      return { ...prev, date };
+    });
   };
   const setImageInForm = ({ file, fileName }) => {
     setAlbum({ ...album, image: { file, fileName } });
@@ -118,6 +94,7 @@ const CreateAlbum = () => {
       <LabelWithLine>Год выпуска</LabelWithLine>
       <Input
         additionalStyle={{ marginBottom: '24px' }}
+        type='number'
         value={album?.date ? album.date : ''}
         placeholder={'Год выпуска'}
         changeHandler={dateInputHandler}

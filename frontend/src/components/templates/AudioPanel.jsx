@@ -85,11 +85,11 @@ const AudioPanel = observer(() => {
   return (
     <AudioPanelMarkup
       songData={{
-        name: audioStore.currentPlaying.name,
-        singers: audioStore.currentPlaying.singers,
+        ...audioStore.currentPlaying,
         currentTime: availableCurrentTime || currentTime,
         duration,
-        volume: audioStore.currentPlaying.audio.volume
+        volume: audioStore.currentPlaying.audio.volume,
+        isFavourite: audioStore.currentPlaying.isFavourite
       }}
       onShuffleQueue={onShuffleQueue}
       onPlayPause={onPlayPause}

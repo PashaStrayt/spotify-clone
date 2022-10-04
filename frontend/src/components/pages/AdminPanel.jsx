@@ -30,7 +30,7 @@ const initialButtons = [
 ];
 
 const AdminPanel = () => {
-  const location= useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
   const [content, setContent] = useState();
   const [buttons, setButtons] = useState(initialButtons.map(button => {
@@ -78,7 +78,9 @@ const AdminPanel = () => {
         selectPanelText='Добавить'
         buttons={buttons}
       />
-      {content}
+      <div className="wrapper">
+        {content}
+      </div>
     </>
   );
 };

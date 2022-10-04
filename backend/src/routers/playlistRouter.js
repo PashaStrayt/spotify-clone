@@ -5,10 +5,16 @@ import { deletePreviewImagesMidddleware } from "../midddleware/deletePreviewImag
 
 const playlistRouter = new Router();
 
-playlistRouter.post('/', checkUserMiddleware('ADMIN'), deletePreviewImagesMidddleware, PlaylistController.create);
+playlistRouter.post(
+  '/',
+  checkUserMiddleware('ADMIN'),
+  deletePreviewImagesMidddleware,
+  PlaylistController.create
+);
 // playlistRouter.post('/edit/:id', checkUserMiddleware('ADMIN'), AlbumController.edit);
-// playlistRouter.get('/:id', AlbumController.getById);
+playlistRouter.get('/:id', PlaylistController.getOne);
 // playlistRouter.get('/', AlbumController.getMany);
 // playlistRouter.delete('/:id', checkUserMiddleware('ADMIN'), AlbumController.deleteById);
+playlistRouter.post('/change-favourite', checkUserMiddleware(), PlaylistController.changeFavourite);
 
 export { playlistRouter };

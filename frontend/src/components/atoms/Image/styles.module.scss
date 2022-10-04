@@ -4,6 +4,7 @@
   opacity: 0;
 
   object-fit: cover;
+  filter: drop-shadow(0px 0px 24px rgba(0, 0, 0, 0.25));
 
   transition: ease-in-out 0.4s;
   -webkit-transition: ease-in-out 0.4s;
@@ -38,13 +39,21 @@
 
     &--small {
       max-width: 182px;
+      min-height: 182px;
       height: 182px;
+      border-radius: 4px;
     }
   }
 
   &--audio {
-    max-width: 52px;
-    max-height: 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
   }
 
   &--upload-icon {

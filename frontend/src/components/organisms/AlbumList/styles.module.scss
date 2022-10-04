@@ -1,0 +1,9 @@
+.self {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  align-items: flex-start;
+  gap: 40px;
+
+  min-height: 344px;
+}

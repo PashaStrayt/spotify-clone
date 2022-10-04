@@ -124,8 +124,8 @@ const AlbumSinger = database.define('album-singer', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
 });
 
-Album.belongsToMany(Singer, { through: AlbumSinger, as: 'AlbumSinger' });
-Singer.belongsToMany(Album, { through: AlbumSinger, as: 'AlbumSinger' });
+Album.belongsToMany(Singer, { through: AlbumSinger, as: 'singers' });
+Singer.belongsToMany(Album, { through: AlbumSinger, as: 'singers' });
 
 export {
   User,

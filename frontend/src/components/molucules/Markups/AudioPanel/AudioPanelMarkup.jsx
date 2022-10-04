@@ -2,11 +2,12 @@ import { observer } from 'mobx-react-lite';
 import styles from './styles.module.scss';
 import CutByLimitParagraph from '../../../atoms/CutByLimitParagraph/CutByLimitParagraph';
 import { AudioAPI } from '../../../../shared/AudioAPI';
-import FavouriteSongButton from '../../FavouriteSongButton/FavouriteSongButton';
+import FavouriteSongButton from '../../Buttons/FavouriteSongButton';
 import IconButton from '../../../atoms/Buttons/IconButton/IconButton';
 import InputRange from '../../../atoms/Inputs/InputRange/InputRange';
 import { uiStore } from './../../../../stores/UIStore';
 import { audioStore } from './../../../../stores/AudioStore';
+import { userStore } from './../../../../stores/UserStore';
 
 const AudioPanelMarkup = observer(({
   songData,
@@ -21,7 +22,6 @@ const AudioPanelMarkup = observer(({
   onControlVolume,
   onShowAudioInfoPlate
 }) => {
-
   return (
     <div className={styles.container}>
 
@@ -36,7 +36,15 @@ const AudioPanelMarkup = observer(({
           </CutByLimitParagraph>
         </div>
 
-        <FavouriteSongButton songInfo={songData} />
+        <FavouriteSongButton
+          songData={{
+            isPreview: songData.isPreview,
+            isPrivate: songData.isPrivate,
+            userId: userStore.userId,
+            songId: songData.id
+          }}
+          isClicked={songData.isFavourite}
+        />
       </div>
 
       <div className={styles.center}>

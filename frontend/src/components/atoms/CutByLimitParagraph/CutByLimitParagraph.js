@@ -2,7 +2,7 @@ import styles from './styles.module.scss';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-const CutByLimitParagraph = ({ className, isActive, children, limit }) => {
+const CutByLimitParagraph = ({ className, isActive, isColumn, children, limit }) => {
   const [cutText, setCutText] = useState(children);
 
   useEffect(() => {
@@ -12,7 +12,10 @@ const CutByLimitParagraph = ({ className, isActive, children, limit }) => {
   }, [children, limit]);
 
   return (
-    <p className={classNames(styles[className], { [styles.active]: isActive })}>
+    <p className={classNames(styles[className], {
+      [styles.active]: isActive,
+      [styles.column]: isColumn
+    })}>
       {cutText}
     </p>
   );

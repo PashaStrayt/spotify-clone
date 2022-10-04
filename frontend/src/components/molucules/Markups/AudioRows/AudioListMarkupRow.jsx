@@ -9,7 +9,7 @@ const AudioListMarkupRow = () => {
       <div className={className(styles.column, styles['column--empty'])} />
       <p className={className(styles.column, styles['album-name'])}>АЛЬБОМ</p>
       <p className={className(styles.column, styles.format)}>ФОРМАТ</p>
-      <div className={className(styles.column, styles['column--empty'])} />
+      {/* <div className={className(styles.column, styles['column--empty'])} /> */}
       <img
         className={className(styles.column, styles.duration)}
         src="/duration-image.svg"

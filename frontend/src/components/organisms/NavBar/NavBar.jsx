@@ -8,7 +8,9 @@ import LinkWithIcon from '../../atoms/Links/LinkWithIcon/LinkWithIcon';
 import LinksPopup from '../Popups/LinksPopup';
 import { useCallback } from 'react';
 import Line from '../../atoms/Line/Line';
-import {checkAuth} from '../../../shared/workingWithAuthentication'
+import { checkAuth } from '../../../shared/workingWithAuthentication'
+import { fetchingWithoutPreloader, RestAPI } from '../../../shared/workingWithFetch';
+import Link from './../../atoms/Links/Link/Link';
 
 const links = [
   { name: 'home' },
@@ -19,6 +21,7 @@ const links = [
 
 const NavBar = observer(() => {
   const [isLinksPopupOpened, setIsLinksPopupOpened] = useState(false);
+  const [albums, setAlbums] = useState();
 
   const onCloseLinksPopup = useCallback(() => {
     setIsLinksPopupOpened(false);
@@ -31,6 +34,13 @@ const NavBar = observer(() => {
 
   useEffect(() => {
     checkAuth();
+    fetchingWithoutPreloader(async () => {
+      const { statusCode, response } = await RestAPI.getFavouriteAlbums();
+
+      if (statusCode === 200) {
+        setAlbums(response);
+      }
+    });
   }, []);
 
   return (
@@ -78,9 +88,13 @@ const NavBar = observer(() => {
 
         {/* Временно. Для предпросмотра дизайна */}
         <div className={style['playlists-block']}>
-          <p href='#'>Chill Mix</p>
-          <p href='#'>Insta Hits</p>
-          <p href='#'>Your Top Songs 2021</p>
+          {
+            albums?.map(({ id, name }) =>
+              <Link className='favourite-in-nav' path={'/album/' + id} key={'favourite-link-' + id}>
+                {name}
+              </Link>
+            )
+          }
         </div>
       </nav>
     </div>

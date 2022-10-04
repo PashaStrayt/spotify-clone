@@ -82,15 +82,18 @@ const AudioItem = observer(props => {
     } else {
       audioStore.setCurrentQueue(deepCopy(audioStore.availableQueue));
       audioStore.setCurrentPlaying({
+        id: props.id,
         name: props.name,
         singers: deepCopy(props.singers),
         albumName: props.albumName,
+        albumId: props.albumId,
         index: props.number - 1,
         fileName: props.fileName,
         format: props.format,
         albumImage: props.albumImage,
         duration: props.duration,
         isFavourite: props.isFavourite,
+        isPrivate: props.isPrivate
       });
       audioStore.currentPlaying.audio.play();
     }

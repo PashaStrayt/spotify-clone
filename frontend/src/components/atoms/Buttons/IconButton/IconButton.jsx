@@ -3,13 +3,20 @@ import { list } from './list'
 import style from './styles.module.scss';
 import className from 'classnames';
 
-const IconButton = ({ name, initialIsClicked, isApplyingHover = true, additionalStyle, clickHandler, ...props }) => {
+const IconButton = ({
+  name,
+  initialIsClicked,
+  isApplyingHover = true,
+  additionalStyle,
+  clickHandler,
+  ...props
+}) => {
   const [isClicked, setIsClicked] = useState(initialIsClicked);
   const [isHover, setIsHover] = useState(initialIsClicked);
   const { title, imageUrl, activeImageUrl, size, doesRememberClicks } = list[name];
 
   useEffect(() => {
-    if (props?.isClicked) {
+    if (props?.isClicked !== undefined) {
       setIsClicked(props.isClicked);
     }
   }, [props?.isClicked]);

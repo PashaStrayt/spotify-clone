@@ -101,7 +101,6 @@ export class SongController {
       const { isPrivate, userId } = request.query;
 
       const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
-      console.log(favouriteId);
 
       let fileName;
       if (isPrivate === 'true') {
@@ -238,8 +237,8 @@ export class SongController {
       const offset = limit * page - limit;
       const order = [['createdAt', 'DESC']];
 
-      const SongsTotalPages = Math.ceil(await Song.count() / 10);
-      const SongPrivatesTotalPages = Math.ceil(await SongPrivate.count() / 10);
+      const SongsTotalPages = Math.ceil(await Song.count() / limit);
+      const SongPrivatesTotalPages = Math.ceil(await SongPrivate.count() / limit);
       response.append('Total-Pages', SongsTotalPages > SongPrivatesTotalPages ? SongsTotalPages : SongPrivatesTotalPages);
 
       let songs = await Song.findAll({
@@ -297,7 +296,7 @@ export class SongController {
       const offset = limit * page - limit;
       const order = [['createdAt', 'DESC']];
 
-      const SongsTotalPages = Math.ceil(await Song.count() / 10);
+      const SongsTotalPages = Math.ceil(await Song.count() / limit);
       response.append('Total-Pages', SongsTotalPages);
 
       let songs = await Song.findAll({
@@ -338,7 +337,7 @@ export class SongController {
     try {
       let { userId, songId, isPrivate } = request.query;
       const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
-      let favouriteSong;
+      let favouriteSong, message, isFavourite;
 
       if (isPrivate === 'true') {
         favouriteSong = await FavouriteSongPrivate.findOne({
@@ -348,8 +347,12 @@ export class SongController {
         });
         if (favouriteSong) {
           favouriteSong.destroy();
+          message = 'Трек успешно удален из избранного';
+          isFavourite = false;
         } else {
           favouriteSong = await FavouriteSongPrivate.create({ favouriteId, songPrivateId: songId });
+          message = 'Трек успешно добавлен в избранное';
+          isFavourite = true;
         }
       } else {
         favouriteSong = await FavouriteSong.findOne({
@@ -359,12 +362,16 @@ export class SongController {
         });
         if (favouriteSong) {
           favouriteSong.destroy();
+          message = 'Трек успешно удален из избранного';
+          isFavourite = false;
         } else {
           favouriteSong = await FavouriteSong.create({ favouriteId, songId });
+          message = 'Трек успешно добавлен в избранное';
+          isFavourite = true;
         }
       }
 
-      response.json({message: 'Трек успешно добавлен / удален из избранного'});
+      response.json({ message, isFavourite });
     } catch (error) {
       console.log(error.message);
       next(ErrorAPI.internalServer(error.message), request, response);

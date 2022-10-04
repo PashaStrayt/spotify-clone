@@ -1,19 +1,21 @@
 import styles from './styles.module.scss';
 import { useFetching } from '../../../hooks/useFetching';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Image from '../../atoms/Image/Image';
 import className from 'classnames';
 import { RestAPI } from '../../../shared/workingWithFetch';
 import Input from './../../atoms/Inputs/Input/Input';
+import { audioStore } from '../../../stores/AudioStore';
 
-const UploadImage = ({ isPreview, type, size, initialFileName, setImageInForm }) => {
+const UploadImage = ({ contentId, isPreview, type, size, initialFileName, setImageInForm }) => {
   const [image, setImage] = useState({
     file: null, fileName: initialFileName
   });
   const [isHover, setIsHover] = useState(false);
   const location = useLocation();
-
+  const param = useParams();
+  
   const fetchPreviewImage = useFetching(async () => {
     const { response: imageFileName } = await RestAPI.uploadPreviewImage(image.file);
 
@@ -24,6 +26,16 @@ const UploadImage = ({ isPreview, type, size, initialFileName, setImageInForm })
     const fileName = await RestAPI.uploadAvatar(image.file);
     setImage({ ...image, fileName });
   });
+  const fetchAlbumImage = useFetching(async () => {
+    const { statusCode, imageFileName: fileName } = await RestAPI.updateAlbumImage(
+      { id: contentId, image: image.file }
+    );
+
+    if (statusCode === 200) {
+      setImage({ ...image, fileName });
+      audioStore.changeAlbum({ image: fileName, id: Number(param.id) });
+    }
+  });
 
   useEffect(() => {
     if (image.file) {
@@ -31,6 +43,8 @@ const UploadImage = ({ isPreview, type, size, initialFileName, setImageInForm })
         fetchPreviewImage();
       } else if (type === 'avatar') {
         fetchAvatar();
+      } else if (type === 'album') {
+        fetchAlbumImage();
       }
     }
   }, [image.file]);
@@ -39,6 +53,11 @@ const UploadImage = ({ isPreview, type, size, initialFileName, setImageInForm })
       setImage({ file: null, fileName: '' });
     }
   }, [location]);
+  useEffect(() => {
+    setImage({
+      file: null, fileName: initialFileName
+    });
+  }, [initialFileName]);
 
   return (
     <label

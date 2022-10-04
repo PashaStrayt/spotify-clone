@@ -53,7 +53,7 @@ export const list = {
     doesRememberClicks: true
   },
   'favourite-album': {
-    title: 'Добавить альбом в избранное',
+    title: 'Добавить / удалить альбом из избранного',
     imageUrl: '/favourite-image.svg',
     activeImageUrl: '/favourite-active-image.svg',
     size: 'big',
@@ -70,7 +70,8 @@ export const list = {
     title: 'Загрузить новые треки',
     imageUrl: '/upload-image.svg',
     activeImageUrl: '/upload-active-image.svg',
-    size: 'big'
+    size: 'big',
+    doesRememberClicks: true
   },
   'search-songs': {
     title: 'Поиск треков в текущем альбоме / плейлисте',
@@ -112,7 +113,8 @@ export const list = {
     title: 'Зациклить трек',
     imageUrl: '/change-loop.svg',
     activeImageUrl: '/change-loop-active.svg',
-    size: 'tiny'
+    size: 'tiny',
+    doesRememberClicks: true
   },
   'shuffle-queue': {
     title: 'Перемешать очередь прослушивания',

@@ -9,13 +9,13 @@ export const useIntersectionObserver = (observableRef, isAbleToLoad, isLoading, 
       observer.current.disconnect();
     }
     
-    if (!isLoading && observableRef?.current) {
+    if (!isLoading && observableRef?.current && isAbleToLoad) {
       const observerCallback = entries => {
         if (entries[0].isIntersecting && isAbleToLoad) {
           callback();
         }
       };
-  
+      
       observer.current = new IntersectionObserver(observerCallback);
       observer.current.observe(observableRef?.current);
     }

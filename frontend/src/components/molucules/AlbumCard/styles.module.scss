@@ -1,0 +1,72 @@
+.self {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 25px;
+
+  max-width: 224px;
+  width: 100%;
+  height: 356px;
+  padding: 20px;
+  border-radius: 8px;
+
+  background: rgba($color: #FFF, $alpha: 0.04);
+
+  cursor: pointer;
+
+  &:hover {
+    background:
+      rgba($color: #FFF, $alpha: 0.08);
+    transform: translateY(-7px);
+    -webkit-transform: translateY(-7px);
+    -moz-transform: translateY(-7px);
+    -ms-transform: translateY(-7px);
+    -o-transform: translateY(-7px);
+  }
+
+  transition: ease-in-out 0.4s;
+  -webkit-transition: ease-in-out 0.4s;
+  -moz-transition: ease-in-out 0.4s;
+  -ms-transition: ease-in-out 0.4s;
+  -o-transition: ease-in-out 0.4s;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+
+  &__name {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+    letter-spacing: 0.03em;
+
+    color: #FFFFFF;
+
+    min-height: 46px;
+    max-height: 46px;
+  }
+
+  &__singers {
+    font-weight: 450;
+    font-size: 18px;
+    line-height: 23px;
+
+    color: #B3B3B3;
+
+    min-height: 46px;
+    max-height: 46px;
+  }
+
+  &__date {
+    font-weight: 450;
+    font-size: 16px;
+    line-height: 12px;
+
+    color: #B3B3B3;
+  }
+}

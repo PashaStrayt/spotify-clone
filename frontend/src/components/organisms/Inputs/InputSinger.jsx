@@ -1,13 +1,13 @@
 import InputWithAdvices from '../../molucules/Inputs/InputWithAdvices/InputWithAdvices';
 import Button from '../../atoms/Buttons/Button/Button';
+import { AudioAPI } from '../../../shared/AudioAPI';
 
 const InputSinger = ({ singers, setData, addOneEmtySinger }) => {
-
   return (
     <>
       {
-        singers &&
-        Object.entries(singers)?.map(([index, { name }]) =>
+        AudioAPI.makeSingersArray(singers) &&
+        AudioAPI.makeSingersArray(singers)?.map(({ name }, index) =>
           <InputWithAdvices
             index={index}
             searchMethod='singer'

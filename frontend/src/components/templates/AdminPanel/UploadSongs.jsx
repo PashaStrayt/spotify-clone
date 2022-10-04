@@ -5,22 +5,28 @@ import { RestAPI } from "../../../shared/workingWithFetch";
 import DragAndDropSong from './../../organisms/DragAndDropSong';
 import { uploadStore } from './../../../stores/UploadStore';
 import AudioList from './../AudioList';
-import { useEffect } from 'react';
 
-const UploadSongs = observer(() => {
+const UploadSongs = observer(({ albumName, albumImage, albumId, singers, onHide }) => {
   const fetchSongs = useFetching(async () => {
     const { info, content } = uploadStore.files;
     const { statusCode } = await RestAPI.uploadSongs({ info, content });
 
     if (statusCode === 200) {
       uploadStore.setDefaultFiles();
+      if (onHide) {
+        onHide();
+      }
     }
   });
   const onCancel = () => uploadStore.setDefaultFiles();
-
   return (
-    <div className="wrapper">
-      <DragAndDropSong />
+    <>
+      <DragAndDropSong
+        albumName={albumName}
+        albumImage={albumImage}
+        albumId={albumId}
+        singers={singers}
+      />
       {
         !!uploadStore.files?.info?.length &&
         <LoadMoreOrSave
@@ -29,7 +35,7 @@ const UploadSongs = observer(() => {
         />
       }
       <AudioList isPreview={true} audios={uploadStore.files.info} />
-    </div>
+    </>
   );
 });
 

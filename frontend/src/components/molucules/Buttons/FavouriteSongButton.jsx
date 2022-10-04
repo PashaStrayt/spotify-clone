@@ -1,10 +1,15 @@
 import { RestAPI } from '../../../shared/workingWithFetch';
 import IconButton from '../../atoms/Buttons/IconButton/IconButton';
-import { useFetching } from './../../../hooks/useFetching';
+import { useFetching } from '../../../hooks/useFetching';
+import { audioStore } from '../../../stores/AudioStore';
 
-const FavouriteSongButton = ({ initialIsClicked, songData }) => {
+const FavouriteSongButton = ({ songData, isClicked }) => {
   const fetchFavourite = useFetching(async () => {
-    await RestAPI.changeSongFavourite(songData);
+    const { statusCode, response } = await RestAPI.changeSongFavourite(songData);
+
+    if (statusCode === 200) {
+      audioStore.changeSong({ id: songData.songId, isFavourite: response.isFavourite });
+    }
   });
 
   const clickHandler = event => {
@@ -18,8 +23,8 @@ const FavouriteSongButton = ({ initialIsClicked, songData }) => {
   return (
     <IconButton
       name='favourite-song'
-      initialIsClicked={initialIsClicked}
       clickHandler={clickHandler}
+      isClicked={isClicked}
     />
   );
 };

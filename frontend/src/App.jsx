@@ -19,7 +19,7 @@ const App = observer(() => {
       <AppController />
       <div style={{ display: 'flex' }}>
         <NavBar />
-        <div style={{ width: '100%', marginBottom: '112px' }}>
+        <div style={{ width: '100%', marginBottom: '152px' }}>
           <AppRouter />
         </div>
         <AudioInfoPlate

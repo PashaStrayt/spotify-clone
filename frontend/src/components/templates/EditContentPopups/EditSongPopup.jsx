@@ -32,6 +32,8 @@ const EditSongPopup = observer(() => {
     if (statusCode === 200) {
       const { index, singers, albumName } = uiStore.currentEditingSong;
       audioStore.setInAvalaibleQueueByIndex(index, { ...response, singers, albumName });
+      const { id, name, albumImage } = response;
+      audioStore.changeSong({ id, name, singers, albumName, albumImage });
     }
   });
 

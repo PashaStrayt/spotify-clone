@@ -24,7 +24,7 @@ const AppController = observer(() => {
           method: 'GET'
         }
       };
-    } else if (location.pathname.includes('/album')) {
+    } else if (location.pathname.includes('/album') && !location.pathname.includes('admin-panel') && !location.pathname.includes('home')) {
       requestData = {
         url: '/api/song/get-from-album',
         query: {
@@ -44,6 +44,7 @@ const AppController = observer(() => {
   // Setting default available queue if changing page
   useEffect(() => {
     audioStore.setDefaultAvailableQueue();
+    audioStore.setDefaultAlbums();
   }, [location]);
 
   // Update available queue for infinity scroll
@@ -170,6 +171,31 @@ const AppController = observer(() => {
       }
     }
   }, [audioStore.currentQueue.isEnded]);
+
+  // Update albums for infinity scroll
+  useEffect(() => {
+    if (audioStore.albums.page === 0) {
+      return audioStore.setAlbums({ page: 1 });
+    }
+
+    let statusCode, response, headers;
+
+    fetching(async () => {
+      if (location.pathname === '/home') {
+        ({ statusCode, response, headers } = await RestAPI.getAllAlbums({ page: 1, limit: 5 }));
+      } else if (location.pathname === '/home/albums') {
+        ({ statusCode, response, headers } = await RestAPI.getAllAlbums({
+          page: audioStore.albums.page,
+          limit: 50
+        }));
+      }
+
+      if (statusCode === 200 && Array.isArray(response) && response.length) {
+        audioStore.setAlbums({ totalPages: headers.totalPages });
+        audioStore.pushInAlbumsList(response);
+      }
+    });
+  }, [audioStore.albums.page]);
 
   return null;
 });

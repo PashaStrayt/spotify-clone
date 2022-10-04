@@ -14,7 +14,7 @@ body {
 }
 
 .wrapper {
-  padding: 40px;
+  padding: 0 40px;
 
   &--login {
     display: flex;
@@ -59,4 +59,10 @@ button {
 .emty {
   width: 100%;
   height: 0;
+}
+
+input[type="number"] {
+  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+    display: none;
+  }
 }

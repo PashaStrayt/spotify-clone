@@ -6,8 +6,6 @@ import Line from './../atoms/Line/Line';
 import { audioStore } from './../../stores/AudioStore';
 import { uiStore } from './../../stores/UIStore';
 import AudioItem from './../organisms/AudioItem';
-import { useEffect } from 'react';
-import { uploadStore } from './../../stores/UploadStore';
 
 const AudioList = observer(({ currentAlbumId, isPreview, audios, playlistId }) => {
   const observableRef = useRef();
@@ -37,7 +35,7 @@ const AudioList = observer(({ currentAlbumId, isPreview, audios, playlistId }) =
               isPreview={isPreview}
               isPrivate={audio?.isPrivate}
               id={audio?.id}
-              name={audio.name}
+              name={audio?.name}
               format={audio?.format}
               albumName={audio?.albumName}
               albumImage={audio?.albumImage}
@@ -49,7 +47,7 @@ const AudioList = observer(({ currentAlbumId, isPreview, audios, playlistId }) =
               number={index + 1}
               isFavourite={audio?.isFavourite}
               allSongInfo={{ ...audio, index }}
-              key={audio.name}
+              key={'song-id-' + index}
             />
         )
       }

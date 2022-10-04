@@ -12,11 +12,19 @@ export const fetching = async callback => {
     uiStore.changeIsLoading();
   }
 }
+export const fetchingWithoutPreloader = async callback => {
+  try {
+    await callback();
+  } catch (error) {
+    uiStore.setErrorMessage(error.message)
+  }
+}
 
 export class RestAPI {
   static async advancedFetch({ url, param, query, body, convertToFormData, method = 'GET' }) {
-    if (url.slice(-1) !== '/' && param) {
-      url = url + '/' + param;
+    if (param) {
+      url += url.slice(-1) !== '/' ? '/' : '';
+      url = url + param;
     }
 
     if (query) {
@@ -88,15 +96,6 @@ export class RestAPI {
     return { statusCode, headers, response };
   };
 
-  static async changeSongFavourite({ isPrivate, userId, songId }) {
-    const { statusCode, headers, response } = await this.advancedFetch({
-      url: '/api/song/change-favourite',
-      query: { isPrivate, userId, songId },
-      method: 'POST'
-    });
-    return { statusCode, headers, response };
-  }
-
   static async uploadPreviewImage(image) {
     const { statusCode, headers, response } = await this.advancedFetch({
       url: '/api/image/preview',
@@ -107,7 +106,6 @@ export class RestAPI {
     return { statusCode, headers, response };
   }
 
-
   static async searchForAdvices({ searchMethod, searchQuery }) {
     const { statusCode, headers, response } = await this.advancedFetch({
       url: '/api/search/simple',
@@ -117,7 +115,6 @@ export class RestAPI {
     return { statusCode, headers, response };
   }
 
-
   static async uploadSongs({ info, content }) {
     const { statusCode, headers, response } = await this.advancedFetch({
       url: '/api/song',
@@ -126,6 +123,14 @@ export class RestAPI {
       method: 'POST'
     });
 
+    return { statusCode, headers, response };
+  }
+  static async changeSongFavourite({ isPrivate, userId, songId }) {
+    const { statusCode, headers, response } = await this.advancedFetch({
+      url: '/api/song/change-favourite',
+      query: { isPrivate, userId, songId },
+      method: 'POST'
+    });
     return { statusCode, headers, response };
   }
   static async updateSong({ songData }) {
@@ -158,6 +163,64 @@ export class RestAPI {
     });
     return { statusCode, headers, response };
   }
+  static async changeAlbumFavourite({ albumId }) {
+    const { statusCode, headers, response } = await this.advancedFetch({
+      url: '/api/album/change-favourite',
+      query: { albumId },
+      method: 'POST'
+    });
+    return { statusCode, headers, response };
+  }
+  static async updateAlbum({ id, name, date, singers }) {
+    const { statusCode, response } = await this.advancedFetch({
+      url: '/api/album/edit',
+      body: { id, name, date, singers: JSON.stringify(singers) },
+      convertToFormData: true,
+      method: 'POST'
+    });
+    return { statusCode, response };
+  }
+  static async getAlbum({ id }) {
+    const isAuth = userStore.isAuth;
+    const userId = userStore.userId;
+    const { statusCode, headers, response } = await this.advancedFetch({
+      url: '/api/album',
+      param: id,
+      query: isAuth ? { userId } : null
+    });
+    return { statusCode, headers, response };
+  }
+  static async getAllAlbums({ page, limit }) {
+    const { statusCode, headers, response } = await this.advancedFetch({
+      url: '/api/album',
+      query: { page, limit }
+    });
+    return { statusCode, headers, response };
+  }
+  static async getFavouriteAlbums() {
+    const { statusCode, response } = await this.advancedFetch({
+      url: '/api/album/favourite'
+    });
+    return { statusCode, response };
+  }
+  static async updateAlbumImage({ id, image }) {
+    const { statusCode, response } = await this.advancedFetch({
+      url: '/api/album/update-image',
+      body: { id, image },
+      convertToFormData: true,
+      method: 'POST'
+    });
+    const imageFileName = response?.imageFileName;
+    return { statusCode, imageFileName };
+  }
+  static async deleteAlbum({ id }) {
+    const { statusCode, response } = await this.advancedFetch({
+      url: '/api/album',
+      param: id,
+      method: 'DELETE'
+    });
+    return { statusCode, response };
+  }
 
   static async createPlaylist({ name, image }) {
     return await this.advancedFetch({
@@ -168,6 +231,24 @@ export class RestAPI {
       convertToFormData: true,
       method: 'POST'
     });
+  }
+  static async changePlaylistFavourite({ playlistId }) {
+    const { statusCode, headers, response } = await this.advancedFetch({
+      url: '/api/playlist/change-favourite',
+      query: { playlistId },
+      method: 'POST'
+    });
+    return { statusCode, headers, response };
+  }
+  static async getPlaylist({ id }) {
+    const isAuth = userStore.isAuth;
+    const userId = userStore.userId;
+    const { statusCode, headers, response } = await this.advancedFetch({
+      url: '/api/album',
+      param: id,
+      query: isAuth ? { userId } : null
+    });
+    return { statusCode, headers, response };
   }
 
   static async createSinger({ name, image }) {
