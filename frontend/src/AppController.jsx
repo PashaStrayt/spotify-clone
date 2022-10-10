@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { RestAPI, fetching } from "./shared/workingWithFetch";
+import { RestAPI, fetching, fetchingWithoutPreloader } from "./shared/workingWithFetch";
 import { AudioAPI } from "./shared/AudioAPI";
 import { audioStore } from "./stores/AudioStore";
 import { uiStore } from "./stores/UIStore";
@@ -24,13 +24,40 @@ const AppController = observer(() => {
           method: 'GET'
         }
       };
-    } else if (location.pathname.includes('/album') && !location.pathname.includes('admin-panel') && !location.pathname.includes('home')) {
+    } else if (
+      location.pathname.includes('/album') &&
+      !location.pathname.includes('admin-panel') &&
+      !location.pathname.includes('home') &&
+      !location.pathname.includes('search') &&
+      !location.pathname.includes('favourite')
+    ) {
       requestData = {
         url: '/api/song/get-from-album',
         query: {
           userId: userStore.isAuth ? userStore.userId : '',
           page: audioStore.availableQueue.page,
           albumId: location.pathname.slice(7),
+          method: 'GET'
+        }
+      };
+    } else if (location.pathname === '/favourite/songs') {
+      requestData = {
+        url: '/api/song/favourite',
+        query: {
+          page: audioStore.availableQueue.page,
+          method: 'GET'
+        }
+      };
+    } else if (location.pathname === '/search/songs') {
+      if (!uiStore.searchQuery) {
+        return;
+      }
+
+      requestData = {
+        url: '/api/song/favourite',
+        query: {
+          page: audioStore.availableQueue.page,
+          searchQuery: uiStore.searchQuery,
           method: 'GET'
         }
       };
@@ -185,9 +212,26 @@ const AppController = observer(() => {
         ({ statusCode, response, headers } = await RestAPI.getAllAlbums({ page: 1, limit: 5 }));
       } else if (location.pathname === '/home/albums') {
         ({ statusCode, response, headers } = await RestAPI.getAllAlbums({
-          page: audioStore.albums.page,
-          limit: 50
+          page: audioStore.albums.page
         }));
+      } else if (location.pathname === '/favourite/albums') {
+        ({ statusCode, response, headers } = await RestAPI.getFavouriteAlbums({
+          page: audioStore.albums.page
+        }));
+      } else if (location.pathname === '/search/albums') {
+        if (!uiStore.searchQuery) {
+          return;
+        }
+        
+        const { statusCode, response, headers } = await RestAPI.searchAlbums({
+          page: audioStore.albums.page,
+          searchQuery: uiStore.searchQuery
+        });
+  
+        if (statusCode === 200 && Array.isArray(response) && response.length) {
+          audioStore.setAlbums({ totalPages: headers.totalPages });
+          audioStore.pushInAlbumsList(response);
+        }
       }
 
       if (statusCode === 200 && Array.isArray(response) && response.length) {
@@ -196,6 +240,9 @@ const AppController = observer(() => {
       }
     });
   }, [audioStore.albums.page]);
+
+  // useEffect(() => {
+  // }, [uiStore.searchQuery, location.pathname]);
 
   return null;
 });

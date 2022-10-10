@@ -102,9 +102,13 @@ export class UserController {
       const user = await User.findOne({ where: { id } });
 
       const dirPath = resolve(__dirname, '..', '..', 'static', 'users');
-      unlink(resolve(dirPath, user.imageFileName), error => {
-        if (error) throw error;
-      });
+      if (user.imageFileName && user.imageFileName !== 'example-user-avatar.jpg') {
+        unlink(resolve(dirPath, user.imageFileName), error => {
+          if (error) {
+            console.log('Такого изображения не существует');
+          };
+        });
+      }
       const imageFileName = v4() + '.jpg';
       image.mv(resolve(dirPath, imageFileName));
 

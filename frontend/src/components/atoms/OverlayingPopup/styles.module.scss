@@ -5,33 +5,33 @@
   justify-content: center;
   align-items: center;
   z-index: 1;
-  animation: container-entering 0.4s ease-in forwards;
-  -webkit-animation: container-entering 0.4s ease-in forwards;
+  animation: opacity-entering 0.4s ease-in forwards;
+  -webkit-animation: opacity-entering 0.4s ease-in forwards;
+}
+
+.container-exiting {
+  animation: opacity-exiting 0.4s ease-in forwards;
+  -webkit-animation: opacity-exiting 0.4s ease-in forwards;
 }
 
 .overlay {
   position: absolute;
   inset: 0;
   cursor: pointer;
-  animation: overlay-entering 0.5s ease-in-out forwards;
-  -webkit-animation: overlay-entering 0.5s ease-in-out forwards;
+  animation: inset-entering 0.4s ease-in-out normal forwards;
+  -webkit-animation: inset-entering 0.4s ease-in-out normal forwards;
 }
 
 .background {
   background: rgba($color: #000, $alpha: 0.6);
 }
 
-.entering {
-  animation: entering 0.4s ease-in-out forwards;
-  -webkit-animation: entering 0.4s ease-in-out forwards;
-}
-
 .exiting {
-  animation: entering 0.4s ease-in-out forwards reverse;
-  -webkit-animation: entering 0.4s ease-in-out forwards reverse;
+  animation: inset-exiting 0.4s ease-in-out forwards;
+  -webkit-animation: inset-exiting 0.4s ease-in-out forwards;
 }
 
-@keyframes container-entering {
+@keyframes opacity-entering {
   0% {
     opacity: 0;
   }
@@ -40,12 +40,31 @@
     opacity: 1;
   }
 }
-@keyframes overlay-entering {
+@keyframes opacity-exiting {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes inset-entering {
   0% {
     inset: 15%;
   }
 
   100% {
     inset: 0;
+  }
+}
+@keyframes inset-exiting {
+  0% {
+    inset: 0;
+  }
+
+  100% {
+    inset: 15%;
   }
 }

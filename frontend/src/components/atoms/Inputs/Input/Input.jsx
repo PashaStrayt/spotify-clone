@@ -5,7 +5,9 @@ const Input = ({
   additionalStyle,
   type = 'text',
   reference,
+  children,
   changeHandler,
+  keyDownHandler,
   ...props
 }) => {
   return (
@@ -14,9 +16,12 @@ const Input = ({
       style={additionalStyle}
       type={type}
       onChange={changeHandler}
+      onKeyDown={keyDownHandler}
       ref={reference}
       {...props}
-    />
+    >
+      {children}
+    </input>
   );
 };
 

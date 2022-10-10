@@ -76,21 +76,19 @@ export class RestAPI {
     let response = await fetch(url, request);
 
     const { status: statusCode } = response;
-    const totalPages = response.headers.get('Total-Pages')
+    const totalPages = response.headers.get('Total-Pages');
     const headers = { totalPages };
 
     response = await response.json();
-    switch (statusCode) {
-      case 200:
-        uiStore.setErrorMessage('');
-        uiStore.setUserMessage('');
-        uiStore.setUserMessage(response.message);
-        break;
-      default:
-        uiStore.setErrorMessage('');
-        uiStore.setUserMessage('');
-        uiStore.setErrorMessage(response.message);
-        break;
+    if (response.message) {
+      switch (statusCode) {
+        case 200:
+          uiStore.setUserMessage(response.message);
+          break;
+        default:
+          uiStore.setErrorMessage(response.message);
+          break;
+      }
     }
 
     return { statusCode, headers, response };
@@ -141,6 +139,13 @@ export class RestAPI {
     });
 
     return { statusCode, headers, response };
+  }
+  static async searchSongs({ page = 1, limit = 50, searchQuery }) {
+    const { statusCode, response, headers } = await this.advancedFetch({
+      url: '/api/search/hard/songs',
+      query: { page, limit, searchQuery }
+    });
+    return { statusCode, response, headers };
   }
   static async deleteSong({ songId, isPrivate, userId }) {
     const { statusCode, headers, response } = await this.advancedFetch({
@@ -197,11 +202,19 @@ export class RestAPI {
     });
     return { statusCode, headers, response };
   }
-  static async getFavouriteAlbums() {
-    const { statusCode, response } = await this.advancedFetch({
-      url: '/api/album/favourite'
+  static async getFavouriteAlbums({ page = 1, limit = 50 }) {
+    const { statusCode, response, headers } = await this.advancedFetch({
+      url: '/api/album/favourite',
+      query: { page, limit }
     });
-    return { statusCode, response };
+    return { statusCode, response, headers };
+  }
+  static async searchAlbums({ page = 1, limit = 50, searchQuery }) {
+    const { statusCode, response, headers } = await this.advancedFetch({
+      url: '/api/search/hard/albums',
+      query: { page, limit, searchQuery }
+    });
+    return { statusCode, response, headers };
   }
   static async updateAlbumImage({ id, image }) {
     const { statusCode, response } = await this.advancedFetch({

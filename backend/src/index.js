@@ -11,7 +11,7 @@ import * as models from './database/models.js'
 
 config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 const server = express();
 
 server.use(express.json());

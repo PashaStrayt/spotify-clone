@@ -6,7 +6,6 @@ config();
 export const checkUserMiddleware = role => {
   return (request, response, next) => {
     try {
-      console.log(1);
       if (!request.headers?.authorization || request.headers?.authorization.length <= 7) {
         return response.status(401).json({ message: 'Не авторизован' });
       }

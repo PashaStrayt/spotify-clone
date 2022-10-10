@@ -112,12 +112,17 @@ export class AlbumController {
       const albumsTotalPages = Math.ceil(await Album.count() / limit);
       response.append('Total-Pages', albumsTotalPages);
 
-      const albums = await Album.findAll({
+      let albums = await Album.findAll({
         include: { model: Singer, as: 'singers' },
         limit,
         offset,
         order: [['createdAt', 'DESC']]
       });
+      await Promise.all(albums.map(async album => {
+        const songsAmount = await Song.count({ where: { albumId: album.id } });
+        album.dataValues.songsAmount = songsAmount;
+        return album;
+      }));
 
       return response.json(albums);
     } catch (error) {
@@ -129,15 +134,34 @@ export class AlbumController {
   static async getEveryFavourite(request, response, next) {
     try {
       const userId = request.user.id;
+      let { limit, page } = request.query;
+      limit = Number(limit) || 50;
+      page = Number(page) || 1;
+      const offset = page * limit - limit;
+
+      const albumsTotalPages = Math.ceil(await Favourite.count({ where: { userId } }) / limit);
+      response.append('Total-Pages', albumsTotalPages);
 
       const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
 
       let albums = await FavouriteAlbum.findAll({
         where: { favouriteId },
-        include: { model: Album }
+        limit,
+        offset,
+        order: [['createdAt', 'DESC']]
       });
 
-      albums = albums.map(({ album }) => album);
+      albums = await Promise.all(albums.map(async ({ albumId }) => {
+        const album = await Album.findOne({
+          where: { id: albumId },
+          include: { model: Singer, as: 'singers' }
+        });
+        const songsAmount = await Song.count({ where: { albumId } });
+
+        album.dataValues.isFavourite = true;
+        album.dataValues.songsAmount = songsAmount;
+        return album;
+      }));
 
       return response.json(albums);
     } catch (error) {

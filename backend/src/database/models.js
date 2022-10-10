@@ -57,7 +57,7 @@ const Song = database.define('song', {
 const SongPrivate = database.define('song_private', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, allowNull: false },
-  singersNames: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false },
+  singersNames: { type: DataTypes.JSON(DataTypes.STRING), allowNull: false },
   albumName: { type: DataTypes.STRING, allowNull: false },
   format: { type: DataTypes.STRING, allowNull: false },
   duration: { type: DataTypes.INTEGER, allowNull: false },

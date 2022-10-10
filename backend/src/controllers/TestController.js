@@ -13,11 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export class TestController {
   static async test(request, response, next) {
     try {
-      await SongPlaylist.create({ songId: 20, playlistId: 1 });
-      await SongPlaylist.create({ songId: 28, playlistId: 1 });
-      await SongPlaylist.create({ songId: 34, playlistId: 1 });
-
-      return response.json({ message: 'SUCCESS' });
+      return response.json({ message: 'Я тебя люлю, Настюша <3' });
     } catch (error) {
       next(ErrorAPI.internalServer(error.message));
     }

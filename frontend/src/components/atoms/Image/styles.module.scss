@@ -63,4 +63,24 @@
     position: absolute;
     inset: calc(50% - 27px);
   }
+
+  &--icon {
+    &--large {
+      height: 56px;
+    }
+    &--big {
+      height: 40px;
+    }
+    &--normal {
+      height: 32px;
+    }
+    &--small {
+      width: auto;
+      height: 100%;  
+      height: 28px;
+    }
+    &--tiny {
+      height: 20px;
+    }
+  }
 }

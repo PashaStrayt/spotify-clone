@@ -10,6 +10,7 @@ class UIStore {
   userMessage = '';
   errorMessage = '';
   stringLimit = {};
+  searchQuery = '';
 
   constructor() {
     this.setEditSongPopup({ isVisible: false, isPreview: true });
@@ -20,6 +21,10 @@ class UIStore {
 
   set(state, value) {
     state = value;
+  }
+
+  setSearchQuery(query) {
+    this.searchQuery = query;
   }
 
   setUserMessage(message) {
@@ -65,7 +70,7 @@ class UIStore {
     this.currentEditingSong = {
       ...this.currentEditingSong,
       singers: {
-        ...singers, 
+        ...singers,
         [index]: { id, name }
       }
     };

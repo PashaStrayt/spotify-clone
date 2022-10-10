@@ -35,7 +35,7 @@ const NavBar = observer(() => {
   useEffect(() => {
     checkAuth();
     fetchingWithoutPreloader(async () => {
-      const { statusCode, response } = await RestAPI.getFavouriteAlbums();
+      const { statusCode, response } = await RestAPI.getFavouriteAlbums({ limit: 200, page: 1 });
 
       if (statusCode === 200) {
         setAlbums(response);

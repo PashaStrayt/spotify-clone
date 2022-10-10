@@ -10,6 +10,17 @@ import { copyFile, readdir, readdirSync, unlink } from 'fs';
 config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const mvAsync = async (file, path) => {
+  return new Promise((resolve, reject) => {
+    file.mv(path, error => {
+      if (error) {
+        return reject(error.message);
+      }
+      resolve();
+    })
+  })
+};
+
 export class SongController {
   static upload(request, response, next) {
     try {
@@ -30,9 +41,9 @@ export class SongController {
         } = songsInfo[index];
 
         const fileName = v4() + '.' + format;
-        song[1].mv(resolve(__dirname, '..', '..', 'static', 'songs', fileName));
+        await mvAsync(song[1], resolve(__dirname, '..', '..', 'static', 'songs', fileName));
 
-        const path = `http://localhost:${process.env.PORT}/${fileName}`;
+        const path = `https://spotify-clone.pashastrayt.repl.co/${fileName}`;
         let duration = await getAudioDurationInSeconds(path);
         duration = Math.floor(duration);
 
@@ -280,6 +291,71 @@ export class SongController {
           });
         }
       }
+
+      response.json([...songs, ...songsPrivate]);
+    } catch (error) {
+      console.log(error.message);
+      next(ErrorAPI.badRequest(error.message));
+    }
+  }
+
+  static async getEveryFavourite(request, response, next) {
+    try {
+      let { limit, page } = request.query;
+      const userId = request.user.id;
+      limit = limit || 50;
+      page = page || 1;
+      const offset = limit * page - limit;
+      const order = [['createdAt', 'DESC']];
+
+      const SongsTotalPages = Math.ceil(await Song.count() / limit);
+      const SongPrivatesTotalPages = Math.ceil(await SongPrivate.count() / limit);
+      response.append('Total-Pages', SongsTotalPages > SongPrivatesTotalPages ? SongsTotalPages : SongPrivatesTotalPages);
+
+      let songs = await Song.findAll({
+        order, limit, offset,
+        include: [
+          { model: Singer, as: 'SongSinger', attributes: ['name'] },
+          { model: Album, attributes: ['name', 'imageFileName'] }
+        ]
+      });
+      let songsPrivate = await SongPrivate.findAll({ order, limit, offset });
+
+      const { id: favouriteId } = await Favourite.findOne({ where: { userId } });
+      const favouriteSongs = await FavouriteSong.findAll({ where: { favouriteId } });
+      const favouriteSongsPrivate = await FavouriteSongPrivate.findAll({ where: { favouriteId } });
+
+      if (favouriteSongs.length) {
+        songs = songs.filter(song => {
+          let isFavourite = false;
+          for (let favouriteSong of favouriteSongs) {
+            if (favouriteSong.songId === song.id) {
+              isFavourite = true;
+              break;
+            }
+          }
+          return isFavourite;
+        });
+      }
+      if (favouriteSongsPrivate.length) {
+        songsPrivate = songsPrivate.filter(songPrivate => {
+          let isFavourite = false;
+          for (let favouriteSongPrivate of favouriteSongsPrivate) {
+            if (favouriteSongPrivate.songPrivateId === songPrivate.id) {
+              isFavourite = true;
+              break;
+            }
+          }
+          return isFavourite;
+        });
+      }
+
+      songs.forEach(song => {
+        song.dataValues.isFavourite = true;
+      });
+      songsPrivate.forEach(song => {
+        song.dataValues.isFavourite = true;
+      });
 
       response.json([...songs, ...songsPrivate]);
     } catch (error) {

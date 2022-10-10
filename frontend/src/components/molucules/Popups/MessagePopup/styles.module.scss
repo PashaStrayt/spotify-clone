@@ -5,6 +5,7 @@
 
   max-width: 400px;
   width: 100%;
+  min-height: 45px;
   padding: 10px;
   border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -32,56 +33,5 @@
   &--error {
     background: rgb(178, 19, 19);
     color: rgb(231, 231, 231);
-  }
-}
-
-.entering {
-  animation: entering 1s forwards ease-in-out;
-  -webkit-animation: entering 1s forwards ease-in-out;
-}
-.entered {
-  animation: continue 5s forwards infinite ease-in-out;
-  -webkit-animation: continue 5s forwards infinite ease-in-out;
-}
-
-.exiting {
-  animation: entering 1s reverse ease-in-out;
-  -webkit-animation: entering 1s reverse ease-in-out;
-}
-
-@keyframes entering {
-  0% {
-    opacity: 0;
-    transform: translateY(-32px);
-    -webkit-transform: translateY(-32px);
-    -moz-transform: translateY(-32px);
-    -ms-transform: translateY(-32px);
-    -o-transform: translateY(-32px);
-}
-
-  50% {
-    opacity: 0.5;
-  }
-
-  100% {
-    transform: translateY(0);
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-  }
-}
-
-@keyframes continue {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.8;
-  }
-
-  100% {
-    opacity: 1;
   }
 }

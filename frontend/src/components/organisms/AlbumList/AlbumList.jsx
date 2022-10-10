@@ -22,13 +22,14 @@ const AlbumList = observer(({ isExpanded }) => {
   return (
     <div className={styles.self}>
       {
-        audioStore.albums.list.map(({ id, name, singers, date, imageFileName }) =>
+        audioStore.albums.list.map(({ id, name, singers, date, imageFileName, songsAmount }) =>
           <AlbumCard
             id={id}
             name={name}
             singers={AudioAPI.makeSingerNames(singers)}
             date={date}
             imageFileName={imageFileName}
+            songsAmount={songsAmount}
             key={'album-card-' + id}
           />
         )

@@ -9,7 +9,9 @@ import AlbumId from './components/pages/AlbumId';
 export const publicRoutes = [
   { path: '/home', element: <Home /> },
   { path: '/home/albums', element: <Home /> },
-  { path: '/search', element: <Search /> },
+  { path: '/search/songs', element: <Search /> },
+  { path: '/search/albums', element: <Search /> },
+  { path: '/search', element: <Navigate to='/search/songs' /> },
   { path: '/album/:id', element: <AlbumId />, exact: true },
   { path: '/error', element: <Error /> },
   { path: '/', element: <Navigate to='/home' /> },
@@ -17,7 +19,9 @@ export const publicRoutes = [
 ];
 
 export const userRoutes = [
-  { path: '/favourite', element: <Favourite /> },
+  { path: '/favourite/songs', element: <Favourite /> },
+  { path: '/favourite/albums', element: <Favourite /> },
+  { path: '/favourite', element: <Navigate to='/favourite/songs' /> }
 ];
 
 export const adminRoutes = [
