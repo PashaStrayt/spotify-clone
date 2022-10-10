@@ -9,6 +9,9 @@ frontend/node_modules
 *.ogg
 *.mp3
 *.m4a
+*.env
+
+.env
 
 # testing
 /coverage

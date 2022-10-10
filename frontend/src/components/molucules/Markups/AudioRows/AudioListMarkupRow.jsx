@@ -1,5 +1,6 @@
 import styles from './styles.module.scss';
 import className from 'classnames';
+import { PROXY_URL } from './../../../../shared/workingWithFetch';
 
 const AudioListMarkupRow = () => {
   return (
@@ -12,7 +13,7 @@ const AudioListMarkupRow = () => {
       {/* <div className={className(styles.column, styles['column--empty'])} /> */}
       <img
         className={className(styles.column, styles.duration)}
-        src="/duration-image.svg"
+        src={PROXY_URL + "/duration-image.svg"}
         alt="Duration icon"
       />
       <div className={className(styles.column, styles['column--empty'])} />

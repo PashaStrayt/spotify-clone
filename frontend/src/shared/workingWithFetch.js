@@ -2,6 +2,8 @@ import { updateUserStoreAndCookies } from './workingWithAuthentication';
 import { uiStore } from './../stores/UIStore';
 import { userStore } from './../stores/UserStore';
 
+export const PROXY_URL = 'https://spotify-clone.pashastrayt.repl.co';
+
 export const fetching = async callback => {
   try {
     uiStore.changeIsLoading();
@@ -63,7 +65,8 @@ export class RestAPI {
     const request = {
       method,
       headers: {
-        'Authorization': 'bearer ' + userStore.token
+        'Authorization': 'bearer ' + userStore.token,
+        userId: userStore.userId
       }
     };
     if (method !== 'GET') {
@@ -73,7 +76,7 @@ export class RestAPI {
       request.headers['Content-Type'] = 'application/json'
     }
 
-    let response = await fetch(url, request);
+    let response = await fetch(PROXY_URL + url, request);
 
     const { status: statusCode } = response;
     const totalPages = response.headers.get('Total-Pages');

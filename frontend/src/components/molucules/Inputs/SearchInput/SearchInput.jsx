@@ -1,6 +1,7 @@
 import Input from '../../../atoms/Inputs/Input/Input';
 import Image from '../../../atoms/Image/Image';
 import styles from './styles.module.scss';
+import { PROXY_URL } from './../../../../shared/workingWithFetch';
 
 const SearchInput = ({ value, changeHandler, keyDownHandler }) => {
   return (
@@ -8,7 +9,7 @@ const SearchInput = ({ value, changeHandler, keyDownHandler }) => {
       <Image
         type='icon'
         size='small'
-        src='/search-dark-icon.svg'
+        src={PROXY_URL + '/search-dark-icon.svg'}
         alt='Search icon'
         additionalStyle={{ position: 'absolute', inset: '12px' }}
       />

@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { deepCopy } from './../shared/workingWithTypes';
+import { PROXY_URL } from './../shared/workingWithFetch';
 
 class AudioStore {
   currentPlaying = {};
@@ -91,7 +92,7 @@ class AudioStore {
       ...object
     };
     if (object.fileName) {
-      this.currentPlaying.audio.src = '/' + object.fileName;
+      this.currentPlaying.audio.src = PROXY_URL + '/' + object.fileName;
     }
   }
   setNextCurrentPlaying(index) {

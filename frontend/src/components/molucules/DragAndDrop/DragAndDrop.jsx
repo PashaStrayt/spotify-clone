@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './styles.module.scss';
+import { PROXY_URL } from './../../../shared/workingWithFetch';
 
 const DragAndDrop = ({ upFiles, accept }) => {
   const [isDragged, setIsDragged] = useState(false);
@@ -34,7 +35,7 @@ const DragAndDrop = ({ upFiles, accept }) => {
       onDrop={onLoadFiles}
     >
 
-      <img className={styles.icon} src="/upload-icon.svg" alt="" />
+      <img className={styles.icon} src={PROXY_URL + "/upload-icon.svg"} alt="" />
 
       {
         isDragged ?

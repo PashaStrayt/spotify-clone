@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { list } from './list'
 import style from './styles.module.scss';
 import className from 'classnames';
+import { PROXY_URL } from './../../../../shared/workingWithFetch';
 
 const IconButton = ({
   name,
@@ -20,7 +21,6 @@ const IconButton = ({
       setIsClicked(props.isClicked);
     }
   }, [props?.isClicked]);
-
   return (
     <button
       title={title}
@@ -35,7 +35,7 @@ const IconButton = ({
       onMouseOver={isApplyingHover ? () => setIsHover(true) : null}
       onMouseOut={isApplyingHover ? () => setIsHover(false) : null}
     >
-      <img className={style.icon} src={(isClicked || isHover) && activeImageUrl ? activeImageUrl : imageUrl} alt="Icon button" />
+      <img className={style.icon} src={PROXY_URL + ((isClicked || isHover) && activeImageUrl ? activeImageUrl : imageUrl)} alt="Icon button" />
     </button>
   );
 };

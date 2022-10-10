@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite';
 import IconButton from '../../../atoms/Buttons/IconButton/IconButton';
 import Image from '../../../atoms/Image/Image';
 import CutByLimitParagraph from '../../../atoms/CutByLimitParagraph/CutByLimitParagraph';
+import { PROXY_URL } from './../../../../shared/workingWithFetch';
 
 const AudioItemMarkupRow = observer(({
   isPlaying,
@@ -52,7 +53,7 @@ const AudioItemMarkupRow = observer(({
     >
 
       {/* Doesn't take space in markup  */}
-      <audio preload='none' src={!props.isPreview ? '/' + props.fileName : ''}></audio>
+      <audio preload='none' src={PROXY_URL + !props.isPreview ? '/' + props.fileName : ''}></audio>
 
       <div className={classNames?.number}>
         {
@@ -64,7 +65,7 @@ const AudioItemMarkupRow = observer(({
 
       <Image
         type='audio'
-        src={'/' + props.albumImage || 'album-image.svg'}
+        src={PROXY_URL + '/' + props.albumImage || 'album-image.svg'}
         alt="Album icon"
       />
 

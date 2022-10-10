@@ -44,6 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {},
-  "proxy": "https://spotify-clone.pashastrayt.repl.co"
+  "devDependencies": {}
 }

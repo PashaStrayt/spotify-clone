@@ -1,6 +1,7 @@
 import styles from './styles.module.scss';
 import { Transition } from 'react-transition-group';
 import classNames from 'classnames';
+import { PROXY_URL } from './../../../shared/workingWithFetch';
 
 const AudioInfoPlate = ({ isOpened, name, singers, albumName, albumImage, format }) => {
 
@@ -15,7 +16,7 @@ const AudioInfoPlate = ({ isOpened, name, singers, albumName, albumImage, format
         {
           state =>
             <div className={classNames(styles.container, styles[state])}>
-              <img src={'/' + albumImage} className={styles.image} alt="" />
+              <img src={PROXY_URL + '/' + albumImage} className={styles.image} alt="" />
               <div className={styles.info}>
                 <div className={styles.info__row}>
                   <p className={styles['info__song-name']}>{name}</p>

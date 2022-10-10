@@ -1,6 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import Image from './../../atoms/Image/Image';
 import styles from './styles.module.scss';
+import { PROXY_URL } from './../../../shared/workingWithFetch';
 
 const AlbumCard = ({ id, name, singers, date, imageFileName, songsAmount }) => {
   return (
@@ -8,7 +9,7 @@ const AlbumCard = ({ id, name, singers, date, imageFileName, songsAmount }) => {
       <Image
         type='album'
         size='small'
-        src={'/' + imageFileName}
+        src={PROXY_URL + '/' + imageFileName}
         alt='Album image'
       />
       <div className={styles.info}>

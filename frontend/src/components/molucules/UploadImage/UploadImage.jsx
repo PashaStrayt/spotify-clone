@@ -7,6 +7,7 @@ import className from 'classnames';
 import { RestAPI } from '../../../shared/workingWithFetch';
 import Input from './../../atoms/Inputs/Input/Input';
 import { audioStore } from '../../../stores/AudioStore';
+import { PROXY_URL } from './../../../shared/workingWithFetch';
 
 const UploadImage = ({ contentId, isPreview, type, size, initialFileName, setImageInForm }) => {
   const [image, setImage] = useState({
@@ -70,7 +71,7 @@ const UploadImage = ({ contentId, isPreview, type, size, initialFileName, setIma
           <Image
             type={type}
             size={size}
-            src={'/' + image.fileName}
+            src={PROXY_URL + '/' + image.fileName}
             alt={type + ' icon'}
           /> :
           <Image
@@ -84,7 +85,7 @@ const UploadImage = ({ contentId, isPreview, type, size, initialFileName, setIma
         <Image
           isVisible={isHover}
           type='upload-icon'
-          src='/upload-icon.svg'
+          src={PROXY_URL + '/upload-icon.svg'}
           alt={'Upload icon'}
         />
       }
