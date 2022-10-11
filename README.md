@@ -1,5 +1,7 @@
-<img width='100%' src='./images/logo.jpg' />
-
+<a href="https://spotify-clone-pashastrayt.vercel.app/home">
+  <img width='100%' src='./images/logo.jpg' />
+</a>
+  
 # Spotify Clone 🎶🎧
 <p>Clone of popular app with supporting such formats: .flac, .wav, .m4a and .ogg.<br>
 // Клон популярного приложения с поддержкой форматов: .flac, .wav, .m4a и .ogg.</p>
@@ -9,6 +11,8 @@
 <p>App already works, but some pages, buttons, etc. haven't finished yet<br>
 // Приложение уже работает, но пока еще не закончены некоторые страницы, кнопки и пр.</p>
 <img width='100%' src='./images/progress.svg' />
+
+<h2><a href="https://spotify-clone-pashastrayt.vercel.app/home">ACTUAL DEPLOY</a><h2>
 
 ## Preview
 <p>Listen, revind, play, pause music!<br>
