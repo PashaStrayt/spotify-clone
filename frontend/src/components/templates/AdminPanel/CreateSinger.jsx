@@ -49,7 +49,7 @@ const CreateSinger = () => {
 
   const nameInputHandler = event => {
     const name = event.target.value;
-    setSinger({ ...singer, name });
+    setSinger(prev => { return { ...prev, name } });
   };
   const setImageInForm = ({ file, fileName }) => {
     setSinger({ ...singer, image: { file, fileName } });
