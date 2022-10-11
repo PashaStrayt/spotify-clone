@@ -8,11 +8,16 @@
 
 
 ## Development progress in percent // Прогресс разработки в процентах
-<p>App already works, but some pages, buttons, etc. haven't finished yet<br>
-// Приложение уже работает, но пока еще не закончены некоторые страницы, кнопки и пр.</p>
+<p>App's almost ready and works fine, but it maybe will get updates for fix some bugs and reworking components in the future<br>
+// Приложение почти готово и прекрасно работает, но возможно еще будет обновляться в будущем</p>
 <img width='100%' src='./images/progress.svg' />
 
 <h2><a href="https://spotify-clone-pashastrayt.vercel.app/home">ACTUAL DEPLOY</a><h2>
+<p>click above text link or below image link<br>
+// нажми на текст выше или на картинку ниже</p>
+<a href="https://spotify-clone-pashastrayt.vercel.app/home">
+  <img width='100%' src='./images/first-load.gif' />
+</a>
 
 ## Preview
 <p>Listen, revind, play, pause music!<br>
