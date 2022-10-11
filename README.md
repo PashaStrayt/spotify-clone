@@ -12,7 +12,7 @@
 // Приложение почти готово и прекрасно работает, но возможно еще будет обновляться в будущем</p>
 <img width='100%' src='./images/progress.svg' />
 
-<h2><a href="https://spotify-clone-pashastrayt.vercel.app/home">ACTUAL DEPLOY</a><h2>
+<h2><a href="https://spotify-clone-pashastrayt.vercel.app/home">ACTUAL DEPLOY LINK</a><h2>
 <p>click above text link or below image link<br>
 // нажми на текст выше или на картинку ниже</p>
 <a href="https://spotify-clone-pashastrayt.vercel.app/home">
@@ -45,8 +45,23 @@
   <li>PostgreSQL</li>
   <li>Express JS</li>
 </ul>
+  
+## Deploy local on your PC // Разверните локально на своем ПК
+<p>For this you need create <code>.env</code> file in the <code>backend</code> directory and put your variables values<br>
+// Для этого вам необходимо создать <code>.env</code> файл в папке <code>backend</code> и поместить туда свои значения</p>
+<pre>
+  <code>
+    PORT=
+    DB_NAME=
+    DB_USER=
+    DB_PASSWORD=
+    DB_HOST=
+    DB_PORT=
+    SECRET_KEY=
+  </code>
+</pre>
 
-## In developing // В разработке
+## In developing (todo list) // В разработке
 <ul>
   <li><s>Панель создания контента</s></li>
   <ul>
