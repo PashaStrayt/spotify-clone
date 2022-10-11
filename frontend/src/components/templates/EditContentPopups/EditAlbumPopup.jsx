@@ -7,6 +7,7 @@ import { useFetching } from '../../../hooks/useFetching';
 import { useEffect, useState } from 'react';
 import { AudioAPI } from '../../../shared/AudioAPI';
 import { audioStore } from '../../../stores/AudioStore';
+import { useCallback } from 'react';
 
 const EditAlbumPopup = observer(({ isOpened, initialData, upData, onClose }) => {
   const [name, setName] = useState();
@@ -24,9 +25,9 @@ const EditAlbumPopup = observer(({ isOpened, initialData, upData, onClose }) => 
   };
   const dateInputHandler = event => setDate(event.target.value.slice(0, 4));
 
-  const addOneEmtySinger = () => {
+  const addOneEmtySinger = useCallback(() => {
     setSingers(prev => [...prev, { id: null, name: '' }]);
-  };
+  }, []);
 
   const fetchUpdateAlbum = useFetching(async () => {
     const { statusCode } = await RestAPI.updateAlbum({
@@ -40,12 +41,12 @@ const EditAlbumPopup = observer(({ isOpened, initialData, upData, onClose }) => 
     }
   });
 
-  const onSavePopup = () => {
+  const onSavePopup = useCallback(() => {
     if (!AudioAPI.isAlbumFormValid({ name, singers, date })) {
       return;
     }
     fetchUpdateAlbum();
-  };
+  }, []);
 
   useEffect(() => {
     setName(initialData.name);

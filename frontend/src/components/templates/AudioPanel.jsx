@@ -4,6 +4,7 @@ import { shuffleArray } from '../../shared/workingWithTypes';
 import { uiStore } from '../../stores/UIStore';
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useCallback } from 'react';
 
 const AudioPanel = observer(() => {
   const [availableCurrentTime, setAvailableCurrentTime] = useState(0);
@@ -15,7 +16,7 @@ const AudioPanel = observer(() => {
     setDuration(Math.ceil(audioStore.currentPlaying.audio.duration || audioStore.currentPlaying.duration));
   }, [audioStore.currentPlaying.currentTime]);
 
-  const onPlayPause = () => {
+  const onPlayPause = useCallback(() => {
     if (audioStore.currentPlaying.audio.paused) {
       audioStore.currentPlaying.audio.play();
       audioStore.setCurrentPlaying({});
@@ -23,16 +24,16 @@ const AudioPanel = observer(() => {
       audioStore.currentPlaying.audio.pause();
       audioStore.setCurrentPlaying({});
     }
-  };
-  const onPrevious = () => {
+  }, []);
+  const onPrevious = useCallback(() => {
     const previousSongIndex = audioStore.currentPlaying.index === 0 ?
       audioStore.currentQueue.queue.length - 1 :
       audioStore.currentPlaying.index - 1;
 
     audioStore.setNextCurrentPlaying(previousSongIndex);
     audioStore.currentPlaying.audio.play();
-  };
-  const onNext = () => {
+  }, []);
+  const onNext = useCallback(() => {
     const nextSongIndex = audioStore.currentPlaying.index === audioStore.currentQueue.queue.length - 1 ?
       0 :
       audioStore.currentPlaying.index + 1;
@@ -43,14 +44,14 @@ const AudioPanel = observer(() => {
     } else {
       audioStore.setCurrentQueue({ isEnded: true });
     }
-  };
-  const onLoop = () => {
+  }, []);
+  const onLoop = useCallback(() => {
     audioStore.currentPlaying.audio.loop = !audioStore.currentPlaying.audio.loop;
     audioStore.setCurrentPlaying({})
-  };
-  const onShuffleQueue = () => {
+  }, []);
+  const onShuffleQueue = useCallback(() => {
     audioStore.setCurrentQueue({ queue: shuffleArray(audioStore.currentQueue.queue) });
-  };
+  }, []);
   const onRewind = event => {
     if (event.target.value <= 0) {
       return setAvailableCurrentTime(0.001);
@@ -65,22 +66,22 @@ const AudioPanel = observer(() => {
     }
     setAvailableCurrentTime(0);
   };
-  const onChangeMute = () => {
+  const onChangeMute = useCallback(() => {
     if (audioStore.currentPlaying.audio.volume) {
       audioStore.currentPlaying.audio.volume = 0;
     } else {
       audioStore.currentPlaying.audio.volume = Number(localStorage.getItem('volume'));
     }
     audioStore.setCurrentPlaying({});
-  };
+  }, []);
   const onControlVolume = event => {
     audioStore.currentPlaying.audio.volume = event.target.value;
     audioStore.setCurrentPlaying({});
     localStorage.setItem('volume', event.target.value);
   };
-  const onShowAudioInfoPlate = () => {
+  const onShowAudioInfoPlate = useCallback(() => {
     uiStore.changeIsVisibleAudioInfoPlate();
-  };
+  }, []);
 
   return (
     <AudioPanelMarkup

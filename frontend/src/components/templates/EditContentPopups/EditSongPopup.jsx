@@ -8,6 +8,7 @@ import InputAlbum from './../../organisms/Inputs/InputAlbum';
 import Input from './../../atoms/Inputs/Input/Input';
 import InputSinger from './../../organisms/Inputs/InputSinger';
 import { useFetching } from './../../../hooks/useFetching';
+import { useCallback } from 'react';
 
 const EditSongPopup = observer(() => {
   const nameInputHandler = event => {
@@ -20,10 +21,10 @@ const EditSongPopup = observer(() => {
     uiStore.setCurrentEditingSong({ albumId, albumName });
   };
 
-  const addOneEmtySinger = () => {
+  const addOneEmtySinger = useCallback(() => {
     const index = Object.entries(uiStore.currentEditingSong.singers).length;
     uiStore.setSingerByIndex(index, { id: null, name: '' });
-  };
+  }, []);
 
   const fetchUpdateSong = useFetching(async () => {
     const songData = uiStore.currentEditingSong;
@@ -37,7 +38,7 @@ const EditSongPopup = observer(() => {
     }
   });
 
-  const onSavePopup = () => {
+  const onSavePopup = useCallback(() => {
     const songData = uiStore.currentEditingSong;
     if (uiStore.editSongPopup.isPreview) {
       uploadStore.setFileInfo(songData, songData.index);
@@ -47,10 +48,10 @@ const EditSongPopup = observer(() => {
     }
 
     uiStore.setEditSongPopup({ isVisible: false });
-  };
-  const onClosePopup = () => {
+  }, []);
+  const onClosePopup = useCallback(() => {
     uiStore.setEditSongPopup({ isVisible: false });
-  };
+  }, []);
 
   return (
     <FormPopup isOpened={uiStore.editSongPopup.isVisible} onSave={onSavePopup} onClose={onClosePopup}>

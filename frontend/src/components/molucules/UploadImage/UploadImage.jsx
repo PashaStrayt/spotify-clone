@@ -1,6 +1,6 @@
 import styles from './styles.module.scss';
 import { useFetching } from '../../../hooks/useFetching';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import Image from '../../atoms/Image/Image';
 import className from 'classnames';
@@ -9,7 +9,7 @@ import Input from './../../atoms/Inputs/Input/Input';
 import { audioStore } from '../../../stores/AudioStore';
 import { PROXY_URL } from './../../../shared/workingWithFetch';
 
-const UploadImage = ({ contentId, isPreview, type, size, initialFileName, setImageInForm }) => {
+const UploadImage = memo(({ contentId, isPreview, type, size, initialFileName, setImageInForm }) => {
   const [image, setImage] = useState({
     file: null, fileName: initialFileName
   });
@@ -99,6 +99,6 @@ const UploadImage = ({ contentId, isPreview, type, size, initialFileName, setIma
       />
     </label>
   );
-};
+});
 
 export default UploadImage;

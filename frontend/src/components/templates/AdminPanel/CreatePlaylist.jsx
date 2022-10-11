@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useFetching } from '../../../hooks/useFetching';
 import LabelWithLine from '../../molucules/LabelWithLine/LabelWithLine';
 import UploadImage from '../../molucules/UploadImage/UploadImage';
@@ -28,9 +28,9 @@ const CreatePlaylist = () => {
   const [playlist, setPlaylist] = useState();
   const location = useLocation();
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     setPlaylist(getDefaultPlaylist());
-  };
+  }, []);
   const onSave = useFetching(async () => {
     const { name } = playlist;
     if (!isFormValid(name)) {

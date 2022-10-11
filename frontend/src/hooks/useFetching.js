@@ -1,7 +1,8 @@
 import { uiStore } from './../stores/UIStore';
+import { useCallback } from 'react';
 
 export const useFetching = callback => {
-  const fetching = async () => {
+  const fetching = useCallback(async () => {
     try {
       uiStore.changeIsLoading();
       await callback();
@@ -10,7 +11,7 @@ export const useFetching = callback => {
     } finally {
       uiStore.changeIsLoading();
     }
-  };
+  }, []);
 
   return fetching;
 };

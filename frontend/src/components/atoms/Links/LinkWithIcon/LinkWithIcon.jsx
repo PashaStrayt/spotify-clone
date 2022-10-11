@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { list } from './list';
 import { Link as RouterLink } from 'react-router-dom';
@@ -6,7 +6,7 @@ import className from 'classnames';
 import styles from './styles.module.scss';
 import { PROXY_URL } from './../../../../shared/workingWithFetch';
 
-const LinkWithIcon = ({ isBackground = false, name, additionalStyle, clickHandler }) => {
+const LinkWithIcon = memo(({ isBackground = false, name, additionalStyle, clickHandler }) => {
   const location = useLocation();
   const [isClicked, setIsClicked] = useState();
   const { path, text, imageUrl, activeImageUrl } = list[name];
@@ -31,6 +31,6 @@ const LinkWithIcon = ({ isBackground = false, name, additionalStyle, clickHandle
       {text}
     </RouterLink>
   );
-};
+});
 
 export default LinkWithIcon;

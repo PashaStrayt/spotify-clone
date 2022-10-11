@@ -8,6 +8,7 @@ import { uiStore } from './../../stores/UIStore';
 import { deepCopy } from './../../shared/workingWithTypes';
 import { uploadStore } from './../../stores/UploadStore';
 import AudioItemMarkupRow from './../molucules/Markups/AudioRows/AudioItemMarkupRow';
+import { useCallback } from 'react';
 
 // isPreview,
 // isPrivate,
@@ -67,7 +68,7 @@ const AudioItem = observer(props => {
       fetchDeleteSong();
     }
   };
-  const audioClickHandler = () => {
+  const audioClickHandler = useCallback(() => {
     if (props.isPreview) return;
     if (audioStore.currentPlaying.audio.src.slice(-41) === props.fileName || audioStore.currentPlaying.audio.src.slice(-40) === props.fileName) {
       if (audioStore.currentPlaying.audio.paused) {
@@ -97,7 +98,7 @@ const AudioItem = observer(props => {
       });
       audioStore.currentPlaying.audio.play();
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (!props.isPreview) {

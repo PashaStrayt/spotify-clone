@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useFetching } from '../../hooks/useFetching';
 import { audioStore } from './../../stores/AudioStore';
@@ -18,36 +18,36 @@ const AlbumId = observer(() => {
   const [isUploadMenuOpened, setIsUploadMenuOpened] = useState(false);
   const [isConfirmDeletionOpened, setIsConfirmDeletionOpened] = useState(false);
 
-  const onPlay = () => {
+  const onPlay = useCallback(() => {
     audioStore.setCurrentPlaying(audioStore.availableQueue.queue[0]);
     audioStore.setCurrentQueue(audioStore.availableQueue);
     audioStore.currentPlaying.audio.currentTime = 0;
     audioStore.currentPlaying.audio.play();
-  };
-  const onEdit = () => setIsEditPopupOpened(true);
-  const onUpload = () => {
+  }, []);
+  const onEdit = useCallback(() => setIsEditPopupOpened(true), []);
+  const onUpload = useCallback(() => {
     setIsUploadMenuOpened(prev => !prev);
-  };
-  const onHideUploadMenu = () => {
+  }, []);
+  const onHideUploadMenu = useCallback(() => {
     setIsUploadMenuOpened(false);
     audioStore.setDefaultAvailableQueue();
-  };
-  const onDelete = () => {
+  }, []);
+  const onDelete = useCallback(() => {
     setIsConfirmDeletionOpened(true);
-  };
+  }, []);
 
   const upPopupData = data => {
     setAlbum(prev => {
       return { ...prev, ...data };
     });
   };
-  const onClosePopup = () => {
+  const onClosePopup = useCallback(() => {
     setIsEditPopupOpened(false);
-  };
+  }, []);
 
-  const onCancelDeletion = () => {
+  const onCancelDeletion = useCallback(() => {
     setIsConfirmDeletionOpened(false);
-  };
+  }, []);
   const onConfirmDeletion = useFetching(async () => {
     const { statusCode } = await RestAPI.deleteAlbum({ id: album.id });
 
@@ -60,13 +60,13 @@ const AlbumId = observer(() => {
   useEffect(() => {
     fetchingWithoutPreloader(async () => {
       const { statusCode, response } = await RestAPI.getAlbum({ id: params.id });
-  
+
       if (statusCode === 200) {
         setAlbum(response);
       }
     });
   }, [params.id]);
-  
+
   return (
     <>
       <AlbumOrPlaylistIdMarkup

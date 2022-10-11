@@ -19,7 +19,7 @@ const links = [
   { name: 'admin-panel', additonalStyle: { margin: '28px 0 48px' } }
 ];
 
-const NavBar = observer(() => {
+const NavBar =  observer(() => {
   const [isLinksPopupOpened, setIsLinksPopupOpened] = useState(false);
   const [albums, setAlbums] = useState();
 

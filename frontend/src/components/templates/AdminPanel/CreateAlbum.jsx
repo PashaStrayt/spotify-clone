@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useFetching } from '../../../hooks/useFetching';
 import { uiStore } from '../../../stores/UIStore';
 import LabelWithLine from '../../molucules/LabelWithLine/LabelWithLine';
@@ -23,9 +23,9 @@ const CreateAlbum = () => {
   const [album, setAlbum] = useState();
   const location = useLocation();
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     setAlbum(getDefaultAlbum());
-  };
+  }, []);
   const onSave = useFetching(async () => {
     const { name, singers, date } = album;
     if (!AudioAPI.isAlbumFormValid({ name, singers, date })) {
@@ -55,11 +55,11 @@ const CreateAlbum = () => {
       return { ...prev, singers }
     });
   };
-  const addOneEmtySinger = () => {
+  const addOneEmtySinger = useCallback(() => {
     const index = Object.entries(album.singers).length;
 
     singerInputHandler(index, { id: null, name: '' });
-  };
+  }, []);
   const dateInputHandler = event => {
     const date = event.target.value.slice(0, 4);
     setAlbum(prev => {

@@ -5,6 +5,7 @@ import { RestAPI } from "../../../shared/workingWithFetch";
 import DragAndDropSong from './../../organisms/DragAndDropSong';
 import { uploadStore } from './../../../stores/UploadStore';
 import AudioList from './../AudioList';
+import { useCallback } from "react";
 
 const UploadSongs = observer(({ albumName, albumImage, albumId, singers, onHide }) => {
   const fetchSongs = useFetching(async () => {
@@ -18,7 +19,7 @@ const UploadSongs = observer(({ albumName, albumImage, albumId, singers, onHide 
       }
     }
   });
-  const onCancel = () => uploadStore.setDefaultFiles();
+  const onCancel = useCallback(() => uploadStore.setDefaultFiles(), []);
   return (
     <>
       <DragAndDropSong

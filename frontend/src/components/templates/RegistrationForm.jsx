@@ -10,6 +10,7 @@ import { RestAPI } from '../../shared/workingWithFetch';
 import { updateUserStoreAndCookies } from './../../shared/workingWithAuthentication';
 import { useNavigate } from 'react-router-dom';
 import FormWithButtons from './../molucules/FormWithButtons/FormWithButtons';
+import { useCallback } from 'react';
 
 const isFormValid = ({ login, email, password, repeatedPassword }) => {
   if (!login) {
@@ -46,9 +47,9 @@ const RegistrationForm = () => {
   const navigate = useNavigate();
   const [account, setAccount] = useState(getDefaultAccount());
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     setAccount(getDefaultAccount());
-  };
+  }, []);
   const onSave = useFetching(async () => {
     if (!isFormValid(account)) {
       return;

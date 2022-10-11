@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useFetching } from '../../hooks/useFetching';
 import { audioStore } from '../../stores/AudioStore';
@@ -25,36 +25,36 @@ const PlaylistId = observer(() => {
       setPlaylist(response);
     }
   });
-  const onPlay = () => {
+  const onPlay = useCallback(() => {
     audioStore.setCurrentPlaying(audioStore.availableQueue.queue[0]);
     audioStore.setCurrentQueue(audioStore.availableQueue);
     audioStore.currentPlaying.audio.currentTime = 0;
     audioStore.currentPlaying.audio.play();
-  };
-  const onEdit = () => setIsEditPopupOpened(true);
-  const onUpload = () => {
+  }, []);
+  const onEdit = useCallback(() => setIsEditPopupOpened(true), []);
+  const onUpload = useCallback(() => {
     setIsAddMenuOpened(prev => !prev);
-  };
-  const onHideUploadMenu = () => {
+  }, []);
+  const onHideUploadMenu = useCallback(() => {
     setIsAddMenuOpened(false);
     audioStore.setDefaultAvailableQueue();
-  };
-  const onDelete = () => {
+  }, []);
+  const onDelete = useCallback(() => {
     setIsConfirmDeletionOpened(true);
-  };
+  }, []);
 
   const upPopupData = data => {
     setPlaylist(prev => {
       return { ...prev, ...data };
     });
   };
-  const onClosePopup = () => {
+  const onClosePopup = useCallback(() => {
     setIsEditPopupOpened(false);
-  };
+  }, []);
 
-  const onCancelDeletion = () => {
+  const onCancelDeletion = useCallback(() => {
     setIsConfirmDeletionOpened(false);
-  };
+  }, []);
   const onConfirmDeletion = useFetching(async () => {
     const { statusCode } = await RestAPI.deletePlaylist({ id: playlist.id });
 

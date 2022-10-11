@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useFetching } from '../../../hooks/useFetching';
 import LabelWithLine from '../../molucules/LabelWithLine/LabelWithLine';
 import UploadImage from '../../molucules/UploadImage/UploadImage';
@@ -29,9 +29,9 @@ const CreateSinger = () => {
   const [singer, setSinger] = useState();
   const location = useLocation();
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     setSinger(getDefaultSinger());
-  };
+  }, []);
   const onSave = useFetching(async () => {
     const { name } = singer;
     if (!isFormValid(name)) {
