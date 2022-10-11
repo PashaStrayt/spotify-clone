@@ -3,6 +3,7 @@ import { uiStore } from './../stores/UIStore';
 import { userStore } from './../stores/UserStore';
 
 export const PROXY_URL = 'https://spotify-clone.pashastrayt.repl.co';
+// export const PROXY_URL = '';
 
 export const fetching = async callback => {
   try {

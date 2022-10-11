@@ -7,6 +7,7 @@
   z-index: 1;
   animation: opacity-entering 0.4s ease-in forwards;
   -webkit-animation: opacity-entering 0.4s ease-in forwards;
+  pointer-events: none;
 }
 
 .container-exiting {
@@ -20,6 +21,7 @@
   cursor: pointer;
   animation: inset-entering 0.4s ease-in-out normal forwards;
   -webkit-animation: inset-entering 0.4s ease-in-out normal forwards;
+  pointer-events: all;
 }
 
 .background {

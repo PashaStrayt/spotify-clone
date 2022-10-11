@@ -70,8 +70,7 @@ export const list = {
     title: 'Загрузить новые треки',
     imageUrl: '/upload-image.svg',
     activeImageUrl: '/upload-active-image.svg',
-    size: 'big',
-    doesRememberClicks: true
+    size: 'big'
   },
   'search-songs': {
     title: 'Поиск треков в текущем альбоме / плейлисте',

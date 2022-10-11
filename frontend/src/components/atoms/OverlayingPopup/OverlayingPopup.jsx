@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const ANIMATION_DURATION = 400;
 
-const OverlayingPopup = ({ isBackground = true, children, isOpened, onClose }) => {
+const OverlayingPopup = ({ isBackground = true, isOverlay = true, children, isOpened, onClose }) => {
   const isMounted = useMount({ isOpened });
   const [isAnimation, setIsAnimation] = useState(false);
 
@@ -30,22 +30,25 @@ const OverlayingPopup = ({ isBackground = true, children, isOpened, onClose }) =
         {
           state =>
             <div className={className(styles.container, styles['container-' + state])}>
-              <Transition
-                in={isAnimation}
-                timeout={ANIMATION_DURATION}
-                mountOnEnter
-                unmountOnExit
-              >
-                {
-                  state =>
-                    <div
-                      className={className(styles.overlay, styles[state], {
-                        [styles.background]: isBackground
-                      })}
-                      onClick={onClose}
-                    />
-                }
-              </Transition>
+              {
+                isOverlay &&
+                <Transition
+                  in={isAnimation}
+                  timeout={ANIMATION_DURATION}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  {
+                    state =>
+                      <div
+                        className={className(styles.overlay, styles[state], {
+                          [styles.background]: isBackground
+                        })}
+                        onClick={onClose}
+                      />
+                  }
+                </Transition>
+              }
               {children}
             </div>
         }

@@ -34,10 +34,7 @@ const App = observer(() => {
           audioStore.currentPlaying.name &&
           <AudioPanel />
         }
-        {
-          uiStore?.editSongPopup?.isVisible &&
-          <EditSongPopup />
-        }
+        <EditSongPopup />
         <LoadingWheel />
         <ErrorPopup />
         <UserMessagePopup />
