@@ -3,17 +3,11 @@ import { Portal } from 'react-portal';
 import className from 'classnames';
 import { useMount } from '../../../hooks/useMount';
 import { Transition } from 'react-transition-group';
-import { useEffect, useState } from 'react';
 
 const ANIMATION_DURATION = 400;
 
 const OverlayingPopup = ({ isBackground = true, isOverlay = true, children, isOpened, onClose }) => {
   const isMounted = useMount({ isOpened });
-  const [isAnimation, setIsAnimation] = useState(false);
-
-  useEffect(() => {
-    setIsAnimation(!!isOpened);
-  }, [isOpened])
 
   if (!isMounted) {
     return null;
@@ -22,7 +16,7 @@ const OverlayingPopup = ({ isBackground = true, isOverlay = true, children, isOp
   return (
     <Portal>
       <Transition
-        in={isAnimation}
+        in={isOpened}
         timeout={ANIMATION_DURATION}
         mountOnEnter
         unmountOnExit
@@ -33,7 +27,7 @@ const OverlayingPopup = ({ isBackground = true, isOverlay = true, children, isOp
               {
                 isOverlay &&
                 <Transition
-                  in={isAnimation}
+                  in={isOpened}
                   timeout={ANIMATION_DURATION}
                   mountOnEnter
                   unmountOnExit

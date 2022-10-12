@@ -12,6 +12,7 @@ import { audioStore } from './stores/AudioStore';
 import AudioPanel from './components/templates/AudioPanel';
 import AudioInfoPlate from './components/molucules/AudioInfoPlate/AudioInfoPlate';
 import { AudioAPI } from './shared/AudioAPI';
+import FirstDialogPopup from "./components/organisms/Popups/FirstDialogPopup";
 
 const App = observer(() => {
   return (
@@ -34,6 +35,7 @@ const App = observer(() => {
           audioStore.currentPlaying.name &&
           <AudioPanel />
         }
+        <FirstDialogPopup />
         <EditSongPopup />
         <LoadingWheel />
         <ErrorPopup />

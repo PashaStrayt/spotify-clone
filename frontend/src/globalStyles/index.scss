@@ -13,6 +13,21 @@ body {
   color: #FFF;
 }
 
+strong {
+  font-weight: bold;
+}
+
+code {
+  padding: 6px 10px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #2b333e;
+  border-radius: 6px;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+}
+
 .wrapper {
   padding: 0 40px;
 

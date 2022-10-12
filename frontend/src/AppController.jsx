@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { RestAPI, fetching, fetchingWithoutPreloader } from "./shared/workingWithFetch";
+import { RestAPI, fetching } from "./shared/workingWithFetch";
 import { AudioAPI } from "./shared/AudioAPI";
 import { audioStore } from "./stores/AudioStore";
 import { uiStore } from "./stores/UIStore";
@@ -70,13 +70,19 @@ const AppController = observer(() => {
 
   // Setting default available queue if changing page
   useEffect(() => {
-    audioStore.setDefaultAvailableQueue();
-    audioStore.setDefaultAlbums();
+    if (location.pathname !== '/') {
+      audioStore.setDefaultAvailableQueue();
+      audioStore.setDefaultAlbums();
+    }
   }, [location]);
 
   // Update available queue for infinity scroll
   useEffect(() => {
-    if (audioStore.availableQueue.page === 0) {
+    if (location.pathname === '/') {
+      return;
+    }
+    
+    if (audioStore.availableQueue.page <= 0) {
       return audioStore.setAvailableQueue({ page: 1 });
     };
 
@@ -201,7 +207,11 @@ const AppController = observer(() => {
 
   // Update albums for infinity scroll
   useEffect(() => {
-    if (audioStore.albums.page === 0) {
+    if (location.pathname === '/') {
+      return;
+    }
+
+    if (audioStore.albums.page <= 0) {
       return audioStore.setAlbums({ page: 1 });
     }
 
@@ -222,12 +232,12 @@ const AppController = observer(() => {
         if (!uiStore.searchQuery) {
           return;
         }
-        
+
         const { statusCode, response, headers } = await RestAPI.searchAlbums({
           page: audioStore.albums.page,
           searchQuery: uiStore.searchQuery
         });
-  
+
         if (statusCode === 200 && Array.isArray(response) && response.length) {
           audioStore.setAlbums({ totalPages: headers.totalPages });
           audioStore.pushInAlbumsList(response);
@@ -240,9 +250,6 @@ const AppController = observer(() => {
       }
     });
   }, [audioStore.albums.page]);
-
-  // useEffect(() => {
-  // }, [uiStore.searchQuery, location.pathname]);
 
   return null;
 });

@@ -58,6 +58,7 @@
     DB_HOST=
     DB_PORT=
     SECRET_KEY=
+    URL=
   </code>
 </pre>
 

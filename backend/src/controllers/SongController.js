@@ -5,7 +5,7 @@ import { getAudioDurationInSeconds } from 'get-audio-duration';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { v4 } from 'uuid';
-import { copyFile, readdir, readdirSync, unlink } from 'fs';
+import { unlink } from 'fs';
 
 config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -43,7 +43,7 @@ export class SongController {
         const fileName = v4() + '.' + format;
         await mvAsync(song[1], resolve(__dirname, '..', '..', 'static', 'songs', fileName));
 
-        const path = `https://spotify-clone.pashastrayt.repl.co/${fileName}`;
+        const path = process.env.URL + '/' + fileName;
         let duration = await getAudioDurationInSeconds(path);
         duration = Math.floor(duration);
 

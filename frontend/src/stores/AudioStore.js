@@ -10,8 +10,8 @@ class AudioStore {
 
   constructor() {
     this.setDefaultCurrentPlaying();
-    this.setDefaultAvailableQueue();
-    this.setDefaultAlbums();
+    this.setDefaultAvailableQueue({ page: -1 });
+    this.setDefaultAlbums({ page: -1 });
 
     const lastQueue = JSON.parse(localStorage.getItem('lastQueue'));
     if (lastQueue?.page) {
@@ -31,11 +31,11 @@ class AudioStore {
       };
     });
   }
-  setDefaultAvailableQueue() {
+  setDefaultAvailableQueue(album) {
     runInAction(() => {
       this.availableQueue = {
         isEnded: false,
-        page: 0,
+        page: album?.page || 0,
         totalPages: 1,
         queue: []
       };
@@ -179,12 +179,14 @@ class AudioStore {
     }
   }
 
-  setDefaultAlbums() {
-    this.albums = {
-      page: 0,
-      totalPages: 1,
-      list: []
-    }
+  setDefaultAlbums(album) {
+    runInAction(() => {
+      this.albums = {
+        page: album?.page || 0,
+        totalPages: 1,
+        list: []
+      }
+    });
   }
   setAlbums(albums) {
     runInAction(() => {

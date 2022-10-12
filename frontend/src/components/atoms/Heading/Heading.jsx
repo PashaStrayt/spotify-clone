@@ -7,6 +7,7 @@ const Heading = ({ level, align, additionalStyle, ...props }) => {
     className: className({
       [styles.primary]: level === 1,
       [styles.secondary]: level === 2,
+      [styles.tertiary]: level === 3,
       [styles.center]: align === 'center'
     }),
     style: additionalStyle,

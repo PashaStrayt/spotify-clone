@@ -103,8 +103,8 @@ const AlbumOrPlaylistId = observer(({
           <AudioList
             isPreview={false}
             audios={audios}
-            currentAlbumId={id}
-            playlistId={id}
+            currentAlbumId={type === 'album' ? id : null}
+            playlistId={type === 'playlist' ? id : null}
           />
         }
       </div>
