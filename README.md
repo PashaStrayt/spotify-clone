@@ -1,14 +1,23 @@
-<img width='100%' src='./images/logo.jpg' />
-
+<a href="https://spotify-clone-pashastrayt.vercel.app/home">
+  <img width='100%' src='./images/logo.jpg' />
+</a>
+  
 # Spotify Clone 🎶🎧
 <p>Clone of popular app with supporting such formats: .flac, .wav, .m4a and .ogg.<br>
 // Клон популярного приложения с поддержкой форматов: .flac, .wav, .m4a и .ogg.</p>
 
 
 ## Development progress in percent // Прогресс разработки в процентах
-<p>App already works, but some pages, buttons, etc. haven't finished yet<br>
-// Приложение уже работает, но пока еще не закончены некоторые страницы, кнопки и пр.</p>
+<p>App's almost ready and works fine, but it maybe will get updates for fix some bugs and reworking components in the future<br>
+// Приложение почти готово и прекрасно работает, но возможно еще будет обновляться в будущем</p>
 <img width='100%' src='./images/progress.svg' />
+
+<h2><a href="https://spotify-clone-pashastrayt.vercel.app/home">ACTUAL DEPLOY LINK</a><h2>
+<p>click above text link or below image link<br>
+// нажми на текст выше или на картинку ниже</p>
+<a href="https://spotify-clone-pashastrayt.vercel.app/home">
+  <img width='100%' src='./images/first-load.gif' />
+</a>
 
 ## Preview
 <p>Listen, revind, play, pause music!<br>
@@ -36,8 +45,23 @@
   <li>PostgreSQL</li>
   <li>Express JS</li>
 </ul>
+  
+## Deploy local on your PC // Разверните локально на своем ПК
+<p>For this you need create <code>.env</code> file in the <code>backend</code> directory and put your variables values<br>
+// Для этого вам необходимо создать <code>.env</code> файл в папке <code>backend</code> и поместить туда свои значения</p>
+<pre>
+  <code>
+    PORT=
+    DB_NAME=
+    DB_USER=
+    DB_PASSWORD=
+    DB_HOST=
+    DB_PORT=
+    SECRET_KEY=
+  </code>
+</pre>
 
-## In developing // В разработке
+## In developing (todo list) // В разработке
 <ul>
   <li><s>Панель создания контента</s></li>
   <ul>
