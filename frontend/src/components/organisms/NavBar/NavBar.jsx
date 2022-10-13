@@ -86,7 +86,6 @@ const NavBar =  observer(() => {
           }
         </div>
 
-        {/* Временно. Для предпросмотра дизайна */}
         <div className={style['playlists-block']}>
           {
             albums?.map(({ id, name }) =>

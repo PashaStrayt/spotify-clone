@@ -13,6 +13,7 @@ export const fetching = async callback => {
     uiStore.setErrorMessage(error.message)
   } finally {
     uiStore.changeIsLoading();
+    uiStore.setIsLoading2(false);
   }
 }
 export const fetchingWithoutPreloader = async callback => {

@@ -16,7 +16,7 @@ const MessagePopup = ({ message, type, clearMessage }) => {
   }, [message]);
 
   return (
-    <OverlayingPopup isOverlay={false} isOpened={message} onClose={clearMessage} isBackground={false}>
+    <OverlayingPopup isOverlay={false} isOpened={!!message} onClose={clearMessage} isBackground={false}>
       <p 
       className={className(styles.self, {
           [styles['self--error']]: type === 'error'

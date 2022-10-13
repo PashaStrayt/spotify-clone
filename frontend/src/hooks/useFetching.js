@@ -9,6 +9,7 @@ export const useFetching = callback => {
       uiStore.setErrorMessage(error.message);
     } finally {
       uiStore.changeIsLoading();
+      uiStore.setIsLoading2(false);
     }
   };
 

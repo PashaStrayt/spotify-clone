@@ -67,7 +67,6 @@ const AppController = observer(() => {
 
     return requestData;
   };
-
   // Setting default available queue if changing page
   useEffect(() => {
     if (location.pathname !== '/') {
@@ -81,7 +80,7 @@ const AppController = observer(() => {
     if (location.pathname === '/') {
       return;
     }
-    
+
     if (audioStore.availableQueue.page <= 0) {
       return audioStore.setAvailableQueue({ page: 1 });
     };
@@ -207,7 +206,11 @@ const AppController = observer(() => {
 
   // Update albums for infinity scroll
   useEffect(() => {
-    if (location.pathname === '/') {
+    const lp = location.pathname;
+    if (
+      lp === '/' ||
+      (lp.includes('/search') && !uiStore.searchQuery)
+    ) {
       return;
     }
 
@@ -216,6 +219,7 @@ const AppController = observer(() => {
     }
 
     let statusCode, response, headers;
+
 
     fetching(async () => {
       if (location.pathname === '/home') {
@@ -250,6 +254,19 @@ const AppController = observer(() => {
       }
     });
   }, [audioStore.albums.page]);
+
+  useEffect(() => {
+    const lp = location.pathname;
+    if (
+      !lp.includes('/home') &&
+      !lp.includes('/favourite')
+    ) {
+      window.addEventListener('load', () => {
+        uiStore.setIsLoading2(false);
+        console.log('PAGE LOADED');
+      });
+    }
+  }, []);
 
   return null;
 });

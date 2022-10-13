@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 const LoadingWheel = observer(() => {
   return (
     <Transition
-      in={uiStore.isLoading}
+      in={uiStore.isLoading || uiStore.isLoading2}
       timeout={500}
       mountOnEnter
       unmountOnExit

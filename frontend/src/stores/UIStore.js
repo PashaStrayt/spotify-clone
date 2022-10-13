@@ -3,6 +3,7 @@ import { stringToBoolean } from './../shared/workingWithTypes';
 
 class UIStore {
   isLoading = false;
+  isLoading2 = false;
   editSongPopup = {};
   isVisibleAudioInfoPlate = stringToBoolean(localStorage.getItem('isVisibleAudioInfoPlate')) || false;
   currentEditingSong = {};
@@ -21,6 +22,10 @@ class UIStore {
 
   set(state, value) {
     state = value;
+  }
+
+  setIsLoading2(isLoading) {
+    this.isLoading2 = isLoading;
   }
 
   setSearchQuery(query) {

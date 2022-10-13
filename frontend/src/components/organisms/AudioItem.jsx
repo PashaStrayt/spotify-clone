@@ -45,6 +45,10 @@ const AudioItem = observer(props => {
   const onEdit = event => {
     event.stopPropagation();
 
+    if (!userStore.isAuth || userStore.role !== 'ADMIN') {
+      return uiStore.setErrorMessage('У вас нет прав администратора');
+    }
+
     uiStore.setEditSongPopup({ isVisible: true, isPreview: props.isPreview });
     const song = {
       id: props.id,
@@ -59,6 +63,10 @@ const AudioItem = observer(props => {
   };
   const onDelete = event => {
     event.stopPropagation();
+
+    if (!userStore.isAuth || userStore.role !== 'ADMIN') {
+      return uiStore.setErrorMessage('У вас нет прав администратора');
+    }
     
     if (props.isPreview) {
       uploadStore.deleteFile(props.number - 1);

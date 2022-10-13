@@ -9,6 +9,8 @@ import AlbumOrPlaylistIdMarkup from '../molucules/Markups/AlbumOrPlaylistId/Albu
 import EditAlbumPopup from '../templates/EditContentPopups/EditAlbumPopup';
 import FormPopup from './../molucules/Popups/FormPopup/FormPopup';
 import Span from '../atoms/Span/Span';
+import { userStore } from './../../stores/UserStore';
+import { uiStore } from './../../stores/UIStore';
 
 const AlbumId = observer(() => {
   const params = useParams();
@@ -24,8 +26,18 @@ const AlbumId = observer(() => {
     audioStore.currentPlaying.audio.currentTime = 0;
     audioStore.currentPlaying.audio.play();
   };
-  const onEdit = () => setIsEditPopupOpened(true);
+  const onEdit = () => {
+    if (!userStore.isAuth || userStore.role !== 'ADMIN') {
+      return uiStore.setErrorMessage('У вас нет прав администратора');
+    }
+
+    setIsEditPopupOpened(true)
+  };
   const onUpload = () => {
+    if (!userStore.isAuth || userStore.role !== 'ADMIN') {
+      return uiStore.setErrorMessage('У вас нет прав администратора');
+    }
+
     setIsUploadMenuOpened(prev => !prev);
   };
   const onHideUploadMenu = () => {
@@ -33,6 +45,10 @@ const AlbumId = observer(() => {
     audioStore.setDefaultAvailableQueue();
   };
   const onDelete = () => {
+    if (!userStore.isAuth || userStore.role !== 'ADMIN') {
+      return uiStore.setErrorMessage('У вас нет прав администратора');
+    }
+
     setIsConfirmDeletionOpened(true);
   };
 
