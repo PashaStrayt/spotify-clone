@@ -206,16 +206,16 @@ const AppController = observer(() => {
 
   // Update albums for infinity scroll
   useEffect(() => {
+    if (audioStore.albums.page <= 0) {
+      return audioStore.setAlbums({ page: 1 });
+    }
+
     const lp = location.pathname;
     if (
       lp === '/' ||
       (lp.includes('/search') && !uiStore.searchQuery)
     ) {
       return;
-    }
-
-    if (audioStore.albums.page <= 0) {
-      return audioStore.setAlbums({ page: 1 });
     }
 
     let statusCode, response, headers;
