@@ -43,6 +43,7 @@ const SearchHeader = ({ value, changeHandler, keyDownHandler }) => {
   return (
     <Header headingText='' selectPanelText='Поиск по' buttons={buttons}>
       <SearchInput value={value} changeHandler={changeHandler} keyDownHandler={keyDownHandler} />
+      <p>Для поиска введите текст в поле выше и нажмите <span style={{background: '#434343', padding: '4px', borderRadius: '6px'}}>'Enter'</span></p>
     </Header>
   );
 };

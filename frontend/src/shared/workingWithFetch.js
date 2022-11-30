@@ -85,13 +85,17 @@ export class RestAPI {
     const headers = { totalPages };
 
     response = await response.json();
-    if (response.message) {
+    let message = response?.message;
+    if (message) {
       switch (statusCode) {
         case 200:
-          uiStore.setUserMessage(response.message);
+          uiStore.setUserMessage(message);
           break;
         default:
-          uiStore.setErrorMessage(response.message);
+          if (message === 'jwt expired') {
+            message = 'Вы вышли из профиля из-за длительного отсутствия'
+          }
+          uiStore.setErrorMessage(message);
           break;
       }
     }
